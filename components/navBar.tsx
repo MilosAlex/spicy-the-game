@@ -27,7 +27,7 @@ export default function NavBar(props: NavBarProps) {
     <div className="navbar">
       <nav className="navbar__content">
         <Link href="/">
-          <h3 className="navbar__title">Uno the game</h3>
+          <h3 className="navbar__title">Spicy the game</h3>
         </Link>
         {session ? (
           <section className="navbar__status">

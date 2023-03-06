@@ -30,10 +30,9 @@ export async function getServerSideProps(context: any) {
 export default function Home({
   isConnected,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-
   return (
     <main className="home">
-      <h1 className="home__title">Welcome to UNO the game!</h1>
+      <h1 className="home__title">Welcome to Spicy the game!</h1>
 
       <section className="home__options">
         <Link className="home__join" href="/rooms">
@@ -44,7 +43,7 @@ export default function Home({
         </Link>
       </section>
 
-      {isConnected ? (
+      {/* {isConnected ? (
         <h2 className="home__subtitle">You are connected to MongoDB</h2>
       ) : (
         <h2 className="home__subtitle">
@@ -58,7 +57,7 @@ export default function Home({
         <Link href="/comments">
           <code>pages/comments.tsx</code>
         </Link>
-      </p>
+      </p> */}
     </main>
   );
 }

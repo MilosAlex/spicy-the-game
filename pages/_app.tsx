@@ -11,8 +11,8 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Head>
-        <title>Uno the game</title>
-        <link rel="icon" href="/uno.png" />
+        <title>Spicy the game</title>
+        <link rel="icon" href="/pepper.png" />
       </Head>
 
       <NavBar />
