@@ -16,7 +16,14 @@ export default async (req: any, res: any) => {
       return;
     }
     res.json({
-      ...room,
+      //...room,
+      _id: room._id,
+      hostId: room.hostId,
+      name: room.name,
+      round: room.round,
+      topCard: room.topCard,
+      declaredCard: room.declaredCard ?? null,
+      declarer: room.declarer ?? null,
       players: room.players.map((player: any) => {
         if (player.id === userId) {
           return { ...player, handSize: player.hand.length };

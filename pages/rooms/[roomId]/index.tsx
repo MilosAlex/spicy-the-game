@@ -14,12 +14,24 @@ interface Card {
   value: string;
 }
 
+interface Player {
+  id: string;
+  name: string;
+  hand: Card[];
+}
+
 interface Room {
   _id: ObjectId;
   hostId: ObjectId;
   name: string;
-  deck?: Card[];
   round: number;
+  topCard: Card;
+  declaredCard: Card | null;
+  declarer: string | null;
+  players: Player[];
+  deck: Card[];
+  deckSize: number;
+  activePlayer: string;
 }
 
 interface GameRoomProps {
@@ -179,7 +191,7 @@ const GameRoom = (props: GameRoomProps) => {
     //console.log(card, user_id);
 
     //setPickedCard(card);
-    return;
+    //return;
 
     const url = window.location.href.replace(
       `rooms/${props.room._id.toString()}`,
@@ -191,6 +203,8 @@ const GameRoom = (props: GameRoomProps) => {
         body: JSON.stringify({
           userId: user_id,
           roomId: props.room._id.toString(),
+          card: pickedCard,
+          declaration: num,
         }),
         headers: {
           Accept: "application/json, text/plain, */*",
@@ -336,9 +350,7 @@ const GameRoom = (props: GameRoomProps) => {
           {pickedCard && (
             <section className="game-room__declaration">
               <Card color={pickedCard.color} value={pickedCard.value} />
-              <h2 className="game-room__declaration__title">
-                "It's a..."
-              </h2>
+              <h2 className="game-room__declaration__title">"It's a..."</h2>
               {[...(Array(10).keys() as any)].map((i: number) => {
                 if (
                   (Number(pickedCard.value) === 9 && i < 4) ||

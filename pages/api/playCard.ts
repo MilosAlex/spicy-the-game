@@ -6,7 +6,7 @@ export default async (req: any, res: any) => {
   try {
     const client = await clientPromise;
     const db = client.db("unodb");
-    const { roomId, userId, card } = req.body;
+    const { roomId, userId, card, declaration } = req.body;
 
     const room = await db
       .collection("rooms")
@@ -32,40 +32,48 @@ export default async (req: any, res: any) => {
     const player = players.find((player: any) => player.id === userId);
 
     if (!player) {
-        res.status(400).json({ message: "Player not found" });
-        return;
+      res.status(400).json({ message: "Player not found" });
+      return;
     }
 
     const { hand } = player;
 
     // remove card from hand
-    const newHand = hand.filter((c: any) => c.color != card.color || c.value != card.value);
+    const newHand = hand.filter(
+      (c: any) => c.color != card.color || c.value != card.value
+    );
 
     const newPlayers = players.map((player: any) => {
-        if (player.id === userId) {
-            return { ...player, hand: newHand };
-        } else {
-            return player;
-        }
+      if (player.id === userId) {
+        return { ...player, hand: newHand };
+      } else {
+        return player;
+      }
     });
 
-    const newRoom = {
-        ...room,
-        deck,
-        players: newPlayers,
-        round: room.round + 1,
-        topCard: card,
+    const newDeclaredCard = {
+      color: room.declaredCard.color ?? room.topCard.color,
+      value: declaration ?? room.topCard.value,
     };
 
-    await db.collection("rooms").updateOne(
-        { _id: new ObjectId(roomId) },
-        { $set: newRoom }
-    );
+    const newRoom = {
+      ...room,
+      deck,
+      players: newPlayers,
+      round: room.round + 1,
+      topCard: card,
+      declaredCard: newDeclaredCard,
+      declarer: userId,
+    };
+
+    await db
+      .collection("rooms")
+      .updateOne({ _id: new ObjectId(roomId) }, { $set: newRoom });
 
     //update sockets
     await pusher.trigger(`presence-${roomId}`, "new-round", {
-        message: "0",
-      });
+      message: "0",
+    });
 
     res.json({
       ...room,
