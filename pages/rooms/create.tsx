@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
+import Lock from "../../icons/lock";
 
 interface CreateRoomProps {}
 
@@ -58,9 +59,22 @@ export default function CreateRoom(props: CreateRoomProps) {
           onChange={(e) => setRoomTitle(e.target.value)}
           placeholder="Peti vs Feri"
         />
-        <button className="register__button" type="submit">
-          Create
-        </button>
+        {session ? (
+          <button className="register__button" type="submit">
+            Create
+          </button>
+        ) : (
+          <>
+            <button className="register__button" type="submit" disabled>
+              <div className="create-room__lock">
+                <Lock />
+              </div>
+            </button>
+            <h3 className="">
+              You have to be logged in to create a room
+            </h3>
+          </>
+        )}
       </form>
     </main>
   );

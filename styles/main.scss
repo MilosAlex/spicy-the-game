@@ -284,6 +284,13 @@ button {
   }
 }
 
+.create-room {
+  &__lock {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
+
 .game-room {
   display: flex;
   flex-direction: column;
