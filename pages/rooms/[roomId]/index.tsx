@@ -34,12 +34,13 @@ const GameRoom = (props: GameRoomProps) => {
   const user_id = session?.user?.id;
   const channel_id = "presence-" + props.room._id.toString();
 
-  //useState for players
   const [players, setPlayers] = useState<any[]>([]);
 
   const [room, setRoom] = useState<any | null>(null);
   const [isActiveTurn, setIsActiveTurn] = useState<boolean>(false);
   const [activePlayer, setActivePlayer] = useState<any>(null);
+
+  const [pickedCard, setPickedCard] = useState<Card | null>(null);
 
   const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
@@ -143,6 +144,10 @@ const GameRoom = (props: GameRoomProps) => {
 
   const handleCardClick = async (card: Card) => {
     console.log(card, user_id);
+
+    setPickedCard(card);
+    return;
+
     const url = window.location.href.replace(
       `rooms/${props.room._id.toString()}`,
       "api/playCard"
@@ -154,6 +159,38 @@ const GameRoom = (props: GameRoomProps) => {
           userId: user_id,
           roomId: props.room._id.toString(),
           card,
+        }),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response;
+      //console.log(response);
+
+      handleRoomQuery();
+    } catch (errorMessage: any) {
+      console.error(errorMessage);
+    }
+  };
+
+  const handleDeclarationClick = async (num: string) => {
+    //console.log(card, user_id);
+
+    //setPickedCard(card);
+    return;
+
+    const url = window.location.href.replace(
+      `rooms/${props.room._id.toString()}`,
+      "api/playCard"
+    );
+    try {
+      let response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          userId: user_id,
+          roomId: props.room._id.toString(),
         }),
         headers: {
           Accept: "application/json, text/plain, */*",
@@ -289,9 +326,39 @@ const GameRoom = (props: GameRoomProps) => {
                 </div>
               ))}
             </article>
-            <button className="game-room__refetch-button" onClick={handleRoomQuery}>Refetch</button>
+            <button
+              className="game-room__refetch-button"
+              onClick={handleRoomQuery}
+            >
+              Refetch
+            </button>
           </section>
-          {/* <h2 className="game-room__subtitle">Your hand: </h2> */}
+          {pickedCard && (
+            <section className="game-room__declaration">
+              <Card color={pickedCard.color} value={pickedCard.value} />
+              <h2 className="game-room__declaration__title">
+                "It's a..."
+              </h2>
+              {[...(Array(10).keys() as any)].map((i: number) => {
+                if (
+                  (Number(pickedCard.value) === 9 && i < 4) ||
+                  (Number(pickedCard.value) !== 9 &&
+                    i > Number(pickedCard.value))
+                )
+                  return (
+                    <Card
+                      key={pickedCard.value + pickedCard.color + i}
+                      color={pickedCard.color}
+                      value={i.toString()}
+                      clickable={isActiveTurn}
+                      onClickHandler={() =>
+                        handleDeclarationClick(i.toString())
+                      }
+                    />
+                  );
+              })}
+            </section>
+          )}
           <section className="game-room__hand">
             {room?.players
               .find((player: any) => player.id == user_id)
