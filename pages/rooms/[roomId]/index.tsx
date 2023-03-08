@@ -188,8 +188,6 @@ const GameRoom = (props: GameRoomProps) => {
   };
 
   const handleDeclarationClick = async (num: string) => {
-    //console.log(card, user_id);
-
     //setPickedCard(card);
     //return;
 
@@ -213,9 +211,9 @@ const GameRoom = (props: GameRoomProps) => {
       });
 
       response = await response;
-      //console.log(response);
 
       handleRoomQuery();
+      setPickedCard(null);
     } catch (errorMessage: any) {
       console.error(errorMessage);
     }
@@ -320,6 +318,18 @@ const GameRoom = (props: GameRoomProps) => {
             <article className="game-room__board__top-card">
               <h2 className="game-room__top-card__title">Top card</h2>
               <Card color={room?.topCard.color} value={room?.topCard.value} />
+              {room?.declaredCard && (
+                <>
+                  <h2 className="game-room__top-card__title">
+                    {players.find((p) => p.id === room.declarer)?.name} said
+                    it's a
+                  </h2>
+                  <Card
+                    color={room.declaredCard.color}
+                    value={room.declaredCard.value}
+                  />
+                </>
+              )}
             </article>
             <article className="game-room__board__players">
               {room?.players.map((player: any) => (
@@ -340,12 +350,12 @@ const GameRoom = (props: GameRoomProps) => {
                 </div>
               ))}
             </article>
-            <button
+            {/* <button
               className="game-room__refetch-button"
               onClick={handleRoomQuery}
             >
               Refetch
-            </button>
+            </button> */}
           </section>
           {pickedCard && (
             <section className="game-room__declaration">
@@ -360,12 +370,12 @@ const GameRoom = (props: GameRoomProps) => {
                   return (
                     <Card
                       key={pickedCard.value + pickedCard.color + i}
-                      color={pickedCard.color}
+                      color={room?.declaredCard?.color ?? room?.topCard.color}
                       value={i.toString()}
                       clickable={isActiveTurn}
-                      onClickHandler={() =>
-                        handleDeclarationClick(i.toString())
-                      }
+                      onClickHandler={() => {
+                        handleDeclarationClick(i.toString());
+                      }}
                     />
                   );
               })}

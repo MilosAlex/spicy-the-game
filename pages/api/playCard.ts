@@ -52,7 +52,7 @@ export default async (req: any, res: any) => {
     });
 
     const newDeclaredCard = {
-      color: room.declaredCard.color ?? room.topCard.color,
+      color: room.declaredCard?.color ?? room.topCard.color,
       value: declaration ?? room.topCard.value,
     };
 
