@@ -334,7 +334,10 @@ const GameRoom = (props: GameRoomProps) => {
                 {room?.declaredCard && (
                   <div className="game-room__board__top-card__declaration">
                     <h3 className="game-room__board__top-card__declaration__text">
-                      {room.players.find((p) => p.id === room.declarer)?.name}{" "}
+                      {
+                        room.players.find((p: any) => p.id === room.declarer)
+                          ?.name
+                      }{" "}
                       said it's a...
                     </h3>
                     <Card
