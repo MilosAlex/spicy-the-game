@@ -376,6 +376,26 @@ button {
     }
   }
 
+  &__challenge-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 2rem;
+    border-radius: 5px;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    padding: unset;
+    background-color: rgb(196, 25, 25);
+
+    &:hover {
+      background-color: white;
+      color: #000;
+      box-shadow: 0.5rem 0.5rem;
+    }
+  }
+
   &__hand {
     display: flex;
     flex-direction: row;
@@ -400,7 +420,7 @@ button {
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1rem;
+    //gap: 1rem;
     margin: 2rem 1rem;
     width: calc(100% - 2.4rem);
     background-color: rgb(221, 221, 221);
@@ -425,7 +445,8 @@ button {
       align-items: center;
       gap: 1rem;
       color: #000;
-      width: 30%;
+      //width: 30%;
+      //border: solid 1px #000;
 
       @media (max-width: 768px) {
         width: 100%;
@@ -433,11 +454,45 @@ button {
     }
 
     &__stats {
+      width: 20%;
+    }
+
+    &__players {
+      width: 20%;
     }
 
     &__top-card {
+      width: 54%;
       &__title {
         margin: unset;
+      }
+
+      &__body {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin: 1rem 0;
+        width: 100%;
+      }
+
+      &__declaration {
+        //card sized
+        height: 11rem;
+        width: 7rem;
+
+        &__text {
+          margin: unset;
+          font-size: 1.2rem;
+          color: #000;
+          text-align: center;
+        }
+
+        .card {
+          scale: 0.7;
+          margin-top: -1.2rem;
+        }
       }
     }
 
@@ -584,6 +639,43 @@ button {
 
     .card__number-middle {
       color: black;
+    }
+  }
+
+  &--unknown {
+    .card__content {
+      //multiple background colors moving
+      background: linear-gradient(
+        135deg,
+        #c40c00 0%,
+        #1254ab 25%,
+        #c40c00 50%,
+        #328a10 75%,
+        #c40c00 100%
+      );
+      background-size: 400% 400%;
+      animation: gradient 5s ease infinite;
+    }
+
+    .card__number-middle {
+      //multiple background colors moving
+      background: linear-gradient(
+        135deg,
+        #c40c00 0%,
+        #1254ab 25%,
+        #c40c00 50%,
+        #328a10 75%,
+        #c40c00 100%
+      );
+      background-size: 400% 400%;
+      animation: gradient 5s ease infinite;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      //shadow none
+      text-shadow: none;
+      width: 4rem;
+      text-align: center;
     }
   }
 

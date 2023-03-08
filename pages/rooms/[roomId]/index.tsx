@@ -25,7 +25,7 @@ interface Room {
   hostId: ObjectId;
   name: string;
   round: number;
-  topCard: Card;
+  topCard: Card | null;
   declaredCard: Card | null;
   declarer: string | null;
   players: Player[];
@@ -314,22 +314,36 @@ const GameRoom = (props: GameRoomProps) => {
                   It's {activePlayer?.name}'s turn!
                 </h3>
               )}
+              {room?.declarer && room?.declarer !== user_id && (
+                <button className="game-room__challenge-button">
+                  It's a lie!
+                </button>
+              )}
             </article>
             <article className="game-room__board__top-card">
-              <h2 className="game-room__top-card__title">Top card</h2>
-              <Card color={room?.topCard.color} value={room?.topCard.value} />
-              {room?.declaredCard && (
-                <>
-                  <h2 className="game-room__top-card__title">
-                    {players.find((p) => p.id === room.declarer)?.name} said
-                    it's a
-                  </h2>
+              <h2 className="game-room__board__top-card__title">Top card</h2>
+              <div className="game-room__board__top-card__body">
+                {room?.topCard ? (
                   <Card
-                    color={room.declaredCard.color}
-                    value={room.declaredCard.value}
+                    color={room?.topCard.color}
+                    value={room?.topCard.value}
                   />
-                </>
-              )}
+                ) : (
+                  <Card color={"unknown"} value={"unknown"} />
+                )}
+                {room?.declaredCard && (
+                  <div className="game-room__board__top-card__declaration">
+                    <h3 className="game-room__board__top-card__declaration__text">
+                      {room.players.find((p) => p.id === room.declarer)?.name}{" "}
+                      said it's a...
+                    </h3>
+                    <Card
+                      color={room.declaredCard.color}
+                      value={room.declaredCard.value}
+                    />
+                  </div>
+                )}
+              </div>
             </article>
             <article className="game-room__board__players">
               {room?.players.map((player: any) => (
@@ -363,9 +377,13 @@ const GameRoom = (props: GameRoomProps) => {
               <h2 className="game-room__declaration__title">"It's a..."</h2>
               {[...(Array(10).keys() as any)].map((i: number) => {
                 if (
-                  (Number(pickedCard.value) === 9 && i < 4) ||
-                  (Number(pickedCard.value) !== 9 &&
-                    i > Number(pickedCard.value))
+                  (Number(room?.declaredCard?.value ?? room?.topCard.value) ===
+                    9 &&
+                    i < 4) ||
+                  (Number(room?.declaredCard?.value ?? room?.topCard.value) !==
+                    9 &&
+                    i >
+                      Number(room?.declaredCard?.value ?? room?.topCard.value))
                 )
                   return (
                     <Card

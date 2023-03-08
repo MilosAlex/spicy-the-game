@@ -58,6 +58,8 @@ export default function Card(props: CardProps) {
     );
   } else if (props.value === "wild") {
     text = "";
+  } else if (props.value === "unknown") {
+    text = "?";
   } else {
     text = props.value;
   }

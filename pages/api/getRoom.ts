@@ -15,13 +15,17 @@ export default async (req: any, res: any) => {
       res.status(400).json({ message: "Room not found" });
       return;
     }
+
+    const newTopCard =
+      !room.declarer || room.declarer === userId ? room.topCard : null;
+
     res.json({
       //...room,
       _id: room._id,
       hostId: room.hostId,
       name: room.name,
       round: room.round,
-      topCard: room.topCard,
+      topCard: newTopCard,
       declaredCard: room.declaredCard ?? null,
       declarer: room.declarer ?? null,
       players: room.players.map((player: any) => {
