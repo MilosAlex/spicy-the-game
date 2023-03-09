@@ -40,7 +40,8 @@ export default async (req: any, res: any) => {
       const name = activePlayers.find(
         (player: any) => player.id === user.id
       )?.name;
-      return { ...user, hand, name };
+      const points = 0;
+      return { ...user, hand, name, points };
     });
 
     console.log(deck);

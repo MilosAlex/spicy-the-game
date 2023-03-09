@@ -32,7 +32,7 @@ export default async (req: any, res: any) => {
       return;
     }
 
-    const deck = await db.collection("decks").findOne({ name: "numbers-only" });
+    const deck = await db.collection("decks").findOne({ name: "numbers-only-spicy" });
 
     if (!deck) {
       res.status(400).json({ message: "Missing deck" });

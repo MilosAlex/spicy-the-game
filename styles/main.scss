@@ -387,12 +387,32 @@ button {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     padding: unset;
-    background-color: rgb(196, 25, 25);
+    background-color: #c40c00;
+
+    &:hover {
+      background-color: #c40c00;
+      color: #000;
+      box-shadow: 0.5rem 0.5rem #000;
+    }
+  }
+
+  &__challenge-color, &__challenge-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 2rem;
+    border-radius: 5px;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    padding: unset;
+    background-color: white;
 
     &:hover {
       background-color: white;
       color: #000;
-      box-shadow: 0.5rem 0.5rem;
+      box-shadow: 0.5rem 0.5rem #000;
     }
   }
 
@@ -403,7 +423,7 @@ button {
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-    margin: 2rem 1rem;
+    margin: 0 1rem 2rem 1rem;
     width: calc(100% - 2.4rem);
     background-color: rgb(221, 221, 221);
     border: 1px solid #000;
@@ -412,6 +432,31 @@ button {
     color: rgb(150, 150, 150);
     box-shadow: 0.5rem 0.5rem;
     max-width: 60rem;
+  }
+
+  &__status-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 1rem 0 1rem;
+    width: calc(100% - 2.4rem);
+    background-color: rgb(221, 221, 221);
+    border: 1px solid #000;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.2rem;
+    max-width: 60rem;
+
+    &__text {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #000;
+      margin: unset;
+      width: 30%;
+      text-align: center;
+    }
   }
 
   &__board {
@@ -538,7 +583,7 @@ button {
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-    margin: 2rem 1rem;
+    margin: 0 1rem 2rem 1rem;
     width: calc(100% - 2.4rem);
     background-color: rgb(221, 221, 221);
     border: 1px solid #000;

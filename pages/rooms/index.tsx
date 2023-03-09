@@ -21,7 +21,7 @@ const RoomList = (props: RoomListProps) => {
     <main>
       <h1 className="room-list__title">Select a room</h1>
       <section className="room-list__room__container">
-        {props.rooms.map((room) =>
+        {props.rooms.reverse().map((room) =>
           session ? (
             <Link
               className="room-list__room"

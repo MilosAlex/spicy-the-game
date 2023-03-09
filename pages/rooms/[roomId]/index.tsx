@@ -53,6 +53,7 @@ const GameRoom = (props: GameRoomProps) => {
   const [activePlayer, setActivePlayer] = useState<any>(null);
 
   const [pickedCard, setPickedCard] = useState<Card | null>(null);
+  const [isChallengeActive, setIsChallengeActive] = useState<boolean>(false);
 
   const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
@@ -219,6 +220,37 @@ const GameRoom = (props: GameRoomProps) => {
     }
   };
 
+  const handleChallenge = async (challenged: string) => {
+    //setPickedCard(card);
+    //return;
+
+    const url = window.location.href.replace(
+      `rooms/${props.room._id.toString()}`,
+      "api/challenge"
+    );
+    try {
+      let response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          userId: user_id,
+          roomId: props.room._id.toString(),
+          challenged,
+        }),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response;
+
+      handleRoomQuery();
+      setIsChallengeActive(false);
+    } catch (errorMessage: any) {
+      console.error(errorMessage);
+    }
+  };
+
   useEffect(() => {
     if (!session) router.replace("/");
 
@@ -293,10 +325,24 @@ const GameRoom = (props: GameRoomProps) => {
         </>
       ) : (
         <>
+          <section className="game-room__status-bar">
+            <h4 className="game-room__status-bar__text">
+              Round: {room?.round}
+            </h4>
+            <h4 className="game-room__status-bar__text">
+              Deck size: {room?.deckSize}
+            </h4>
+            <h4 className="game-room__status-bar__text">
+              Cards in the pile: {room?.deckSize}
+            </h4>
+          </section>
           <section className="game-room__board">
             <article className="game-room__board__stats">
-              <h3 className="game-room__round">Round: {room?.round}</h3>
+              {/* <h3 className="game-room__round">Round: {room?.round}</h3>
               <h3 className="game-room__round">Deck size: {room?.deckSize}</h3>
+              <h3 className="game-room__round">
+                Cards in the pile: {room?.deckSize}
+              </h3> */}
               {isActiveTurn ? (
                 <>
                   <h3 className="game-room__round">
@@ -314,14 +360,40 @@ const GameRoom = (props: GameRoomProps) => {
                   It's {activePlayer?.name}'s turn!
                 </h3>
               )}
-              {room?.declarer && room?.declarer !== user_id && (
-                <button className="game-room__challenge-button">
-                  It's a lie!
-                </button>
-              )}
+              {room?.declarer &&
+                room?.declarer !== user_id &&
+                (isChallengeActive ? (
+                  <>
+                    <button
+                      className="game-room__challenge-color"
+                      onClick={() => handleChallenge("color")}
+                    >
+                      Not the right color
+                    </button>
+                    <button
+                      className="game-room__challenge-number"
+                      onClick={() => handleChallenge("color")}
+                    >
+                      Not the right number
+                    </button>
+                    <button
+                      className="game-room__challenge-button"
+                      onClick={() => setIsChallengeActive(false)}
+                    >
+                      Ahh, nevermind
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="game-room__challenge-button"
+                    onClick={() => setIsChallengeActive(true)}
+                  >
+                    It's a lie!
+                  </button>
+                ))}
             </article>
             <article className="game-room__board__top-card">
-              <h2 className="game-room__board__top-card__title">Top card</h2>
+              {/* <h2 className="game-room__board__top-card__title">Top card</h2> */}
               <div className="game-room__board__top-card__body">
                 {room?.topCard ? (
                   <Card
@@ -334,10 +406,10 @@ const GameRoom = (props: GameRoomProps) => {
                 {room?.declaredCard && (
                   <div className="game-room__board__top-card__declaration">
                     <h3 className="game-room__board__top-card__declaration__text">
-                      {
-                        room.players.find((p: any) => p.id === room.declarer)
-                          ?.name
-                      }{" "}
+                      {room.declarer === user_id
+                        ? "You"
+                        : room.players.find((p: any) => p.id === room.declarer)
+                            ?.name}{" "}
                       said it's a...
                     </h3>
                     <Card
@@ -353,8 +425,8 @@ const GameRoom = (props: GameRoomProps) => {
                 <div
                   className={
                     room?.activePlayer === player.id
-                      ? "game-room__board__players__player"
-                      : "game-room__board__players__player game-room__board__players__player--active"
+                      ? "game-room__board__players__player game-room__board__players__player--active"
+                      : "game-room__board__players__player"
                   }
                   key={player.id}
                 >
@@ -363,6 +435,9 @@ const GameRoom = (props: GameRoomProps) => {
                   </h3>
                   <p className="game-room__board__players__hand-size">
                     Hand size: {player.handSize}
+                  </p>
+                  <p className="game-room__board__players__hand-size">
+                    points: {player.points}
                   </p>
                 </div>
               ))}
