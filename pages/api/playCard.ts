@@ -64,6 +64,7 @@ export default async (req: any, res: any) => {
       topCard: card,
       declaredCard: newDeclaredCard,
       declarer: userId,
+      pileSize: room.pileSize + 1,
     };
 
     await db

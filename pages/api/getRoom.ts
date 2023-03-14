@@ -38,6 +38,7 @@ export default async (req: any, res: any) => {
       deck: [],
       deckSize: room.deck.length,
       activePlayer: room.players[room.round % room.players.length].id,
+      pileSize: room.pileSize,
     });
   } catch (e) {
     console.error(e);

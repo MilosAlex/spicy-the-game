@@ -62,7 +62,15 @@ export default async (req: any, res: any) => {
       .collection("rooms")
       .updateOne(
         { _id: new ObjectId(roomId) },
-        { $set: { round: 0, players, deck, topCard: startingCard } }
+        {
+          $set: {
+            round: 0,
+            players,
+            deck,
+            topCard: startingCard,
+            pileSize: 1,
+          },
+        }
       );
 
     /* if (!deck) {

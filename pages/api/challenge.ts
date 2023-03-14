@@ -6,7 +6,7 @@ export default async (req: any, res: any) => {
   try {
     const client = await clientPromise;
     const db = client.db("unodb");
-    const { roomId, userId } = req.body;
+    const { roomId, userId, challenged } = req.body;
 
     const room = await db
       .collection("rooms")
@@ -30,30 +30,51 @@ export default async (req: any, res: any) => {
     const { deck, players } = room;
 
     const player = players.find((player: any) => player.id === userId);
+    const opponent = players.find((player: any) => player.id === room.declarer);
 
     if (!player) {
-        res.status(400).json({ message: "Player not found" });
-        return;
+      res.status(400).json({ message: "Player not found" });
+      return;
+    }
+    if (!opponent) {
+      res.status(400).json({ message: "Opponent not found" });
+      return;
     }
 
-    const { hand } = player;
+    if (room.topCard[challenged] === room.declaredCard[challenged]) {
+      //opponent wins
+      opponent.points += room.pileSize;
+    } else {
+      //player wins
+      player.points += room.pileSize;
+    }
 
+    const newPlayers = players.map((p: any) => {
+      if (p.id === userId) {
+        return player;
+      } else if (p.id === room.declarer) {
+        return opponent;
+      } else {
+        return p;
+      }
+    });
 
     const newRoom = {
-        ...room,
-        declaredCard: undefined,
-        declarer: undefined,
+      ...room,
+      players: newPlayers,
+      declaredCard: undefined,
+      declarer: undefined,
+      pileSize: 1,
     };
 
-    await db.collection("rooms").updateOne(
-        { _id: new ObjectId(roomId) },
-        { $set: newRoom }
-    );
+    await db
+      .collection("rooms")
+      .updateOne({ _id: new ObjectId(roomId) }, { $set: newRoom });
 
     //update sockets
     await pusher.trigger(`presence-${roomId}`, "new-round", {
-        message: "0",
-      });
+      message: "0",
+    });
 
     res.json({
       ...room,

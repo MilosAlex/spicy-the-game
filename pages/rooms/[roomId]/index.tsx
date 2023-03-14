@@ -31,6 +31,7 @@ interface Room {
   players: Player[];
   deck: Card[];
   deckSize: number;
+  pileSize: number;
   activePlayer: string;
 }
 
@@ -333,7 +334,7 @@ const GameRoom = (props: GameRoomProps) => {
               Deck size: {room?.deckSize}
             </h4>
             <h4 className="game-room__status-bar__text">
-              Cards in the pile: {room?.deckSize}
+              Cards in the pile: {room?.pileSize}
             </h4>
           </section>
           <section className="game-room__board">
@@ -372,7 +373,7 @@ const GameRoom = (props: GameRoomProps) => {
                     </button>
                     <button
                       className="game-room__challenge-number"
-                      onClick={() => handleChallenge("color")}
+                      onClick={() => handleChallenge("value")}
                     >
                       Not the right number
                     </button>
@@ -457,7 +458,8 @@ const GameRoom = (props: GameRoomProps) => {
                 if (
                   (Number(room?.declaredCard?.value ?? room?.topCard.value) ===
                     9 &&
-                    i < 4) ||
+                    i < 4 &&
+                    i > 0) ||
                   (Number(room?.declaredCard?.value ?? room?.topCard.value) !==
                     9 &&
                     i >
