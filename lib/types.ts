@@ -25,7 +25,7 @@ export interface RoomData {
   round: number;
   pileSize: number;
   players: Player[];
-  topCard?: Card;
+  topCard: Card;
   declaredCard?: Card | null;
   declarer?: string | null;
 }

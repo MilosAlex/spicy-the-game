@@ -15,8 +15,14 @@ export default async (req: any, res: any) => {
 
     const controller = await Controller(roomId, hostId);
     await controller.startGame(activePlayers);
+    const room = controller.getPlayerRoom();
 
-    res.json({});
+    if (!room) {
+      res.status(400).json({ message: "Room not found" });
+      return;
+    }
+
+    res.json(room);
   } catch (e) {
     console.error(e);
     //throw new Error(e).message;

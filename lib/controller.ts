@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import Model from "./model";
 import clientPromise from "./mongodb";
 import { pusher } from "./pusher";
-import { RoomData, User } from "./types";
+import { Card, RoomData, User } from "./types";
 
 const Controller = async (roomId: string, userId: string) => {
   //getting room data from db
@@ -50,12 +50,35 @@ const Controller = async (roomId: string, userId: string) => {
     const room = model.getRoom();
     await updateDbRoom(room);
     await notifyPlayers();
-    console.log("Game started controller");
+  };
+
+  const playCard = async (card: Card, declaration: string) => {
+    model.playCard(userId, card, declaration);
+    const room = model.getRoom();
+    await updateDbRoom(room);
+    await notifyPlayers();
+  };
+
+  const drawCard = async () => {
+    model.drawCard(userId);
+    const room = model.getRoom();
+    await updateDbRoom(room);
+    await notifyPlayers();
+  };
+
+  const challenge = async (challenged: "color" | "value") => {
+    model.challenge(userId, challenged);
+    const room = model.getRoom();
+    await updateDbRoom(room);
+    await notifyPlayers();
   };
 
   return {
     getPlayerRoom,
     startGame,
+    playCard,
+    drawCard,
+    challenge,
   };
 };
 
