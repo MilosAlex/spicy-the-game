@@ -13,7 +13,8 @@ export default async (req: any, res: any) => {
       return;
     }
 
-    const controller = await Controller(roomId, hostId);
+    const controller = new Controller();
+    await controller.initialize(roomId, hostId);
     await controller.startGame(activePlayers);
     const room = controller.getPlayerRoom();
 

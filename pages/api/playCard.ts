@@ -17,7 +17,8 @@ export default async (req: any, res: any) => {
       return;
     }
 
-    const controller = await Controller(roomId, userId);
+    const controller = new Controller();
+    await controller.initialize(roomId, userId);
     await controller.playCard(card, declaration);
     const room = controller.getPlayerRoom();
 

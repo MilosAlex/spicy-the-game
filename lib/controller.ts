@@ -1,37 +1,54 @@
-import { ObjectId } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import Model from "./model";
 import clientPromise from "./mongodb";
 import { pusher } from "./pusher";
 import { Card, RoomData, User } from "./types";
 
-const Controller = async (roomId: string, userId: string) => {
-  //getting room data from db
-  const client = await clientPromise;
-  const db = client.db("unodb");
+class Controller {
+  private roomId: string;
+  private userId: string;
+  private model: Model;
+  private db: Db;
 
-  const roomData: any = await db
-    .collection("rooms")
-    .findOne({ _id: new ObjectId(roomId) });
+  constructor() {
+    this.roomId = "";
+    this.userId = "";
+    this.model = {} as Model;
+    this.db = {} as Db;
+  }
 
-  //creating model
-  const model = new Model(roomData);
+  async initialize(roomId: string, userId: string) {
+    this.roomId = roomId;
+    this.userId = userId;
 
-  const getPusherUsers = async () => {
-    const url = `/channels/presence-${roomId}/users`;
+    //getting room data from db
+    const client = await clientPromise;
+    this.db = client.db("unodb");
+
+    const roomData: any = await this.db
+      .collection("rooms")
+      .findOne({ _id: new ObjectId(roomId) });
+
+    //creating model
+    this.model = new Model(roomData);
+  }
+
+  private getPusherUsers = async () => {
+    const url = `/channels/presence-${this.roomId}/users`;
     const pusherRes = await pusher.get({ path: url });
     const body = await pusherRes.json();
     return body.users;
   };
 
-  const notifyPlayers = async () => {
-    await pusher.trigger(`presence-${roomId}`, "new-round", {
+  private notifyPlayers = async () => {
+    await pusher.trigger(`presence-${this.roomId}`, "new-round", {
       message: "0",
     });
   };
 
-  const updateDbRoom = async (room: any) => {
-    const newRoom = await db.collection("rooms").updateOne(
-      { _id: new ObjectId(roomId) },
+  private updateDbRoom = async (room: RoomData) => {
+    const newRoom = await this.db.collection("rooms").updateOne(
+      { _id: new ObjectId(this.roomId) },
       {
         $set: {
           ...room,
@@ -40,46 +57,38 @@ const Controller = async (roomId: string, userId: string) => {
     );
   };
 
-  const getPlayerRoom = () => {
-    const room = model.getPlayerRoom(userId);
+  public getPlayerRoom = () => {
+    const room = this.model.getPlayerRoom(this.userId);
     return room;
   };
 
-  const startGame = async (activePlayers: User[]) => {
-    model.startGame(activePlayers);
-    const room = model.getRoom();
-    await updateDbRoom(room);
-    await notifyPlayers();
+  public startGame = async (activePlayers: User[]) => {
+    this.model.startGame(activePlayers);
+    const room = this.model.getRoom();
+    await this.updateDbRoom(room);
+    await this.notifyPlayers();
   };
 
-  const playCard = async (card: Card, declaration: string) => {
-    model.playCard(userId, card, declaration);
-    const room = model.getRoom();
-    await updateDbRoom(room);
-    await notifyPlayers();
+  public playCard = async (card: Card, declaration: string) => {
+    this.model.playCard(this.userId, card, declaration);
+    const room = this.model.getRoom();
+    await this.updateDbRoom(room);
+    await this.notifyPlayers();
   };
 
-  const drawCard = async () => {
-    model.drawCard(userId);
-    const room = model.getRoom();
-    await updateDbRoom(room);
-    await notifyPlayers();
+  public drawCard = async () => {
+    this.model.drawCard(this.userId);
+    const room = this.model.getRoom();
+    await this.updateDbRoom(room);
+    await this.notifyPlayers();
   };
 
-  const challenge = async (challenged: "color" | "value") => {
-    model.challenge(userId, challenged);
-    const room = model.getRoom();
-    await updateDbRoom(room);
-    await notifyPlayers();
+  public challenge = async (challenged: "color" | "value") => {
+    this.model.challenge(this.userId, challenged);
+    const room = this.model.getRoom();
+    await this.updateDbRoom(room);
+    await this.notifyPlayers();
   };
-
-  return {
-    getPlayerRoom,
-    startGame,
-    playCard,
-    drawCard,
-    challenge,
-  };
-};
+}
 
 export default Controller;
