@@ -73,7 +73,7 @@ const GameRoom = (props: GameRoomProps) => {
       let response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
-          hostId: user_id,
+          userId: user_id,
           roomId: props.room._id.toString(),
           activePlayers: players,
         }),

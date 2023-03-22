@@ -25,10 +25,10 @@ export default async (req: any, res: any) => {
   try {
     const client = await clientPromise;
     const db = client.db("unodb");
-    const { name, hostId } = req.body;
+    const { name, userId } = req.body;
 
-    if (!hostId) {
-      res.status(400).json({ message: "Missing hostId" });
+    if (!userId) {
+      res.status(400).json({ message: "Missing userId" });
       return;
     }
 
@@ -42,7 +42,7 @@ export default async (req: any, res: any) => {
     const shuffledDeck = shuffle(deck.cards);
 
     const room = await db.collection("rooms").insertOne({
-      hostId: new ObjectId(hostId),
+      hostId: new ObjectId(userId),
       name,
       deck: shuffledDeck,
       round: -1,

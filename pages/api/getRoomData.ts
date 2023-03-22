@@ -1,6 +1,8 @@
 import { ObjectId } from "mongodb";
 import clientPromise from "../../lib/mongodb";
 
+//this is not used anywhere
+
 export default async (req: any, res: any) => {
   try {
     const { roomId } = req.body;

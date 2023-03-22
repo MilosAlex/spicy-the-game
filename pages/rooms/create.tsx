@@ -21,7 +21,7 @@ export default function CreateRoom(props: CreateRoomProps) {
         method: "POST",
         body: JSON.stringify({
           name: roomTitle,
-          hostId: user_id,
+          userId: user_id,
         }),
         headers: {
           Accept: "application/json, text/plain, */*",

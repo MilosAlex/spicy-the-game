@@ -2,9 +2,11 @@ import { Card, RoomData, User } from "./types";
 
 class Model {
   private roomData: RoomData;
+
   public getRoom = () => {
     return this.roomData;
   };
+  
   private initPlayers = (activePlayers: User[]) => {
     const players = activePlayers.map((user: User) => {
       const hand = this.roomData.deck.splice(0, 7);
