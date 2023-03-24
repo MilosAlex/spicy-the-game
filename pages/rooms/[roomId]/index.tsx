@@ -6,13 +6,11 @@ import { useRouter } from "next/router";
 import Script from "next/script";
 import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
-import Card from "../../../components/card";
+import CardComponent from "../../../components/card";
+import Hand from "../../../components/hand";
+import PlayerList from "../../../components/playerList";
 import clientPromise from "../../../lib/mongodb";
-
-interface Card {
-  color: string;
-  value: string;
-}
+import { Card } from "../../../lib/types";
 
 interface Player {
   id: string;
@@ -151,39 +149,6 @@ const GameRoom = (props: GameRoomProps) => {
       setActivePlayer(
         data.players.find((player: any) => player.id === data.activePlayer)
       ); */
-    } catch (errorMessage: any) {
-      console.error(errorMessage);
-    }
-  };
-
-  const handleCardClick = async (card: Card) => {
-    console.log(card, user_id);
-
-    setPickedCard(card);
-    return;
-
-    const url = window.location.href.replace(
-      `rooms/${props.room._id.toString()}`,
-      "api/playCard"
-    );
-    try {
-      let response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          userId: user_id,
-          roomId: props.room._id.toString(),
-          card,
-        }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-      });
-
-      response = await response;
-      //console.log(response);
-
-      handleRoomQuery();
     } catch (errorMessage: any) {
       console.error(errorMessage);
     }
@@ -397,12 +362,12 @@ const GameRoom = (props: GameRoomProps) => {
               {/* <h2 className="game-room__board__top-card__title">Top card</h2> */}
               <div className="game-room__board__top-card__body">
                 {room?.topCard ? (
-                  <Card
+                  <CardComponent
                     color={room?.topCard.color}
                     value={room?.topCard.value}
                   />
                 ) : (
-                  <Card color={"unknown"} value={"unknown"} />
+                  <CardComponent color={"unknown"} value={"unknown"} />
                 )}
                 {room?.declaredCard && (
                   <div className="game-room__board__top-card__declaration">
@@ -413,7 +378,7 @@ const GameRoom = (props: GameRoomProps) => {
                             ?.name}{" "}
                       said it's a...
                     </h3>
-                    <Card
+                    <CardComponent
                       color={room.declaredCard.color}
                       value={room.declaredCard.value}
                     />
@@ -421,77 +386,25 @@ const GameRoom = (props: GameRoomProps) => {
                 )}
               </div>
             </article>
-            <article className="game-room__board__players">
-              {room?.players.map((player: any) => (
-                <div
-                  className={
-                    room?.activePlayer === player.id
-                      ? "game-room__board__players__player game-room__board__players__player--active"
-                      : "game-room__board__players__player"
-                  }
-                  key={player.id}
-                >
-                  <h3 className="game-room__board__players__name">
-                    {player.name}
-                  </h3>
-                  <p className="game-room__board__players__hand-size">
-                    Hand size: {player.handSize}
-                  </p>
-                  <p className="game-room__board__players__hand-size">
-                    points: {player.points}
-                  </p>
-                </div>
-              ))}
-            </article>
-            {/* <button
-              className="game-room__refetch-button"
-              onClick={handleRoomQuery}
-            >
-              Refetch
-            </button> */}
+            {room && (
+              <PlayerList
+                players={room.players}
+                activePlayer={room.activePlayer}
+              />
+            )}
           </section>
-          {pickedCard && (
-            <section className="game-room__declaration">
-              <Card color={pickedCard.color} value={pickedCard.value} />
-              <h2 className="game-room__declaration__title">"It's a..."</h2>
-              {[...(Array(10).keys() as any)].map((i: number) => {
-                if (
-                  (Number(room?.declaredCard?.value ?? room?.topCard.value) ===
-                    9 &&
-                    i < 4 &&
-                    i > 0) ||
-                  (Number(room?.declaredCard?.value ?? room?.topCard.value) !==
-                    9 &&
-                    i >
-                      Number(room?.declaredCard?.value ?? room?.topCard.value))
-                )
-                  return (
-                    <Card
-                      key={pickedCard.value + pickedCard.color + i}
-                      color={room?.declaredCard?.color ?? room?.topCard.color}
-                      value={i.toString()}
-                      clickable={isActiveTurn}
-                      onClickHandler={() => {
-                        handleDeclarationClick(i.toString());
-                      }}
-                    />
-                  );
-              })}
-            </section>
+          {room && (
+            <Hand
+              cards={
+                room.players.find((player: any) => player.id == user_id)
+                  ?.hand ?? []
+              }
+              isActive={isActiveTurn}
+              onClickHandler={handleDeclarationClick}
+              declaredCard={room.declaredCard}
+              topCard={room.topCard}
+            />
           )}
-          <section className="game-room__hand">
-            {room?.players
-              .find((player: any) => player.id == user_id)
-              ?.hand?.map((card: Card, i: number) => (
-                <Card
-                  key={card.value + card.color + i}
-                  color={card.color}
-                  value={card.value}
-                  clickable={isActiveTurn}
-                  onClickHandler={() => handleCardClick(card)}
-                />
-              ))}
-          </section>
         </>
       )}
     </main>

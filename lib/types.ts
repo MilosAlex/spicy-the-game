@@ -10,10 +10,18 @@ export interface Card {
   value: string;
 }
 
+export interface PlayerData {
+  id: string;
+  name: string;
+  hand: Card[];
+  points: number;
+}
+
 export interface Player {
   id: string;
   name: string;
   hand: Card[];
+  handSize: number;
   points: number;
 }
 
@@ -24,7 +32,7 @@ export interface RoomData {
   deck: Card[];
   round: number;
   pileSize: number;
-  players: Player[];
+  players: PlayerData[];
   topCard: Card;
   declaredCard?: Card | null;
   declarer?: string | null;
