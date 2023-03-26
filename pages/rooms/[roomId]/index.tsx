@@ -1,37 +1,11 @@
 import { ObjectId } from "mongodb";
-import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
-import Head from "next/head";
 import { useRouter } from "next/router";
-import Script from "next/script";
 import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
-import CardComponent from "../../../components/card";
-import Hand from "../../../components/hand";
-import PlayerList from "../../../components/playerList";
+import GameBoard from "../../../components/gameBoard";
 import clientPromise from "../../../lib/mongodb";
-import { Card } from "../../../lib/types";
-
-interface Player {
-  id: string;
-  name: string;
-  hand: Card[];
-}
-
-interface Room {
-  _id: ObjectId;
-  hostId: ObjectId;
-  name: string;
-  round: number;
-  topCard: Card | null;
-  declaredCard: Card | null;
-  declarer: string | null;
-  players: Player[];
-  deck: Card[];
-  deckSize: number;
-  pileSize: number;
-  activePlayer: string;
-}
+import { Room } from "../../../lib/types";
 
 interface GameRoomProps {
   room: Room;
@@ -47,12 +21,7 @@ const GameRoom = (props: GameRoomProps) => {
 
   const [players, setPlayers] = useState<any[]>([]);
 
-  const [room, setRoom] = useState<any | null>(null);
-  const [isActiveTurn, setIsActiveTurn] = useState<boolean>(false);
-  const [activePlayer, setActivePlayer] = useState<any>(null);
-
-  const [pickedCard, setPickedCard] = useState<Card | null>(null);
-  const [isChallengeActive, setIsChallengeActive] = useState<boolean>(false);
+  const [room, setRoom] = useState<Room | null>(null);
 
   const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
@@ -111,114 +80,14 @@ const GameRoom = (props: GameRoomProps) => {
       console.log("room: ", data);
 
       setRoom(data);
-      setIsActiveTurn(data.activePlayer === user_id);
-      setActivePlayer(
-        data.players.find((player: any) => player.id === data.activePlayer)
-      );
-    } catch (errorMessage: any) {
-      console.error(errorMessage);
-    }
-  };
-
-  const handleDrawCard = async () => {
-    const url = window.location.href.replace(
-      `rooms/${props.room._id.toString()}`,
-      "api/drawCard"
-    );
-    try {
-      let response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          userId: user_id,
-          roomId: props.room._id.toString(),
-        }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-      });
-
-      response = await response;
-      const data = await response.json();
-
-      handleRoomQuery();
-      /* console.log("room: ", data);
-
-      setRoom(data);
-      setIsActiveTurn(data.activePlayer === user_id);
-      setActivePlayer(
-        data.players.find((player: any) => player.id === data.activePlayer)
-      ); */
-    } catch (errorMessage: any) {
-      console.error(errorMessage);
-    }
-  };
-
-  const handleDeclarationClick = async (num: string) => {
-    //setPickedCard(card);
-    //return;
-
-    const url = window.location.href.replace(
-      `rooms/${props.room._id.toString()}`,
-      "api/playCard"
-    );
-    try {
-      let response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          userId: user_id,
-          roomId: props.room._id.toString(),
-          card: pickedCard,
-          declaration: num,
-        }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-      });
-
-      response = await response;
-
-      handleRoomQuery();
-      setPickedCard(null);
-    } catch (errorMessage: any) {
-      console.error(errorMessage);
-    }
-  };
-
-  const handleChallenge = async (challenged: string) => {
-    //setPickedCard(card);
-    //return;
-
-    const url = window.location.href.replace(
-      `rooms/${props.room._id.toString()}`,
-      "api/challenge"
-    );
-    try {
-      let response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          userId: user_id,
-          roomId: props.room._id.toString(),
-          challenged,
-        }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-      });
-
-      response = await response;
-
-      handleRoomQuery();
-      setIsChallengeActive(false);
     } catch (errorMessage: any) {
       console.error(errorMessage);
     }
   };
 
   useEffect(() => {
-    if (!session) router.replace("/");
+    if (!props.room) router.replace("/");
+    if (!session) return;
 
     if (props.room.round !== -1) {
       handleRoomQuery();
@@ -253,11 +122,7 @@ const GameRoom = (props: GameRoomProps) => {
     return () => {
       pusher.unsubscribe(channel_id);
     };
-  }, []);
-
-  /* useEffect(() => {
-    console.log(players);
-  }, [players]); */
+  }, [session]);
 
   const membersToArray = (members: any) => {
     const membersArray = [];
@@ -291,120 +156,7 @@ const GameRoom = (props: GameRoomProps) => {
         </>
       ) : (
         <>
-          <section className="game-room__status-bar">
-            <h4 className="game-room__status-bar__text">
-              Round: {room?.round}
-            </h4>
-            <h4 className="game-room__status-bar__text">
-              Deck size: {room?.deckSize}
-            </h4>
-            <h4 className="game-room__status-bar__text">
-              Cards in the pile: {room?.pileSize}
-            </h4>
-          </section>
-          <section className="game-room__board">
-            <article className="game-room__board__stats">
-              {/* <h3 className="game-room__round">Round: {room?.round}</h3>
-              <h3 className="game-room__round">Deck size: {room?.deckSize}</h3>
-              <h3 className="game-room__round">
-                Cards in the pile: {room?.deckSize}
-              </h3> */}
-              {isActiveTurn ? (
-                <>
-                  <h3 className="game-room__round">
-                    It's your turn, pick a card!
-                  </h3>
-                  <button
-                    className="game-room__draw-button"
-                    onClick={handleDrawCard}
-                  >
-                    Draw a card
-                  </button>
-                </>
-              ) : (
-                <h3 className="game-room__round">
-                  It's {activePlayer?.name}'s turn!
-                </h3>
-              )}
-              {room?.declarer &&
-                room?.declarer !== user_id &&
-                (isChallengeActive ? (
-                  <>
-                    <button
-                      className="game-room__challenge-color"
-                      onClick={() => handleChallenge("color")}
-                    >
-                      Not the right color
-                    </button>
-                    <button
-                      className="game-room__challenge-number"
-                      onClick={() => handleChallenge("value")}
-                    >
-                      Not the right number
-                    </button>
-                    <button
-                      className="game-room__challenge-button"
-                      onClick={() => setIsChallengeActive(false)}
-                    >
-                      Ahh, nevermind
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    className="game-room__challenge-button"
-                    onClick={() => setIsChallengeActive(true)}
-                  >
-                    It's a lie!
-                  </button>
-                ))}
-            </article>
-            <article className="game-room__board__top-card">
-              {/* <h2 className="game-room__board__top-card__title">Top card</h2> */}
-              <div className="game-room__board__top-card__body">
-                {room?.topCard ? (
-                  <CardComponent
-                    color={room?.topCard.color}
-                    value={room?.topCard.value}
-                  />
-                ) : (
-                  <CardComponent color={"unknown"} value={"unknown"} />
-                )}
-                {room?.declaredCard && (
-                  <div className="game-room__board__top-card__declaration">
-                    <h3 className="game-room__board__top-card__declaration__text">
-                      {room.declarer === user_id
-                        ? "You"
-                        : room.players.find((p: any) => p.id === room.declarer)
-                            ?.name}{" "}
-                      said it's a...
-                    </h3>
-                    <CardComponent
-                      color={room.declaredCard.color}
-                      value={room.declaredCard.value}
-                    />
-                  </div>
-                )}
-              </div>
-            </article>
-            {room && (
-              <PlayerList
-                players={room.players}
-                activePlayer={room.activePlayer}
-              />
-            )}
-          </section>
-          {room && (
-            <Hand
-              cards={
-                room.players.find((player: any) => player.id == user_id)
-                  ?.hand ?? []
-              }
-              isActive={isActiveTurn}
-              onClickHandler={handleDeclarationClick}
-              declaredCard={room.declaredCard}
-              topCard={room.topCard}
-            />
-          )}
+          {room && <GameBoard room={room} setRoom={setRoom} userId={user_id} />}
         </>
       )}
     </main>

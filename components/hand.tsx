@@ -5,9 +5,9 @@ import CardComponent from "./card";
 interface HandProps {
   cards: Card[];
   declaredCard: Card | null;
-  topCard: Card;
+  topCard: Card | null;
   isActive: boolean;
-  onClickHandler: (num: string) => void;
+  onClickHandler: (pickedCard: Card, declaredNum: string) => Promise<void>;
 }
 
 const Hand = (props: HandProps) => {
@@ -32,20 +32,21 @@ const Hand = (props: HandProps) => {
       <h2 className="game-room__declaration__title">"It's a..."</h2>
       {[...(Array(10).keys() as any)].map((i: number) => {
         if (
-          (Number(props.declaredCard?.value ?? props.topCard.value) === 9 &&
+          (Number(props.declaredCard?.value ?? props.topCard?.value) === 9 &&
             i < 4 &&
             i > 0) ||
-          (Number(props.declaredCard?.value ?? props.topCard.value) !== 9 &&
-            i > Number(props.declaredCard?.value ?? props.topCard.value))
+          (Number(props.declaredCard?.value ?? props.topCard?.value) !== 9 &&
+            i > Number(props.declaredCard?.value ?? props.topCard?.value))
         )
           return (
             <CardComponent
               key={pickedCard.value + pickedCard.color + i}
-              color={props.declaredCard?.color ?? props.topCard.color}
+              color={props.declaredCard?.color ?? props.topCard?.color ?? ""}
               value={i.toString()}
               clickable={props.isActive}
               onClickHandler={() => {
-                props.onClickHandler(i.toString());
+                props.onClickHandler(pickedCard, i.toString());
+                setPickedCard(null);
               }}
             />
           );

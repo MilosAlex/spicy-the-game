@@ -120,6 +120,11 @@ class Controller {
         return;
       }
 
+      if (!declaration) {
+        this.res.status(400).json({ message: "Missing declaration" });
+        return;
+      }
+
       this.model.playCard(this.userId, card, declaration);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);

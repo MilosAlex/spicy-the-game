@@ -62,7 +62,6 @@ class Model {
           return { ...player, hand: [], handSize: player.hand.length };
         }
       }),
-      deck: [],
       deckSize: this.roomData.deck.length,
       activePlayer:
         this.roomData.players[

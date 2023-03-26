@@ -37,3 +37,17 @@ export interface RoomData {
   declaredCard?: Card | null;
   declarer?: string | null;
 }
+
+export interface Room {
+  _id: ObjectId;
+  hostId: ObjectId;
+  name: string;
+  round: number;
+  topCard: Card | null;
+  declaredCard: Card | null;
+  declarer: string | null;
+  players: Player[];
+  deckSize: number;
+  pileSize: number;
+  activePlayer: string;
+}
