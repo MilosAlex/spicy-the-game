@@ -8,15 +8,16 @@ html {
 
   display: flex;
   flex-direction: row;
-  //justify-content: center;
+  justify-content: center;
   //align-items: center;
 
   &__center {
     width: 100%;
     max-width: 69.4rem;
+    //min-width: 53rem;
     height: 47.6rem;
-    border-right: 1px solid #505D5F;
-    border-left: 1px solid #505D5F;
+    border-right: 1px solid #505d5f;
+    border-left: 1px solid #505d5f;
     background-color: #ede9db;
 
     display: flex;
@@ -156,5 +157,16 @@ html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+}
+
+// Media queries
+
+@media screen and (max-width: map-get($breakpoints, 'large')) {
+  .game-board {
+    &__players,
+    &__chat {
+      display: none;
+    }
   }
 }

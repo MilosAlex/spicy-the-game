@@ -66,3 +66,11 @@
     }
   }
 }
+
+// Media queries
+
+@media screen and (max-width: map-get($breakpoints, 'large')) {
+  .hand {
+    width: 100%;
+  }
+}
