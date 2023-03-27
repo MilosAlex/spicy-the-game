@@ -27,6 +27,7 @@ html {
     &__title {
       @include typo-bungee-24($main-black);
       margin: 2.4rem 0 0 0;
+      text-align: center;
     }
 
     &__cards {
@@ -162,11 +163,23 @@ html {
 
 // Media queries
 
-@media screen and (max-width: map-get($breakpoints, 'large')) {
+@media screen and (max-width: map-get($breakpoints, "large")) {
   .game-board {
     &__players,
     &__chat {
       display: none;
     }
+  }
+}
+
+@media screen and (max-width: map-get($breakpoints, "medium")) {
+  .game-board {
+    &__center {
+      height: unset;
+      &__buttons {
+        margin: 2.4rem 0;
+      }
+    }
+
   }
 }

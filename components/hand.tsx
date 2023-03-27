@@ -40,7 +40,7 @@ const Hand = (props: HandProps) => {
       </button>
       <div className="hand__cards">
         <CardComponent color={pickedCard.color} value={pickedCard.value} />
-        <h2 className="game-room__declaration__title">"It's a..."</h2>
+        <h2 className="hand__declaration-title">It's a...</h2>
         {[...(Array(10).keys() as any)].map((i: number) => {
           if (
             (Number(props.declaredCard?.value ?? props.topCard?.value) === 9 &&

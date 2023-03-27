@@ -65,6 +65,11 @@
       background-color: #888;
     }
   }
+
+  &__declaration-title {
+    //@include typo-bungee-16(#fff);
+    @include typo-poppins-16(#fff);
+  }
 }
 
 // Media queries
