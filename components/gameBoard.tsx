@@ -202,6 +202,7 @@ const GameBoard = (props: GameBoardProps) => {
         }
         isActive={isActiveTurn}
         onClickHandler={handleDeclarationClick}
+        drawCard={handleDrawCard}
         declaredCard={props.room.declaredCard}
         topCard={props.room.topCard}
       />

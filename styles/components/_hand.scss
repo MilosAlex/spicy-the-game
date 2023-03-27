@@ -1,0 +1,67 @@
+.hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  //margin: 0 1rem 2rem 1rem;
+  width: calc(100% - 2.4rem);
+  background-color: #1f2123;
+  //border: 1px solid #000;
+  border-radius: 1.2rem;
+  padding: 1.6rem 2.4rem 1.9rem 2.4rem;
+  max-width: 120rem;
+  //height: 26.8rem;
+  height: 29.3rem;
+
+  &__button {
+    width: 100%;
+    max-width: 28.2rem;
+    height: 4rem;
+    border-radius: 1.2rem;
+    border: 1px solid $main-black;
+    background-color: #fff;
+    color: $main-black;
+    font-size: 1.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    font-family: "Bungee";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0.3rem 0.5rem #fff;
+    }
+  }
+
+  &__cards {
+    display: flex;
+    //flex-direction: row;
+    //justify-content: center;
+    align-items: center;
+    //flex-wrap: wrap;
+    overflow-x: auto;
+    gap: 2.6rem;
+    height: 20.2rem;
+    max-width: 100%;
+
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      height: 0.3rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #888;
+    }
+  }
+}

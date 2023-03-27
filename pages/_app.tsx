@@ -1,6 +1,5 @@
 import { SessionProvider } from "next-auth/react";
 import NavBar from "../components/navBar";
-import "../styles/normalize.css";
 import "../styles/main.scss";
 import Head from "next/head";
 

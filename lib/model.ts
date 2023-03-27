@@ -6,7 +6,7 @@ class Model {
   public getRoom = () => {
     return this.roomData;
   };
-  
+
   private initPlayers = (activePlayers: User[]) => {
     const players = activePlayers.map((user: User) => {
       const hand = this.roomData.deck.splice(0, 7);
@@ -111,9 +111,11 @@ class Model {
       throw new Error("Not your turn");
     }
 
-    activePlayer.hand.push(
-      this.roomData.deck.splice(0, 1)[0]
-    );
+    if (this.roomData.deck.length === 0) {
+      throw new Error("Not enough cards in deck");
+    }
+
+    activePlayer.hand.push(this.roomData.deck.splice(0, 1)[0]);
 
     this.roomData.round++;
   };
@@ -124,12 +126,15 @@ class Model {
     }
     const player = this.getPlayer(userId);
     const challengedPlayer = this.getPlayer(this.roomData.declarer);
-    
+
     if (player.id === challengedPlayer.id) {
       throw new Error("You can't challenge yourself");
     }
 
-    if (this.roomData.topCard[challenged] === this.roomData.declaredCard[challenged]) {
+    if (
+      this.roomData.topCard[challenged] ===
+      this.roomData.declaredCard[challenged]
+    ) {
       //opponent wins
       challengedPlayer.points += this.roomData.pileSize;
     } else {

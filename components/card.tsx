@@ -80,7 +80,7 @@ export default function Card(props: CardProps) {
       }}
     >
       <div className="card__content">
-        <span className="card__number-top">{text}</span>
+        {/* <span className="card__number-top">{text}</span>
         <div className="card__ellipse">
           {props.value === "wild" && (
             <>
@@ -91,13 +91,13 @@ export default function Card(props: CardProps) {
               <div className="card__ellipse__border" />
             </>
           )}
-        </div>
+        </div> */}
         {!mainIcon ? (
           <span className="card__number-middle">{text}</span>
         ) : (
           mainIcon
         )}
-        <span className="card__number-bottom">{text}</span>
+        {/* <span className="card__number-bottom">{text}</span> */}
       </div>
     </article>
   );
