@@ -19,7 +19,8 @@ const Hand = (props: HandProps) => {
 
   return !pickedCard ? (
     <section className="hand">
-      <button className="hand__button" onClick={props.drawCard}>Draw a card</button>
+      {props.isActive && (
+      <button className="hand__button" onClick={props.drawCard}>Draw a card</button>)}
       <div className="hand__cards" ref={scrollRef as any}>
         {props.cards.map((card: Card, i: number) => (
           <CardComponent

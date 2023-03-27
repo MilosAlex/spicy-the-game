@@ -168,15 +168,17 @@ const GameBoard = (props: GameBoardProps) => {
                 value={props.room.declaredCard?.value ?? "unknown"}
                 size={"large"}
               />
-              <div className="game-board__center__cards__tag__container">
-                <p className="game-board__center__cards__tag">
-                  {props.room.declarer === props.userId
-                    ? "You"
-                    : props.room.players.find(
-                        (p: any) => p.id === props.room.declarer
-                      )?.name}
-                </p>
-              </div>
+              {props.room.declarer && (
+                <div className="game-board__center__cards__tag__container">
+                  <p className="game-board__center__cards__tag">
+                    {props.room.declarer === props.userId
+                      ? "You"
+                      : props.room.players.find(
+                          (p: any) => p.id === props.room.declarer
+                        )?.name}
+                  </p>
+                </div>
+              )}
             </div>
           </section>
 
@@ -196,13 +198,15 @@ const GameBoard = (props: GameBoardProps) => {
                       className="game-board__center__buttons__color-number"
                       onClick={() => handleChallenge("color")}
                     >
-                      Not the right<br/> color
+                      Not the right
+                      <br /> color
                     </button>
                     <button
                       className="game-board__center__buttons__color-number"
                       onClick={() => handleChallenge("value")}
                     >
-                      Not the right<br/> number
+                      Not the right
+                      <br /> number
                     </button>
                   </div>
                 </>
@@ -296,7 +300,7 @@ const GameBoard = (props: GameBoardProps) => {
           </article> */}
         </div>
         <div className="game-board__chat">
-          <Chat/>
+          <Chat />
         </div>
       </section>
       <Hand
