@@ -7,10 +7,12 @@ interface CardProps {
   value: string;
   clickable?: boolean;
   onClickHandler?: () => void;
+  size?: "small" | "medium" | "large";
 }
 
 export default function Card(props: CardProps) {
   const colorClass = `card--${props.color}`;
+  const sizeClass = props.size ? `card--${props.size}` : "";
   const SmallCard = () => (
     <article className={`card--small ${colorClass}`}>
       <div className="card__content card__content--small" />
@@ -66,7 +68,7 @@ export default function Card(props: CardProps) {
 
   return (
     <article
-      className={`card ${colorClass} ${
+      className={`card ${colorClass} ${sizeClass} ${
         props.clickable ? "card--clickable" : ""
       }`}
       onClick={() => {

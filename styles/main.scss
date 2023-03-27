@@ -13,7 +13,8 @@
 @import "layout/header", "layout/footer";
 
 // 5. Components
-@import "components/button", "components/hand", "components/player-list";
+@import "components/button", "components/hand", "components/player-list",
+  "components/game-board", "components/card", "components/chat";
 
 // 6. Page-specific styles
 @import "pages/home";
@@ -623,7 +624,7 @@ button {
   }
 }
 
-.card {
+/* .card {
   height: 17.2rem;
   width: 12rem;
   min-height: 17.2rem;
@@ -945,4 +946,4 @@ button {
   100% {
     background-position: 0% 50%;
   }
-}
+} */

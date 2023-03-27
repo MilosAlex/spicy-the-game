@@ -1,0 +1,330 @@
+.card {
+  height: 17.2rem;
+  width: 12rem;
+  min-height: 17.2rem;
+  min-width: 12rem;
+  border: solid 1px #a1b2b5;
+  background-color: #f1edea;
+  border-radius: 1rem;
+  padding: 0.6rem;
+
+  &--large {
+    height: 22rem;
+    width: 15.2rem;
+    min-height: 22rem;
+    min-width: 15.2rem;
+  }
+
+  &--red {
+    .card__content {
+      border-color: $card-red;
+    }
+
+    .card__number-middle {
+      color: $card-red;
+    }
+
+    .card__main-icon path,
+    .card__main-icon--reverse path {
+      fill: #c40c00;
+    }
+  }
+
+  &--blue {
+    .card__content {
+      border-color: $card-blue;
+    }
+
+    .card__number-middle {
+      color: $card-blue;
+    }
+
+    .card__main-icon path,
+    .card__main-icon--reverse path {
+      fill: #1254ab;
+    }
+  }
+
+  &--yellow {
+    .card__content {
+      border-color: #e7d004;
+    }
+
+    .card__number-middle {
+      color: #e7d004;
+    }
+
+    .card__main-icon path,
+    .card__main-icon--reverse path {
+      fill: #e7d004;
+    }
+  }
+
+  &--green {
+    .card__content {
+      border-color: $card-green;
+    }
+
+    .card__number-middle {
+      color: $card-green;
+    }
+
+    .card__main-icon path,
+    .card__main-icon--reverse path {
+      fill: #328a10;
+    }
+  }
+
+  &--black {
+    .card__content {
+      border-color: black;
+    }
+
+    .card__number-middle {
+      color: black;
+    }
+  }
+
+  &--unknown {
+    /* .card__content {
+      //multiple background colors moving
+      background: linear-gradient(
+        135deg,
+        #c40c00 0%,
+        #1254ab 25%,
+        #c40c00 50%,
+        #328a10 75%,
+        #c40c00 100%
+      );
+      background-size: 400% 400%;
+      animation: gradient 5s ease infinite;
+    } */
+
+    .card__number-middle {
+      //multiple background colors moving
+      background: linear-gradient(
+        135deg,
+        #c40c00 0%,
+        #1254ab 25%,
+        #c40c00 50%,
+        #328a10 75%,
+        #c40c00 100%
+      );
+      background-size: 400% 400%;
+      animation: gradient 5s ease infinite;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      //shadow none
+      text-shadow: none;
+      width: 4rem;
+      text-align: center;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.8rem;
+    position: relative;
+    border: solid 0.5rem #913219;
+
+    &--small {
+      border-radius: 0.2rem;
+    }
+  }
+
+  &__number-top {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    -webkit-text-stroke: 1px black;
+  }
+
+  &__number-bottom {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.3rem;
+    rotate: 180deg;
+    -webkit-text-stroke: 1px black;
+  }
+
+  &__number-middle {
+    font-family: "Bungee";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 6rem;
+    line-height: 4.8rem;
+    //padding-bottom: 0.5rem;
+    //font-weight: 900;
+    //font-style: italic;
+    color: #913219;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    //z-index: 10;
+    //text-shadow: 0.2rem 0.2rem black;
+    //-webkit-text-stroke: 1px black;
+  }
+
+  &__ellipse {
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    border-radius: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(35deg);
+
+    &__red,
+    &__blue,
+    &__yellow,
+    &__green {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      //border: solid 4px white;
+    }
+
+    &__red {
+      background-color: #c40c00;
+      border-top-left-radius: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    &__blue {
+      background-color: #1254ab;
+      border-top-right-radius: 100%;
+      top: 0;
+      right: 0;
+    }
+
+    &__yellow {
+      background-color: #e7d004;
+      border-bottom-left-radius: 100%;
+      bottom: 0;
+      left: 0;
+    }
+
+    &__green {
+      background-color: #328a10;
+      border-bottom-right-radius: 100%;
+      bottom: 0;
+      right: 0;
+    }
+
+    &__border {
+      position: absolute;
+      width: 98%;
+      height: 98%;
+      border: solid 2px white;
+      border-radius: 100%;
+      top: -1px;
+      left: -1px;
+    }
+  }
+
+  &--small {
+    height: 2rem;
+    width: 1.2rem;
+    border: solid 1px #000;
+    border-radius: 0.2rem;
+    padding: 4px;
+    transform: skew(-15deg, 0deg);
+    background-color: white;
+
+    &__container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      &:first-child {
+        position: absolute;
+        top: 45%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+      }
+
+      &:last-child {
+        position: absolute;
+        top: 55%;
+        left: 57%;
+        transform: translate(-50%, -50%);
+      }
+
+      &:only-child {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &:first-child {
+      position: absolute;
+      top: 10px;
+      left: -15px;
+      transform: skew(-15deg, 0deg) translate(-50%, -50%);
+    }
+
+    &:last-child {
+      position: absolute;
+      top: -5px;
+      left: 5px;
+      transform: skew(-15deg, 0deg) translate(-50%, -50%);
+    }
+  }
+
+  &__main-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4rem;
+    height: 4rem;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+
+    &--reverse {
+      position: absolute;
+      top: 42%;
+      left: 50%;
+      width: 3rem;
+      height: 3rem;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+    }
+  }
+
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.03);
+      transition: all 0.2s ease-in-out;
+      color: #fff;
+      box-shadow: 0.6rem 0.9rem;
+    }
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

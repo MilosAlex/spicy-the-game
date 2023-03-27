@@ -34,3 +34,65 @@
   }
 }
 
+@mixin typo-bungee-60($color: $main-black) {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 6rem;
+  line-height: 7.2rem;
+  color: $color;
+}
+
+@mixin typo-bungee-24($color: $main-black) {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+  color: $color;
+}
+
+@mixin typo-bungee-16($color: $main-black) {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  color: $color;
+}
+
+@mixin typo-bungee-14($color: $main-black) {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: $color;
+}
+
+@mixin typo-bungee-12($color: $main-black) {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  color: $color;
+}
+
+@mixin typo-poppins-16($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  color: $color;
+}
+
+@mixin typo-poppins-14($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  color: $color;
+}
