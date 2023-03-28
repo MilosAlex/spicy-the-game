@@ -132,34 +132,25 @@ const GameRoom = (props: GameRoomProps) => {
     return membersArray;
   };
 
-  return (
+  return (room == null || room?.round == -1) && props.room.round == -1 ? (
     <main className="game-room">
-      {(room == null || room?.round == -1) && props.room.round == -1 ? (
-        <>
-          <h1 className="game-room__title">{props.room.name}</h1>
-          <h2 className="game-room__subtitle">Players waiting in the room:</h2>
-          {players.map((player: any) => (
-            <p className="game-room__name" key={player.id}>
-              {player.name}
-            </p>
-          ))}
-          {props.room.hostId.toString() === user_id && (
-            <section className="game-room__start">
-              <button
-                className="game-room__start-button"
-                onClick={handleStartGame}
-              >
-                Start Game
-              </button>
-            </section>
-          )}
-        </>
-      ) : (
-        <>
-          {room && <GameBoard room={room} setRoom={setRoom} userId={user_id} />}
-        </>
+      <h1 className="game-room__title">{props.room.name}</h1>
+      <h2 className="game-room__subtitle">Players waiting in the room:</h2>
+      {players.map((player: any) => (
+        <p className="game-room__name" key={player.id}>
+          {player.name}
+        </p>
+      ))}
+      {props.room.hostId.toString() === user_id && (
+        <section className="game-room__start">
+          <button className="game-room__start-button" onClick={handleStartGame}>
+            Start Game
+          </button>
+        </section>
       )}
     </main>
+  ) : (
+    room && <GameBoard room={room} setRoom={setRoom} userId={user_id} />
   );
 };
 
