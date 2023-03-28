@@ -13,7 +13,7 @@
 @import "layout/header", "layout/footer";
 
 // 5. Components
-@import "components/button", "components/hand", "components/player-list",
+@import "components/navbar", "components/hand", "components/player-list",
   "components/game-board", "components/card", "components/chat";
 
 // 6. Page-specific styles
@@ -114,54 +114,6 @@ button {
     a {
       color: inherit;
       text-decoration: none;
-    }
-  }
-}
-
-.navbar {
-  display: flex;
-  width: 100%;
-  height: 5rem;
-
-  &__content {
-    z-index: 12;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    //width: calc(100% - 40px);
-    width: 100%;
-    height: 50px;
-    background-color: #000;
-    top: 0;
-    left: 0;
-    padding: 0 20px;
-  }
-
-  &__title {
-    font-size: 20px;
-    font-weight: 700;
-    color: rgb(192, 192, 192);
-  }
-
-  &__name {
-    font-size: 15px;
-    font-weight: 500;
-    color: rgb(192, 192, 192);
-  }
-
-  &__status {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    a,
-    button {
-      height: 30px;
-      border-radius: 5px;
-      width: 5rem;
     }
   }
 }

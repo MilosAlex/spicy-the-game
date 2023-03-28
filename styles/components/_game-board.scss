@@ -190,10 +190,10 @@
   .game-board {
     background-color: #ede9db;
     &__center {
-      height: unset;
+      height: 36.8rem;
       border: none;
-      &__buttons {
-        margin: 2.4rem 0;
+      &__cards {
+        overflow: visible;
       }
     }
   }
@@ -202,7 +202,7 @@
 @media screen and (max-height: 820px) {
   .game-board {
     &__center {
-      height: unset;
+      height: 36.8rem;
       &__buttons {
         margin: 2.4rem 0;
       }

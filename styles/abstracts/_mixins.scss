@@ -52,6 +52,15 @@
   color: $color;
 }
 
+@mixin typo-bungee-20($color: $main-black) {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 3rem;
+  color: $color;
+}
+
 @mixin typo-bungee-16($color: $main-black) {
   font-family: "Bungee";
   font-style: normal;
@@ -94,5 +103,14 @@
   font-weight: 600;
   font-size: 1.4rem;
   line-height: 1.6rem;
+  color: $color;
+}
+
+@mixin typo-poppins-10($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2rem;
   color: $color;
 }
