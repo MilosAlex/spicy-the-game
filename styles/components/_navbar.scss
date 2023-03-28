@@ -20,11 +20,13 @@
   &__title {
     @include typo-bungee-20(#fff);
     //color: rgb(192, 192, 192);
-  }
+    white-space: nowrap;
+}
 
-  &__name {
+&__name {
     @include typo-poppins-14(#fff);
     font-weight: 400;
+    white-space: nowrap;
   }
 
   &__status {
@@ -53,3 +55,11 @@
     }
   }
 }
+
+@media screen and (max-width: map-get($breakpoints, "medium")) {
+    .navbar {
+        &__name--extra {
+            display: none;
+        }
+    }
+  }

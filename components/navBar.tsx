@@ -31,7 +31,10 @@ export default function NavBar(props: NavBarProps) {
         </Link>
         {session ? (
           <section className="navbar__status">
-            <h3 className="navbar__name">Signed in as {session.user?.name}</h3>
+            <h3 className="navbar__name">
+              <span className="navbar__name--extra">Signed in as </span>
+              {session.user?.name}
+            </h3>
             <button onClick={() => signOut()}>Logout</button>
           </section>
         ) : (
