@@ -1,4 +1,5 @@
 import React from "react";
+import Pepper from "../icons/pepper";
 import Reverse from "../icons/Reverse";
 import Skip from "../icons/Skip";
 
@@ -56,6 +57,13 @@ export default function Card(props: CardProps) {
     mainIcon = (
       <div className="card__main-icon--reverse">
         <Reverse />
+      </div>
+    );
+  } else if (props.value === "deck") {
+    text = "";
+    mainIcon = (
+      <div className="card__main-icon card__main-icon--pepper">
+        <Pepper />
       </div>
     );
   } else if (props.value === "wild") {

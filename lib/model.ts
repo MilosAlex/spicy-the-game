@@ -1,4 +1,4 @@
-import { Card, RoomData, User } from "./types";
+import { Card, PlayerData, RoomData, User } from "./types";
 
 class Model {
   private roomData: RoomData;
@@ -18,10 +18,6 @@ class Model {
 
   private drawTopCard = () => {
     const card = this.roomData.deck.splice(0, 1)[0];
-    /* while (startingCard.value.length !== 1) {
-      deck.push(startingCard);
-      startingCard = deck.splice(0, 1)[0];
-    } */
     return card;
   };
 
@@ -39,6 +35,16 @@ class Model {
     return this.roomData.players[
       this.roomData.round % this.roomData.players.length
     ];
+  };
+
+  private setActivePlayer = (player: PlayerData) => {
+    this.roomData.round = this.roomData.players.indexOf(player);
+  };
+
+  private checkGameEnded = () => {
+    if (this.roomData.deck.length === 0) {
+      throw new Error("Game ended");
+    }
   };
 
   public getPlayerRoom = (userId: string) => {
@@ -82,6 +88,7 @@ class Model {
   };
 
   public playCard = (userId: string, card: Card, declaration: string) => {
+    this.checkGameEnded();
     const activePlayer = this.getActivePlayer();
     if (activePlayer.id !== userId) {
       throw new Error("Not your turn");
@@ -106,6 +113,7 @@ class Model {
   };
 
   public drawCard = (userId: string) => {
+    this.checkGameEnded();
     const activePlayer = this.getActivePlayer();
     if (activePlayer.id !== userId) {
       throw new Error("Not your turn");
@@ -121,6 +129,7 @@ class Model {
   };
 
   public challenge = (userId: string, challenged: "color" | "value") => {
+    this.checkGameEnded();
     if (!this.roomData.declarer || !this.roomData.declaredCard) {
       throw new Error("No declaration to challenge");
     }
@@ -137,9 +146,25 @@ class Model {
     ) {
       //opponent wins
       challengedPlayer.points += this.roomData.pileSize;
+
+      if (this.roomData.deck.length !== 0) {
+        player.hand.push(this.roomData.deck.splice(0, 1)[0]);
+      }
+      if (this.roomData.deck.length !== 0) {
+        player.hand.push(this.roomData.deck.splice(0, 1)[0]);
+      }
+      this.setActivePlayer(player);
     } else {
       //player wins
       player.points += this.roomData.pileSize;
+
+      if (this.roomData.deck.length !== 0) {
+        challengedPlayer.hand.push(this.roomData.deck.splice(0, 1)[0]);
+      }
+      if (this.roomData.deck.length !== 0) {
+        challengedPlayer.hand.push(this.roomData.deck.splice(0, 1)[0]);
+      }
+      this.setActivePlayer(challengedPlayer);
     }
 
     this.roomData.declaredCard = null;

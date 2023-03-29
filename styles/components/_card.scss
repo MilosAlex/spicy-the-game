@@ -308,6 +308,11 @@
       transform: translate(-50%, -50%);
       font-size: 2rem;
     }
+
+    &--pepper {
+      width: 6rem;
+      height: 6rem;
+    }
   }
 
   &--clickable {
@@ -339,10 +344,10 @@
 @media screen and (max-width: map-get($breakpoints, "medium")) {
   .card {
     height: 11.5rem;
-      width: 8rem;
-      min-height: 11.5rem;
-      min-width: 8rem;
-      
+    width: 8rem;
+    min-height: 11.5rem;
+    min-width: 8rem;
+
     &--large {
       height: 11.5rem;
       width: 8rem;
@@ -360,10 +365,10 @@
 @media screen and (max-height: 820px) {
   .card {
     height: 11.5rem;
-      width: 8rem;
-      min-height: 11.5rem;
-      min-width: 8rem;
-      
+    width: 8rem;
+    min-height: 11.5rem;
+    min-width: 8rem;
+
     &--large {
       height: 11.5rem;
       width: 8rem;

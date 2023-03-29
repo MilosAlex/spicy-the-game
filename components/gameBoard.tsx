@@ -123,7 +123,7 @@ const GameBoard = (props: GameBoardProps) => {
                 <div className="game-board__center__cards__label__container">
                   <p className="game-board__center__cards__label">Deck</p>
                 </div>
-                <CardComponent color={"black"} value={""} size={"large"} />
+                <CardComponent color={"black"} value={"deck"} size={"large"} />
                 <div className="game-board__center__cards__tag__container">
                   <p className="game-board__center__cards__tag">
                     {props.room.deckSize}
