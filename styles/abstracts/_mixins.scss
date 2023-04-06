@@ -134,6 +134,15 @@
   color: $color;
 }
 
+@mixin typo-poppins-12($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  color: $color;
+}
+
 @mixin typo-poppins-10($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
