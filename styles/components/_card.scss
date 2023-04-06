@@ -28,11 +28,6 @@
     .card__number-middle {
       color: $card-red;
     }
-
-    .card__main-icon path,
-    .card__main-icon--reverse path {
-      fill: #c40c00;
-    }
   }
 
   &--blue {
@@ -43,26 +38,6 @@
     .card__number-middle {
       color: $card-blue;
     }
-
-    .card__main-icon path,
-    .card__main-icon--reverse path {
-      fill: #1254ab;
-    }
-  }
-
-  &--yellow {
-    .card__content {
-      border-color: #e7d004;
-    }
-
-    .card__number-middle {
-      color: #e7d004;
-    }
-
-    .card__main-icon path,
-    .card__main-icon--reverse path {
-      fill: #e7d004;
-    }
   }
 
   &--green {
@@ -72,11 +47,6 @@
 
     .card__number-middle {
       color: $card-green;
-    }
-
-    .card__main-icon path,
-    .card__main-icon--reverse path {
-      fill: #328a10;
     }
   }
 
@@ -91,8 +61,8 @@
   }
 
   &--unknown {
-    /* .card__content {
-      //multiple background colors moving
+    .card__content {
+      border: none;
       background: linear-gradient(
         135deg,
         #c40c00 0%,
@@ -103,10 +73,9 @@
       );
       background-size: 400% 400%;
       animation: gradient 5s ease infinite;
-    } */
+    }
 
     .card__number-middle {
-      //multiple background colors moving
       background: linear-gradient(
         135deg,
         #c40c00 0%,
@@ -120,8 +89,6 @@
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      //shadow none
-      text-shadow: none;
       width: 6rem;
       text-align: center;
     }
@@ -137,6 +104,17 @@
     &--small {
       border-radius: 0.2rem;
     }
+  }
+
+  &__gradient-border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 1rem);
+    height: calc(100% - 1rem);
+    background-color: #f1edea;
+    border-radius: 0.3rem;
   }
 
   &__number-top {
@@ -177,117 +155,6 @@
     //z-index: 10;
     //text-shadow: 0.2rem 0.2rem black;
     //-webkit-text-stroke: 1px black;
-  }
-
-  &__ellipse {
-    background-color: white;
-    width: 80%;
-    height: 80%;
-    border-radius: 80%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(35deg);
-
-    &__red,
-    &__blue,
-    &__yellow,
-    &__green {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      //border: solid 4px white;
-    }
-
-    &__red {
-      background-color: #c40c00;
-      border-top-left-radius: 100%;
-      top: 0;
-      left: 0;
-    }
-
-    &__blue {
-      background-color: #1254ab;
-      border-top-right-radius: 100%;
-      top: 0;
-      right: 0;
-    }
-
-    &__yellow {
-      background-color: #e7d004;
-      border-bottom-left-radius: 100%;
-      bottom: 0;
-      left: 0;
-    }
-
-    &__green {
-      background-color: #328a10;
-      border-bottom-right-radius: 100%;
-      bottom: 0;
-      right: 0;
-    }
-
-    &__border {
-      position: absolute;
-      width: 98%;
-      height: 98%;
-      border: solid 2px white;
-      border-radius: 100%;
-      top: -1px;
-      left: -1px;
-    }
-  }
-
-  &--small {
-    height: 2rem;
-    width: 1.2rem;
-    border: solid 1px #000;
-    border-radius: 0.2rem;
-    padding: 4px;
-    transform: skew(-15deg, 0deg);
-    background-color: white;
-
-    &__container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      &:first-child {
-        position: absolute;
-        top: 45%;
-        left: 40%;
-        transform: translate(-50%, -50%);
-      }
-
-      &:last-child {
-        position: absolute;
-        top: 55%;
-        left: 57%;
-        transform: translate(-50%, -50%);
-      }
-
-      &:only-child {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    }
-
-    &:first-child {
-      position: absolute;
-      top: 10px;
-      left: -15px;
-      transform: skew(-15deg, 0deg) translate(-50%, -50%);
-    }
-
-    &:last-child {
-      position: absolute;
-      top: -5px;
-      left: 5px;
-      transform: skew(-15deg, 0deg) translate(-50%, -50%);
-    }
   }
 
   &__main-icon {
