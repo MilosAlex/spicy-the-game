@@ -1,0 +1,76 @@
+.room-list {
+  &__title {
+    margin: 5rem 0 0 0;
+    line-height: 1.15;
+    font-size: 4rem;
+    text-align: center;
+  }
+
+  &__room {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 10rem;
+    border-radius: 5px;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: rgb(192, 192, 192);
+      color: #000;
+      box-shadow: 0.5rem 0.5rem;
+    }
+
+    &--locked {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      cursor: not-allowed;
+
+      &:hover {
+        div,
+        h3 {
+          opacity: 1;
+        }
+      }
+    }
+
+    &__title {
+      margin: unset;
+    }
+
+    &__lock {
+      height: 2rem;
+      width: 2rem;
+      opacity: 0;
+      transition: all 0.2s ease-in-out;
+    }
+
+    &__warning {
+      text-align: center;
+      height: 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #000;
+      margin: unset;
+      opacity: 0;
+      transition: all 0.2s ease-in-out;
+    }
+
+    &__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 4rem;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+}

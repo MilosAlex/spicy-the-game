@@ -38,12 +38,12 @@
 
     a,
     button {
-      @include typo-poppins-10($main-black);
+      @include typo-poppins-12($main-black);
       font-weight: 400;
       height: 3rem;
       border-radius: 0.8rem;
-      width: 5rem;
-      border: 1px solid $main-black;
+      width: 6rem;
+      border: 0.1rem solid $main-black;
 
 
       transition: all 0.2s ease-in-out;
