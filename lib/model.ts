@@ -61,7 +61,7 @@ class Model {
       topCard: shownTopCard,
       declaredCard: this.roomData.declaredCard ?? null,
       declarer: this.roomData.declarer ?? null,
-      players: this.roomData.players?.map((player: any) => {
+      players: this.roomData.players?.map((player: PlayerData) => {
         if (player.id === userId) {
           return { ...player, handSize: player.hand.length };
         } else {
@@ -74,6 +74,10 @@ class Model {
           this.roomData.round % this.roomData.players.length
         ].id,
       pileSize: this.roomData.pileSize,
+      you: {
+        ...this.getPlayer(userId),
+        handSize: this.getPlayer(userId).hand.length,
+      },
     };
   };
 
@@ -85,6 +89,8 @@ class Model {
     this.roomData.players = players;
     this.roomData.topCard = startingCard;
     this.roomData.pileSize = 1;
+
+    return "Game started";
   };
 
   public playCard = (userId: string, card: Card, declaration: string) => {
@@ -110,6 +116,8 @@ class Model {
     this.roomData.round++;
     this.roomData.topCard = card;
     this.roomData.pileSize++;
+
+    return `${activePlayer.name} played a ${card.color} ${card.value} card`;
   };
 
   public drawCard = (userId: string) => {
@@ -126,6 +134,8 @@ class Model {
     activePlayer.hand.push(this.roomData.deck.splice(0, 1)[0]);
 
     this.roomData.round++;
+
+    return `${activePlayer.name} drew card`;
   };
 
   public challenge = (userId: string, challenged: "color" | "value") => {
@@ -170,6 +180,10 @@ class Model {
     this.roomData.declaredCard = null;
     this.roomData.declarer = null;
     this.roomData.pileSize = 1;
+
+    return `${player.name} challenged ${challengedPlayer.name} and ${
+      player.id === this.getActivePlayer().id ? "won" : "lost"
+    }`;
   };
 
   constructor(roomData: RoomData) {

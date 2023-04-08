@@ -54,9 +54,11 @@ class GameController {
     return body.users;
   };
 
-  private notifyPlayers = async () => {
+  private notifyPlayers = async (eventMessage: string) => {
     await pusher.trigger(`presence-${this.roomId}`, "new-round", {
-      message: "0",
+      sender: this.roomId,
+      message: eventMessage,
+      gameEvent: true,
     });
   };
 
@@ -83,14 +85,7 @@ class GameController {
     return room;
   };
 
-  public startGame = async (activePlayers: User[]) => {
-    this.model.startGame(activePlayers);
-    const room = this.model.getRoom();
-    await this.updateDbRoom(room);
-    await this.notifyPlayers();
-  };
-
-  public startGameApi = async () => {
+  public startGame = async () => {
     try {
       const { activePlayers }: { activePlayers: User[] } = this.req.body;
 
@@ -99,10 +94,10 @@ class GameController {
         return;
       }
 
-      this.model.startGame(activePlayers);
+      const eventMessage = this.model.startGame(activePlayers);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-      await this.notifyPlayers();
+      await this.notifyPlayers(eventMessage);
 
       this.getPlayerRoom();
     } catch (e) {
@@ -125,10 +120,13 @@ class GameController {
         return;
       }
 
-      this.model.playCard(this.userId, card, declaration);
+      const eventMessage = this.model.playCard(this.userId, card, declaration);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-      await this.notifyPlayers();
+
+      const player = room.players.find((p) => p.id === this.userId);
+
+      await this.notifyPlayers(eventMessage);
 
       this.getPlayerRoom();
     } catch (e) {
@@ -138,10 +136,13 @@ class GameController {
 
   public drawCard = async () => {
     try {
-      this.model.drawCard(this.userId);
+      const eventMessage = this.model.drawCard(this.userId);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-      await this.notifyPlayers();
+      
+      const player = room.players.find((p) => p.id === this.userId);
+
+      await this.notifyPlayers(eventMessage);
 
       this.getPlayerRoom();
     } catch (e) {
@@ -158,10 +159,13 @@ class GameController {
         return;
       }
 
-      this.model.challenge(this.userId, challenged);
+      const eventMessage = this.model.challenge(this.userId, challenged);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-      await this.notifyPlayers();
+      
+      const player = room.players.find((p) => p.id === this.userId);
+
+      await this.notifyPlayers(eventMessage);
 
       this.getPlayerRoom();
     } catch (e) {

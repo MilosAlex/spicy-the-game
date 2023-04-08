@@ -50,4 +50,11 @@ export interface Room {
   deckSize: number;
   pileSize: number;
   activePlayer: string;
+  you: Player;
+}
+
+export interface ChatMessage {
+  sender: string;
+  message: string;
+  gameEvent: boolean;
 }

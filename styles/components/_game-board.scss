@@ -195,6 +195,9 @@
         overflow: visible;
       }
     }
+    &__chat {
+      max-height: 35.4rem;
+    }
   }
 }
 
@@ -205,6 +208,10 @@
       &__buttons {
         margin: 2.4rem 0;
       }
+    }
+
+    &__chat {
+      max-height: 35.4rem;
     }
   }
 }

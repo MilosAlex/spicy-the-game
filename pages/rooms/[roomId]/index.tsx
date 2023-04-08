@@ -5,7 +5,7 @@ import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
 import GameBoard from "../../../components/gameBoard";
 import clientPromise from "../../../lib/mongodb";
-import { Room } from "../../../lib/types";
+import { ChatMessage, Room } from "../../../lib/types";
 
 interface GameRoomProps {
   room: Room;
@@ -22,6 +22,8 @@ const GameRoom = (props: GameRoomProps) => {
   const [players, setPlayers] = useState<any[]>([]);
 
   const [room, setRoom] = useState<Room | null>(null);
+
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
   const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
@@ -96,25 +98,28 @@ const GameRoom = (props: GameRoomProps) => {
     channel = pusher.subscribe(channel_id);
 
     // when a new member successfully subscribes to the channel
-    channel.bind("pusher:subscription_succeeded", (members: any) => {
+    channel.bind("pusher:subscription_succeeded", () => {
       // total subscribed
       setPlayers(membersToArray(channel.members.members as any) as any);
     });
 
-    channel.bind("new-round", function (data: any) {
+    channel.bind("new-round", function (gameEvent: ChatMessage) {
       handleRoomQuery();
+      setChatMessages((prev) => [...prev, gameEvent]);
     });
 
-    //console.log(channel);
+    channel.bind("new-chat", function (data: ChatMessage) {
+      setChatMessages((prev) => [...prev, data]);
+    });
 
     // when a new member joins the chat
-    channel.bind("pusher:member_added", (member: any) => {
+    channel.bind("pusher:member_added", () => {
       console.log("count", channel.members.count);
       setPlayers(membersToArray(channel.members.members as any) as any);
     });
 
     // when a member leaves the chat
-    channel.bind("pusher:member_removed", (member: any) => {
+    channel.bind("pusher:member_removed", () => {
       console.log("count", channel.members.members);
       setPlayers(membersToArray(channel.members.members as any) as any);
     });
@@ -150,7 +155,14 @@ const GameRoom = (props: GameRoomProps) => {
       )}
     </main>
   ) : (
-    room && <GameBoard room={room} setRoom={setRoom} userId={user_id} />
+    room && (
+      <GameBoard
+        room={room}
+        setRoom={setRoom}
+        userId={user_id}
+        chatMessages={chatMessages}
+      />
+    )
   );
 };
 

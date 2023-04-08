@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Deck from "../icons/deck";
-import { Card, Room } from "../lib/types";
+import { Card, ChatMessage, Room } from "../lib/types";
 import CardComponent from "./card";
 import Chat from "./chat";
 import Hand from "./hand";
@@ -10,6 +10,7 @@ interface GameBoardProps {
   room: Room;
   setRoom: React.Dispatch<React.SetStateAction<Room | null>>;
   userId: string;
+  chatMessages: ChatMessage[];
 }
 
 const GameBoard = (props: GameBoardProps) => {
@@ -213,7 +214,11 @@ const GameBoard = (props: GameBoardProps) => {
             </section>
           </div>
           <div className="game-board__chat">
-            <Chat />
+            <Chat
+              roomId={props.room._id}
+              userName={props.room.you.name}
+              messages={props.chatMessages}
+            />
           </div>
         </div>
         <Hand
