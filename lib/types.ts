@@ -51,6 +51,7 @@ export interface Room {
   pileSize: number;
   activePlayer: string;
   you: Player;
+  isGameEnded: boolean;
 }
 
 export interface ChatMessage {

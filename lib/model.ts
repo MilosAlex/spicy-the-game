@@ -78,6 +78,7 @@ class Model {
         ...this.getPlayer(userId),
         handSize: this.getPlayer(userId).hand.length,
       },
+      isGameEnded: this.roomData.deck.length === 0,
     };
   };
 
