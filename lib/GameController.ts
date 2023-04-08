@@ -4,7 +4,7 @@ import clientPromise from "./mongodb";
 import { pusher } from "./pusher";
 import { Card, RoomData, User } from "./types";
 
-class Controller {
+class GameController {
   private roomId: string;
   private userId: string;
   private model: Model;
@@ -170,4 +170,4 @@ class Controller {
   };
 }
 
-export default Controller;
+export default GameController;

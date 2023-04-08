@@ -1,4 +1,4 @@
-import Controller from "../../lib/controller";
+import Controller from "../../lib/GameController";
 
 export default async (req: any, res: any) => {
   const controller = new Controller(req, res);
