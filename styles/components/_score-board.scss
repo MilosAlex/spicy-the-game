@@ -1,0 +1,34 @@
+.score-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+
+  min-height: 30rem;
+
+  &__title {
+    @include typo-bungee-24($main-black);
+    margin: 0;
+  }
+
+  &__cell {
+    @include typo-poppins-14($main-black);
+    margin: 0;
+    font-weight: 400;
+    padding: 0.4rem 0.8rem;
+    text-align: center;
+
+    &--head {
+      @include typo-poppins-16($main-black);
+      margin: 0;
+      padding: 0.4rem 0.8rem;
+    }
+
+    &--bold {
+      @include typo-poppins-14($main-black);
+      margin: 0;
+      padding: 0.4rem 0.8rem;
+    }
+  }
+}

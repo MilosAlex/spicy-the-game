@@ -14,10 +14,12 @@
 
 // 5. Components
 @import "components/navbar", "components/hand", "components/player-list",
-  "components/game-board", "components/card", "components/chat";
+  "components/game-board", "components/card", "components/chat",
+  "components/score-board";
 
 // 6. Page-specific styles
-@import "pages/home", "pages/register", "pages/room-list", "pages/game-room", "pages/create-room";
+@import "pages/home", "pages/register", "pages/room-list", "pages/game-room",
+  "pages/create-room";
 
 // 7. Themes
 @import "themes/default";

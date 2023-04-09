@@ -1,11 +1,13 @@
 import { ObjectId } from "mongodb";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
 import GameBoard from "../../../components/gameBoard";
 import clientPromise from "../../../lib/mongodb";
 import { ChatMessage, Room } from "../../../lib/types";
+import Lobby from "../../../components/lobby";
+import ScoreBoard from "../../../components/scoreBoard";
 
 interface GameRoomProps {
   room: Room;
@@ -17,7 +19,7 @@ const GameRoom = (props: GameRoomProps) => {
   const { data: session }: any = useSession();
   const username = session?.user?.name;
   const user_id = session?.user?.id;
-  const channel_id = "presence-" + props.room._id.toString();
+  const channel_id = "presence-" + props.room?._id.toString();
 
   const [players, setPlayers] = useState<any[]>([]);
 
@@ -88,7 +90,7 @@ const GameRoom = (props: GameRoomProps) => {
   };
 
   useEffect(() => {
-    if (!props.room) router.replace("/");
+    if (!props.room) window.location.href = "/";
     if (!session) return;
 
     if (props.room.round !== -1) {
@@ -110,6 +112,10 @@ const GameRoom = (props: GameRoomProps) => {
 
     channel.bind("new-chat", function (data: ChatMessage) {
       setChatMessages((prev) => [...prev, data]);
+    });
+
+    channel.bind("room-deleted", function () {
+      window.location.href = "/";
     });
 
     // when a new member joins the chat
@@ -137,32 +143,29 @@ const GameRoom = (props: GameRoomProps) => {
     return membersArray;
   };
 
-  return (room == null || room?.round == -1) && props.room.round == -1 ? (
-    <main className="game-room">
-      <h1 className="game-room__title">{props.room.name}</h1>
-      <h2 className="game-room__subtitle">Players waiting in the room:</h2>
-      {players.map((player: any) => (
-        <p className="game-room__name" key={player.id}>
-          {player.name}
-        </p>
-      ))}
-      {props.room.hostId.toString() === user_id && (
-        <section className="game-room__start">
-          <button className="game-room__start-button" onClick={handleStartGame}>
-            Start Game
-          </button>
-        </section>
+  return (
+    <>
+      {(room == null || room?.round == -1) && props.room.round == -1 && (
+        <Lobby
+          title={props.room.name}
+          players={players}
+          handleStartGame={handleStartGame}
+          hostId={props.room.hostId}
+          userId={user_id}
+        />
       )}
-    </main>
-  ) : (
-    room && (
-      <GameBoard
-        room={room}
-        setRoom={setRoom}
-        userId={user_id}
-        chatMessages={chatMessages}
-      />
-    )
+      {room && room.round != -1 && !room.isGameEnded && (
+        <GameBoard
+          room={room}
+          setRoom={setRoom}
+          userId={user_id}
+          chatMessages={chatMessages}
+        />
+      )}
+      {room && room.round != -1 && room.isGameEnded && (
+        <ScoreBoard players={room.players} />
+      )}
+    </>
   );
 };
 
