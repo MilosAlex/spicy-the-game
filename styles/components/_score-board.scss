@@ -31,4 +31,21 @@
       padding: 0.4rem 0.8rem;
     }
   }
+
+  &__button {
+    @include typo-bungee-12(#fff);
+    width: 100%;
+    max-width: 18.2rem;
+    height: 3rem;
+    border-radius: 1.2rem;
+    border: none;
+    background-color: #ab1010;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin-top: 2rem;
+
+    &:hover {
+      box-shadow: 0.3rem 0.5rem #292d2e;
+    }
+  }
 }

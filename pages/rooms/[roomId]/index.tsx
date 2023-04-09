@@ -36,10 +36,7 @@ const GameRoom = (props: GameRoomProps) => {
   let channel: any;
 
   const handleStartGame = async () => {
-    const url = window.location.href.replace(
-      `rooms/${props.room._id.toString()}`,
-      "api/startGame"
-    );
+    const url = `${process.env.NEXT_PUBLIC_URL}api/startGame`;
     try {
       let response = await fetch(url, {
         method: "POST",
@@ -62,10 +59,7 @@ const GameRoom = (props: GameRoomProps) => {
   };
 
   const handleRoomQuery = async () => {
-    const url = window.location.href.replace(
-      `rooms/${props.room._id.toString()}`,
-      "api/getRoom"
-    );
+    const url = `${process.env.NEXT_PUBLIC_URL}api/getRoom`;
     try {
       let response = await fetch(url, {
         method: "POST",
@@ -163,7 +157,12 @@ const GameRoom = (props: GameRoomProps) => {
         />
       )}
       {room && room.round != -1 && room.isGameEnded && (
-        <ScoreBoard players={room.players} />
+        <ScoreBoard
+          players={room.players}
+          roomId={room._id.toString()}
+          userId={user_id}
+          hostId={room.hostId.toString()}
+        />
       )}
     </>
   );

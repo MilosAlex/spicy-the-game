@@ -3,16 +3,39 @@ import { Player } from "../lib/types";
 
 interface ScoreBoardProps {
   players: Player[];
+  roomId: string;
+  userId: string;
+  hostId: string;
 }
 
 const ScoreBoard = (props: ScoreBoardProps) => {
-  console.log("props", props.players);
-
-  //const playerScores = props.players.map((player) => {...player, score: player.points - player.hand});
-
   const sortedPlayers = props.players.sort(
     (a, b) => b.points - b.handSize - (a.points - a.handSize)
   );
+
+  const handleRoomDelete = async () => {
+    const url = `${process.env.NEXT_PUBLIC_URL}api/deleteRoom`;
+    try {
+      let response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          userId: props.userId,
+          roomId:  props.roomId,
+        }),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response;
+      const data = await response.json();
+      console.log("deleted: ", data);
+
+    } catch (errorMessage: any) {
+      console.error(errorMessage);
+    }
+  };
 
   return (
     <main className="score-board">
@@ -41,6 +64,11 @@ const ScoreBoard = (props: ScoreBoardProps) => {
           ))}
         </tbody>
       </table>
+      {props.hostId === props.userId && (
+        <button className="score-board__button" onClick={handleRoomDelete}>
+          Delete room 
+        </button>
+      )}
     </main>
   );
 };
