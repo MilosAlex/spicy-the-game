@@ -127,15 +127,15 @@ class Model {
       activePlayer.hand.splice(index, 1);
     }
 
-    const eventMessages = [
-      `${activePlayer.name} played a ${card.color} ${card.value} card`,
-    ];
-    this.resolveTrophy(eventMessages);
-
     this.roomData.declaredCard = {
       color: this.roomData.declaredCard?.color ?? this.roomData.topCard?.color,
       value: declaration,
     };
+
+    const eventMessages = [
+      `${activePlayer.name} played a ${this.roomData.declaredCard.color} ${this.roomData.declaredCard.value} card`,
+    ];
+    this.resolveTrophy(eventMessages);
 
     this.roomData.declarer = userId;
     this.roomData.round++;
