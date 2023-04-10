@@ -54,12 +54,12 @@ class GameController {
     return body.users;
   };
 
-  private notifyPlayers = async (eventMessage: string) => {
-    await pusher.trigger(`presence-${this.roomId}`, "new-round", {
-      sender: this.roomId,
-      message: eventMessage,
-      gameEvent: true,
+  private notifyPlayers = async (eventMessages: string[]) => {
+    const messages = eventMessages.map((message) => {
+      return { sender: this.roomId, message, gameEvent: true };
     });
+
+    await pusher.trigger(`presence-${this.roomId}`, "new-round", messages);
   };
 
   private updateDbRoom = async (room: RoomData) => {
@@ -139,7 +139,7 @@ class GameController {
       const eventMessage = this.model.drawCard(this.userId);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-      
+
       const player = room.players.find((p) => p.id === this.userId);
 
       await this.notifyPlayers(eventMessage);
@@ -162,7 +162,7 @@ class GameController {
       const eventMessage = this.model.challenge(this.userId, challenged);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-      
+
       const player = room.players.find((p) => p.id === this.userId);
 
       await this.notifyPlayers(eventMessage);

@@ -99,9 +99,9 @@ const GameRoom = (props: GameRoomProps) => {
       setPlayers(membersToArray(channel.members.members as any) as any);
     });
 
-    channel.bind("new-round", function (gameEvent: ChatMessage) {
+    channel.bind("new-round", function (gameEvent: ChatMessage[]) {
       handleRoomQuery();
-      setChatMessages((prev) => [...prev, gameEvent]);
+      setChatMessages((prev) => [...prev, ...gameEvent]);
     });
 
     channel.bind("new-chat", function (data: ChatMessage) {

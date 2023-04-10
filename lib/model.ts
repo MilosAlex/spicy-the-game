@@ -9,7 +9,7 @@ class Model {
 
   private initPlayers = (activePlayers: User[]) => {
     const players = activePlayers.map((user: User) => {
-      const hand = this.roomData.deck.splice(0, 7);
+      const hand = this.roomData.deck.splice(0, 6);
       const points = 0;
       return { ...user, hand, points };
     });
@@ -44,6 +44,25 @@ class Model {
   private checkGameEnded = () => {
     if (this.roomData.deck.length === 0) {
       throw new Error("Game ended");
+    }
+  };
+
+  private resolveTrophy = (eventMessages: string[]) => {
+    const prevDeclarer = this.roomData.players.find(
+      (player: PlayerData) => player.id === this.roomData.declarer
+    );
+
+    if (prevDeclarer?.hand.length === 0) {
+      prevDeclarer.points += 10;
+      for (let i = 0; i < 6; i++) {
+        if (this.roomData.deck.length !== 0) {
+          prevDeclarer.hand.push(this.roomData.deck.splice(0, 1)[0]);
+        }
+      }
+
+      eventMessages.push(
+        `${prevDeclarer.name} earned 10 points for playing all cards`
+      );
     }
   };
 
@@ -91,7 +110,7 @@ class Model {
     this.roomData.topCard = startingCard;
     this.roomData.pileSize = 1;
 
-    return "Game started";
+    return ["Game started"];
   };
 
   public playCard = (userId: string, card: Card, declaration: string) => {
@@ -108,6 +127,11 @@ class Model {
       activePlayer.hand.splice(index, 1);
     }
 
+    const eventMessages = [
+      `${activePlayer.name} played a ${card.color} ${card.value} card`,
+    ];
+    this.resolveTrophy(eventMessages);
+
     this.roomData.declaredCard = {
       color: this.roomData.declaredCard?.color ?? this.roomData.topCard?.color,
       value: declaration,
@@ -118,7 +142,7 @@ class Model {
     this.roomData.topCard = card;
     this.roomData.pileSize++;
 
-    return `${activePlayer.name} played a ${card.color} ${card.value} card`;
+    return eventMessages;
   };
 
   public drawCard = (userId: string) => {
@@ -134,9 +158,12 @@ class Model {
 
     activePlayer.hand.push(this.roomData.deck.splice(0, 1)[0]);
 
+    const eventMessages = [`${activePlayer.name} drew card`];
+    this.resolveTrophy(eventMessages);
+
     this.roomData.round++;
 
-    return `${activePlayer.name} drew card`;
+    return eventMessages;
   };
 
   public challenge = (userId: string, challenged: "color" | "value") => {
@@ -182,9 +209,11 @@ class Model {
     this.roomData.declarer = null;
     this.roomData.pileSize = 1;
 
-    return `${player.name} challenged ${challengedPlayer.name} and ${
-      player.id === this.getActivePlayer().id ? "won" : "lost"
-    }`;
+    return [
+      `${player.name} challenged ${challengedPlayer.name} and ${
+        player.id === this.getActivePlayer().id ? "won" : "lost"
+      }`,
+    ];
   };
 
   constructor(roomData: RoomData) {
