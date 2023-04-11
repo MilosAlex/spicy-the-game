@@ -133,6 +133,16 @@
         background-color: #fff;
       }
 
+      &--mobile-buttons {
+        @include typo-bungee-14($main-black);
+        white-space: nowrap;
+        border: 0.1rem solid #9a9a9a;
+        border-radius: 0.8rem;
+        width: 100%;
+        height: 4rem;
+        background-color: #fff;
+      }
+
       &__container {
         width: 100%;
         display: flex;
@@ -140,8 +150,22 @@
         justify-content: space-between;
         align-items: center;
         gap: 1rem;
+
+        &--mobile {
+          display: none;
+        }
       }
     }
+  }
+
+  &__modal {
+    z-index: 15;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
   &__players {
@@ -187,10 +211,14 @@
   .game-board {
     background-color: #ede9db;
     &__center {
-      height: 35.4rem;
+      height: 40.4rem;
       border: none;
       &__cards {
         overflow: visible;
+      }
+
+      &__buttons__container--mobile {
+        display: flex;
       }
     }
     &__chat {
@@ -202,9 +230,13 @@
 @media screen and (max-height: 820px) {
   .game-board {
     &__center {
-      height: 35.4rem;
+      height: 40.4rem;
       &__buttons {
         margin: 2.4rem 0;
+      }
+
+      &__buttons__container--mobile {
+        display: flex;
       }
     }
 

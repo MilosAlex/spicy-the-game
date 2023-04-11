@@ -16,6 +16,9 @@ interface GameBoardProps {
 const GameBoard = (props: GameBoardProps) => {
   const [isChallengeActive, setIsChallengeActive] = useState<boolean>(false);
 
+  const [isChatVisible, setIsChatVisible] = useState<boolean>(false);
+  const [isPlayersVisible, setIsPlayersVisible] = useState<boolean>(false);
+
   const isActiveTurn = props.room.activePlayer === props.userId;
   const activePlayer = props.room.players.find(
     (player: any) => player.id === props.room.activePlayer
@@ -211,6 +214,20 @@ const GameBoard = (props: GameBoardProps) => {
                     It's a lie!
                   </button>
                 ))}
+              <div className="game-board__center__buttons__container game-board__center__buttons__container--mobile">
+                <button
+                  className="game-board__center__buttons--mobile-buttons"
+                  onClick={() => setIsPlayersVisible(true)}
+                >
+                  Players
+                </button>
+                <button
+                  className="game-board__center__buttons--mobile-buttons"
+                  onClick={() => setIsChatVisible(true)}
+                >
+                  Chat
+                </button>
+              </div>
             </section>
           </div>
           <div className="game-board__chat">
@@ -233,6 +250,25 @@ const GameBoard = (props: GameBoardProps) => {
           topCard={props.room.topCard}
         />
       </section>
+      {isPlayersVisible && (
+        <section className="game-board__modal">
+          <button onClick={() => setIsPlayersVisible(false)}>X</button>
+            <PlayerList
+              players={props.room.players}
+              activePlayer={props.room.activePlayer}
+            />
+        </section>
+      )}
+      {isChatVisible && (
+        <section className="game-board__modal">
+          <button onClick={() => setIsChatVisible(false)}>X</button>
+            <Chat
+              roomId={props.room._id}
+              userName={props.room.you.name}
+              messages={props.chatMessages}
+            />
+        </section>
+      )}
     </main>
   );
 };
