@@ -23,6 +23,7 @@ export interface Player {
   hand: Card[];
   handSize: number;
   points: number;
+  isSpectator?: boolean;
 }
 
 export interface RoomData {

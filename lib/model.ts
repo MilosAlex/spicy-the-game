@@ -1,4 +1,4 @@
-import { Card, PlayerData, RoomData, User } from "./types";
+import { Card, Player, PlayerData, RoomData, User } from "./types";
 
 class Model {
   private roomData: RoomData;
@@ -72,6 +72,25 @@ class Model {
         ? this.roomData.topCard
         : null;
 
+    let you : Player;
+
+    try {
+      you = {
+        ...this.getPlayer(userId),
+        handSize: this.getPlayer(userId).hand.length,
+      };
+    } catch (e) {
+      //user is a spectator
+      you = {
+        id: userId,
+        name: "Spectator",
+        hand: [],
+        points: 0,
+        handSize: 0,
+        isSpectator: true,
+      };
+    }
+
     return {
       _id: this.roomData._id,
       hostId: this.roomData.hostId,
@@ -93,10 +112,7 @@ class Model {
           this.roomData.round % this.roomData.players.length
         ].id,
       pileSize: this.roomData.pileSize,
-      you: {
-        ...this.getPlayer(userId),
-        handSize: this.getPlayer(userId).hand.length,
-      },
+      you: you,
       isGameEnded: this.roomData.deck.length === 0,
     };
   };

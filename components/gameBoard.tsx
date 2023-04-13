@@ -181,6 +181,7 @@ const GameBoard = (props: GameBoardProps) => {
             <section className="game-board__center__buttons">
               {props.room.declarer &&
                 props.room.declarer !== props.userId &&
+                !props.room.you.isSpectator &&
                 (isChallengeActive ? (
                   <>
                     <button
@@ -252,21 +253,35 @@ const GameBoard = (props: GameBoardProps) => {
       </section>
       {isPlayersVisible && (
         <section className="game-board__modal">
-          <button onClick={() => setIsPlayersVisible(false)}>X</button>
+          <div className="game-board__modal__content">
+            <button
+              className="game-board__modal__close"
+              onClick={() => setIsPlayersVisible(false)}
+            >
+              X
+            </button>
             <PlayerList
               players={props.room.players}
               activePlayer={props.room.activePlayer}
             />
+          </div>
         </section>
       )}
       {isChatVisible && (
         <section className="game-board__modal">
-          <button onClick={() => setIsChatVisible(false)}>X</button>
+          <div className="game-board__modal__content">
+            <button
+              className="game-board__modal__close"
+              onClick={() => setIsChatVisible(false)}
+            >
+              X
+            </button>
             <Chat
               roomId={props.room._id}
               userName={props.room.you.name}
               messages={props.chatMessages}
             />
+          </div>
         </section>
       )}
     </main>
