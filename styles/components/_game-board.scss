@@ -166,6 +166,28 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+
+    &__content {
+      width: calc(100% - 2rem);
+      height: calc(100% - 2rem);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem;
+      background-color: #292d2e;
+      border-radius: $border-radius-12;
+    }
+
+    &__close {
+      @include typo-poppins-16($main-black);
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 3.2rem;
+      height: 3.2rem;
+      border: none;
+      border-radius: 50%;
+    }
   }
 
   &__players {
