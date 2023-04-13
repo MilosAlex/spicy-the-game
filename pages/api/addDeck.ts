@@ -1,6 +1,8 @@
 import { ObjectId } from "mongodb";
 import clientPromise from "../../lib/mongodb";
 
+//THIS API IS NOT PART OF THE FINAL PRODUCT
+
 export default async (req: any, res: any) => {
   try {
     const client = await clientPromise;
