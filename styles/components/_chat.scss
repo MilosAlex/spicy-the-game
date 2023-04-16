@@ -52,7 +52,7 @@
   }
 
   &__text {
-    @include typo-poppins-12($main-black);
+    @include typo-poppins-12-semibold($main-black);
     font-weight: 400;
     margin: unset;
 

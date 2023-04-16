@@ -76,7 +76,7 @@
       }
 
       &__tag {
-        @include typo-poppins-16($main-black);
+        @include typo-poppins-16-semibold($main-black);
         margin: unset;
 
         &__container {
@@ -179,7 +179,7 @@
     }
 
     &__close {
-      @include typo-poppins-16($main-black);
+      @include typo-poppins-16-semibold($main-black);
       position: absolute;
       top: 0;
       right: 0;

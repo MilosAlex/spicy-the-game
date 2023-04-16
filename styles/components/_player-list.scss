@@ -29,11 +29,11 @@
   }
 
   &__points {
-    @include typo-poppins-16($main-black);
+    @include typo-poppins-16-semibold($main-black);
   }
 
   &__hand-size {
-    @include typo-poppins-16($main-black);
+    @include typo-poppins-16-semibold($main-black);
   }
 
   &__points__container {

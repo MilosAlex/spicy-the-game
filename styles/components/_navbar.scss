@@ -24,7 +24,7 @@
 }
 
 &__name {
-    @include typo-poppins-14(#fff);
+    @include typo-poppins-14-semibold(#fff);
     font-weight: 400;
     white-space: nowrap;
   }
@@ -38,7 +38,7 @@
 
     a,
     button {
-      @include typo-poppins-12($main-black);
+      @include typo-poppins-12-semibold($main-black);
       font-weight: 400;
       height: 3rem;
       border-radius: 0.8rem;

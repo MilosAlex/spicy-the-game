@@ -34,6 +34,8 @@
   }
 }
 
+/// Bungee font
+
 @mixin typo-bungee-60($color: $main-black) {
   font-family: "Bungee";
   font-style: normal;
@@ -88,8 +90,9 @@
   color: $color;
 }
 
+/// Poppins regular font
 
-@mixin typo-poppins-60($color: $main-black) {
+@mixin typo-poppins-60-regular($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -98,7 +101,7 @@
   color: $color;
 }
 
-@mixin typo-poppins-24($color: $main-black) {
+@mixin typo-poppins-24-regular($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -107,7 +110,7 @@
   color: $color;
 }
 
-@mixin typo-poppins-20($color: $main-black) {
+@mixin typo-poppins-20-regular($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -116,7 +119,7 @@
   color: $color;
 }
 
-@mixin typo-poppins-16($color: $main-black) {
+@mixin typo-poppins-16-regular($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
@@ -125,7 +128,7 @@
   color: $color;
 }
 
-@mixin typo-poppins-14($color: $main-black) {
+@mixin typo-poppins-14-regular($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
@@ -134,7 +137,7 @@
   color: $color;
 }
 
-@mixin typo-poppins-12($color: $main-black) {
+@mixin typo-poppins-12-regular($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
@@ -143,11 +146,104 @@
   color: $color;
 }
 
-@mixin typo-poppins-10($color: $main-black) {
+@mixin typo-poppins-10-regular($color: $main-black) {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
   font-size: 1rem;
   line-height: 1.2rem;
   color: $color;
+}
+
+///Poppins semibold font
+
+@mixin typo-poppins-60-semibold($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 6rem;
+  line-height: 7.2rem;
+  color: $color;
+}
+
+@mixin typo-poppins-24-semibold($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+  color: $color;
+}
+
+@mixin typo-poppins-20-semibold($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 3rem;
+  color: $color;
+}
+
+@mixin typo-poppins-16-semibold($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  color: $color;
+}
+
+@mixin typo-poppins-14-semibold($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  color: $color;
+}
+
+@mixin typo-poppins-12-semibold($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  color: $color;
+}
+
+@mixin typo-poppins-10-semibold($color: $main-black) {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  color: $color;
+}
+
+/// Other mixins
+
+@mixin option-button() {
+  @include typo-poppins-16-regular($full-black);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  max-width: 50rem;
+  min-width: 16rem;
+  height: 16rem;
+
+  border-radius: 0.8rem;
+  border: 1px solid $full-black;
+
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: rgb(192, 192, 192);
+    color: $full-black;
+    box-shadow: 0.5rem 0.5rem;
+  }
 }

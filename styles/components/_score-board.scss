@@ -13,20 +13,20 @@
   }
 
   &__cell {
-    @include typo-poppins-14($main-black);
+    @include typo-poppins-14-semibold($main-black);
     margin: 0;
     font-weight: 400;
     padding: 0.4rem 0.8rem;
     text-align: center;
 
     &--head {
-      @include typo-poppins-16($main-black);
+      @include typo-poppins-16-semibold($main-black);
       margin: 0;
       padding: 0.4rem 0.8rem;
     }
 
     &--bold {
-      @include typo-poppins-14($main-black);
+      @include typo-poppins-14-semibold($main-black);
       margin: 0;
       padding: 0.4rem 0.8rem;
     }
