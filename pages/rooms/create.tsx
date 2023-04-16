@@ -45,14 +45,14 @@ export default function CreateRoom(props: CreateRoomProps) {
   }, []); */
 
   return (
-    <main className="register">
-      <h1 className="register__title">Create room</h1>
-      <form className="register__form" onSubmit={(e) => handleSubmit(e)}>
-        <label className="register__label" htmlFor="roomTitle">
+    <main className="create-room">
+      <h1 className="create-room__title">Create room</h1>
+      <form className="create-room__form" onSubmit={(e) => handleSubmit(e)}>
+        <label className="create-room__label" htmlFor="roomTitle">
           Room title
         </label>
         <input
-          className="register__input"
+          className="create-room__input"
           id="roomTitle"
           type="text"
           value={roomTitle}
@@ -60,17 +60,17 @@ export default function CreateRoom(props: CreateRoomProps) {
           placeholder="Peti vs Feri"
         />
         {session ? (
-          <button className="register__button" type="submit">
+          <button className="create-room__button" type="submit">
             Create
           </button>
         ) : (
           <>
-            <button className="register__button" type="submit" disabled>
+            <button className="create-room__button create-room__button--disabled" type="submit" disabled>
               <div className="create-room__lock">
                 <Lock />
               </div>
             </button>
-            <h3 className="">
+            <h3 className="create-room__warning">
               You have to be logged in to create a room
             </h3>
           </>

@@ -1,6 +1,79 @@
 .create-room {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    @include typo-poppins-60-semibold();
+    margin: 5rem 0 0 0;
+    text-align: center;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 4rem 0 4rem;
+    width: calc(100% - 8rem);
+    max-width: 50rem;
+  }
+
+  &__input {
+    @include typo-poppins-16-regular($full-black);
+    width: 100%;
+    height: 4rem;
+    border-radius: 0.8rem;
+    border: 1px solid $full-black;
+    cursor: pointer;
+    padding: 0.2rem 0.6rem;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0.5rem 0.5rem rgb(192, 192, 192);
+    }
+
+    &::placeholder {
+      color: rgb(192, 192, 192);
+    }
+  }
+
+  &__label {
+    @include typo-poppins-14-semibold($full-black);
+    margin: unset;
+  }
+
+  &__button {
+    @include typo-poppins-16-semibold($full-black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    border-radius: 0.8rem;
+    border: 1px solid $full-black;
+    cursor: pointer;
+    background-color: rgb(192, 192, 192);
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0.5rem 0.5rem $full-black;
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+    }
+  }
+
   &__lock {
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 2rem;
+    width: 2rem;
+  }
+
+  &__warning {
+    @include typo-poppins-14-semibold($full-black);
+    margin: 0.5rem 0 0 0;
   }
 }
