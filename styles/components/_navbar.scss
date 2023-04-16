@@ -23,7 +23,7 @@
     white-space: nowrap;
 }
 
-&__name {
+&__name, &__name--extra {
     @include typo-poppins-14-semibold(#fff);
     font-weight: 400;
     white-space: nowrap;

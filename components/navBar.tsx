@@ -39,7 +39,7 @@ export default function NavBar(props: NavBarProps) {
           </section>
         ) : (
           <section className="navbar__status">
-            <h3 className="navbar__name">Signed out</h3>
+            <h3 className="navbar__name--extra">Signed out</h3>
             <button onClick={handleSignIn}>Login</button>
             <Link href="/register">
               <button onClick={() => {}}>Register</button>
