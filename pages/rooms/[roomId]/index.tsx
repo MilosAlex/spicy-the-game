@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Pusher from "pusher-js";
+import Pusher, { PresenceChannel } from "pusher-js";
 import { useEffect, useState } from "react";
 import GameBoard from "../../../components/gameBoard";
 import clientPromise from "../../../lib/mongodb";
@@ -112,15 +112,25 @@ const GameRoom = (props: GameRoomProps) => {
       window.location.href = "/";
     });
 
-    // when a new member joins the chat
-    channel.bind("pusher:member_added", () => {
-      console.log("count", channel.members.count);
+    // when a new member joins the room
+    channel.bind("pusher:member_added", (member: any) => {
+      const gameEvent: ChatMessage = {
+        sender: "System",
+        message: `${member.info.username} joined the room`,
+        gameEvent: true,
+      };
+      setChatMessages((prev) => [...prev, gameEvent]);
       setPlayers(membersToArray(channel.members.members as any) as any);
     });
 
-    // when a member leaves the chat
-    channel.bind("pusher:member_removed", () => {
-      console.log("count", channel.members.members);
+    // when a member leaves the room
+    channel.bind("pusher:member_removed", (member: any) => {
+      const gameEvent: ChatMessage = {
+        sender: "System",
+        message: `${member.info.username} left the room`,
+        gameEvent: true,
+      };
+      setChatMessages((prev) => [...prev, gameEvent]);
       setPlayers(membersToArray(channel.members.members as any) as any);
     });
 
