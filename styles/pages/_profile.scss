@@ -1,0 +1,83 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    @include typo-poppins-60-semibold();
+    margin: 5rem 0 0 0;
+  }
+
+  &__subtitle {
+    @include typo-poppins-24-semibold();
+    margin: 2rem 0 0 0;
+  }
+
+  &__room {
+    position: relative;
+    width: 100%;
+    max-width: 50rem;
+    min-width: 16rem;
+    height: 16rem;
+
+    &__link {
+      position: relative;
+      @include option-button();
+    }
+
+    &__delete {
+      @include typo-bungee-14(#fff);
+      position: absolute;
+      top: -1rem;
+      right: -1rem;
+      height: 4rem;
+      width: 8rem;
+      border-radius: 1.2rem;
+      border: none;
+      background-color: #ab1010;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        box-shadow: 0.3rem 0.5rem #292d2e;
+      }
+    }
+
+    &__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin: 3rem 4rem 0 4rem;
+      width: calc(100% - 8rem);
+    }
+  }
+
+  &__login,
+  &__register {
+    @include option-button();
+    background-color: $full-white;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 10rem 0 10rem;
+    width: calc(100% - 8rem);
+  }
+}
+
+// Media queries
+
+@media screen and (max-width: map-get($breakpoints, "medium")) {
+    .profile {
+      &__actions {
+        flex-direction: column;
+        margin: 3rem 4rem 0 4rem;
+      }
+    }
+  }
