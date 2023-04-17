@@ -36,8 +36,7 @@
     align-items: center;
     gap: 0.5rem;
 
-    a,
-    button {
+    &__button {
       @include typo-poppins-12-semibold($main-black);
       font-weight: 400;
       height: 3rem;

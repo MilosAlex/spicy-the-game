@@ -1,27 +1,11 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { FormEvent, useState } from "react";
-import Pusher from "pusher-js";
+import React from "react";
 
 interface NavBarProps {}
 
 export default function NavBar(props: NavBarProps) {
-  const router = useRouter();
   const { data: session } = useSession();
-
-  if (session) console.log("session: ", session);
-
-  const handleSignIn = () => {
-    signIn();
-    /*const username = session?.user?.name ?? "John Doe";
-     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-      cluster: "eu",
-      // use jwts in prod
-      authEndpoint: `api/pusher/auth`,
-      auth: { params: { username: "test" } },
-    }); */
-  };
 
   return (
     <div className="navbar">
@@ -33,16 +17,25 @@ export default function NavBar(props: NavBarProps) {
           <section className="navbar__status">
             <h3 className="navbar__name">
               <span className="navbar__name--extra">Signed in as </span>
-              {session.user?.name}
+              <Link href="/profile">{session.user?.name}</Link>
             </h3>
-            <button onClick={() => signOut()}>Logout</button>
+            <button
+              className="navbar__status__button"
+              onClick={() => signOut()}
+            >
+              Logout
+            </button>
           </section>
         ) : (
           <section className="navbar__status">
             <h3 className="navbar__name--extra">Signed out</h3>
-            <button onClick={handleSignIn}>Login</button>
+            <button className="navbar__status__button" onClick={() => signIn()}>
+              Login
+            </button>
             <Link href="/register">
-              <button onClick={() => {}}>Register</button>
+              <button className="navbar__status__button" onClick={() => {}}>
+                Register
+              </button>
             </Link>
           </section>
         )}
