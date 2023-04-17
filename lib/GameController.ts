@@ -10,14 +10,14 @@ class GameController {
   private model: Model;
   private db: Db;
 
-  private req: any;
+  private reqBody: any;
   private res: any;
 
   constructor(req: any, res: any) {
-    this.req = req;
+    this.reqBody = JSON.parse(req.body);
     this.res = res;
 
-    const { userId, roomId } = this.req.body;
+    const { userId, roomId } = this.reqBody;
     this.roomId = roomId;
     this.userId = userId;
     //validate userId and roomId
@@ -87,7 +87,7 @@ class GameController {
 
   public startGame = async () => {
     try {
-      const { activePlayers }: { activePlayers: User[] } = this.req.body;
+      const { activePlayers }: { activePlayers: User[] } = this.reqBody;
 
       if (!activePlayers) {
         this.res.status(400).json({ message: "Missing activePlayers" });
@@ -108,7 +108,7 @@ class GameController {
   public playCard = async () => {
     try {
       const { card, declaration }: { card: Card; declaration: string } =
-        this.req.body;
+        this.reqBody;
 
       if (!card) {
         this.res.status(400).json({ message: "Missing card" });
@@ -152,7 +152,7 @@ class GameController {
 
   public challenge = async () => {
     try {
-      const { challenged }: { challenged: "color" | "value" } = this.req.body;
+      const { challenged }: { challenged: "color" | "value" } = this.reqBody;
 
       if (!challenged) {
         this.res.status(400).json({ message: "Missing challenged" });

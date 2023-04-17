@@ -14,7 +14,7 @@ export default function CreateRoom(props: CreateRoomProps) {
   const [roomTitle, setRoomTitle] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const url = window.location.href.replace("rooms/create", "api/addRoom");
+    const url = `${process.env.NEXT_PUBLIC_URL}api/addRoom`;
     e.preventDefault();
     try {
       let response = await fetch(url, {
@@ -23,10 +23,6 @@ export default function CreateRoom(props: CreateRoomProps) {
           name: roomTitle,
           userId: user_id,
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;
@@ -65,7 +61,11 @@ export default function CreateRoom(props: CreateRoomProps) {
           </button>
         ) : (
           <>
-            <button className="create-room__button create-room__button--disabled" type="submit" disabled>
+            <button
+              className="create-room__button create-room__button--disabled"
+              type="submit"
+              disabled
+            >
               <div className="create-room__lock">
                 <Lock />
               </div>

@@ -15,7 +15,7 @@ export default function Register(props: RegisterProps) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     console.log(e, username, password);
 
-    const url = window.location.href.replace("register", "api/addUser");
+    const url = `${process.env.NEXT_PUBLIC_URL}api/addUser`;
     e.preventDefault();
     console.log({ username, password });
     try {
@@ -25,10 +25,6 @@ export default function Register(props: RegisterProps) {
           username,
           password,
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;
@@ -83,6 +79,6 @@ export default function Register(props: RegisterProps) {
 
 export async function getServerSideProps() {
   return {
-    props: { comments: JSON.parse(JSON.stringify({})) },
+    props: {},
   };
 }

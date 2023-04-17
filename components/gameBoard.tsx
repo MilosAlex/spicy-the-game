@@ -33,10 +33,6 @@ const GameBoard = (props: GameBoardProps) => {
           userId: props.userId,
           roomId: props.room._id.toString(),
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       }).then((res) => res.json());
 
       console.log("room: ", response);
@@ -61,10 +57,6 @@ const GameBoard = (props: GameBoardProps) => {
           card: pickedCard,
           declaration: declaredNum,
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;
@@ -88,10 +80,6 @@ const GameBoard = (props: GameBoardProps) => {
           roomId: props.room._id.toString(),
           challenged,
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;

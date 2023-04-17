@@ -45,10 +45,6 @@ const GameRoom = (props: GameRoomProps) => {
           roomId: props.room._id.toString(),
           activePlayers: players,
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;
@@ -67,10 +63,6 @@ const GameRoom = (props: GameRoomProps) => {
           userId: user_id,
           roomId: props.room._id.toString(),
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;

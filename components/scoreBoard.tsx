@@ -22,10 +22,6 @@ const ScoreBoard = (props: ScoreBoardProps) => {
           userId: props.userId,
           roomId:  props.roomId,
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;

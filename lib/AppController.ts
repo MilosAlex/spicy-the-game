@@ -4,19 +4,20 @@ import shuffle from "./shuffle";
 import { pusher } from "./pusher";
 
 class GameController {
-  private req: any;
+  private reqBody: any;
   private res: any;
 
   constructor(req: any, res: any) {
-    this.req = req;
+    this.reqBody = JSON.parse(req.body);
     this.res = res;
   }
 
   public createRoom = async () => {
+    console.log(this.reqBody);
     try {
       const client = await clientPromise;
       const db = client.db("unodb");
-      const { name, userId } = this.req.body;
+      const { name, userId } = this.reqBody;
 
       if (!userId) {
         this.res.status(400).json({ message: "Missing userId" });
@@ -52,7 +53,7 @@ class GameController {
     try {
       const client = await clientPromise;
       const db = client.db("unodb");
-      const { username, password } = this.req.body;
+      const { username, password } = this.reqBody;
 
       let newUser = null;
 
@@ -78,7 +79,7 @@ class GameController {
   };
 
   public deleteRoom = async () => {
-    const { roomId, userId } = this.req.body;
+    const { roomId, userId } = this.reqBody;
     await pusher.trigger(`presence-${roomId}`, "room-deleted", {});
 
     try {
@@ -107,7 +108,7 @@ class GameController {
   };
 
   public sendChatMessage = async () => {
-    const { roomId, userName, message } = this.req.body;
+    const { roomId, userName, message } = this.reqBody;
 
     await pusher.trigger(`presence-${roomId}`, "new-chat", {
       sender: userName,

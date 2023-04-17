@@ -24,10 +24,6 @@ const Chat = (props: ChatProps) => {
           userName: props.userName,
           message: textValue,
         }),
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
       });
 
       response = await response;
@@ -41,18 +37,20 @@ const Chat = (props: ChatProps) => {
   return (
     <section className="chat">
       <div className="chat__messages-container">
-        {[...props.messages].reverse().map((message, i) => (
+        {[...props.messages].reverse().map((message, i) =>
           !message.gameEvent ? (
-          <article className="chat__message" key={i}>
-            <h4 className="chat__sender">{message.sender}</h4>
-            <p className="chat__text">{message.message}</p>
-          </article>
+            <article className="chat__message" key={i}>
+              <h4 className="chat__sender">{message.sender}</h4>
+              <p className="chat__text">{message.message}</p>
+            </article>
           ) : (
             <article className="chat__message" key={i}>
-              <p className="chat__text chat__text--centered">{message.message}</p>
+              <p className="chat__text chat__text--centered">
+                {message.message}
+              </p>
             </article>
           )
-        ))}
+        )}
       </div>
       <form className="chat__form" onSubmit={handleChatSubmit}>
         <textarea
