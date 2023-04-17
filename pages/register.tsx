@@ -15,7 +15,7 @@ export default function Register(props: RegisterProps) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     console.log(e, username, password);
 
-    const url = `${process.env.NEXT_PUBLIC_URL}api/addUser`;
+    const url = `${process.env.NEXT_PUBLIC_URL}api/createUser`;
     e.preventDefault();
     console.log({ username, password });
     try {

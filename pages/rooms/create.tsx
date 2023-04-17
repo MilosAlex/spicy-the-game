@@ -14,7 +14,7 @@ export default function CreateRoom(props: CreateRoomProps) {
   const [roomTitle, setRoomTitle] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const url = `${process.env.NEXT_PUBLIC_URL}api/addRoom`;
+    const url = `${process.env.NEXT_PUBLIC_URL}api/createRoom`;
     e.preventDefault();
     try {
       let response = await fetch(url, {
