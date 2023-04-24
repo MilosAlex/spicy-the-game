@@ -17,7 +17,7 @@ export const authOptions = {
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
                 username: { label: "Username", type: "text", placeholder: "Username" },
-                password: { label: "Magic word (don't use passwords, I'm not encrypting)", type: "password", placeholder: "doggo" }
+                password: { label: "Password", type: "password", placeholder: "doggo" }
             },
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
