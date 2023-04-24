@@ -1,27 +1,24 @@
-.game-room {
+.lobby {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   &__title {
+    @include typo-poppins-60-semibold();
     margin: 5rem 0 0 0;
-    line-height: 1.15;
-    font-size: 4rem;
     text-align: center;
   }
 
   &__subtitle {
-    margin: 3rem 0 0 0;
-    line-height: 1.15;
-    font-size: 2rem;
+    @include typo-poppins-24-semibold();
+    margin: 2rem 0 0 0;
     text-align: center;
   }
 
   &__name {
     margin: 1rem 0 0 0;
-    line-height: 1.15;
-    font-size: 1rem;
+    @include typo-poppins-16-regular();
     text-align: center;
   }
 
@@ -36,23 +33,16 @@
   }
 
   &__start-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    min-width: 20rem;
-    height: 2rem;
-    border-radius: 5px;
-    border: 1px solid #000;
-    cursor: pointer;
+    @include typo-bungee-14(#fff);
+    height: 4rem;
+    width: 16rem;
+    border-radius: 1.2rem;
+    border: none;
+    background-color: #ab1010;
     transition: all 0.2s ease-in-out;
-    padding: unset;
-    background-color: rgb(192, 192, 192);
 
     &:hover {
-      background-color: rgb(192, 192, 192);
-      color: #000;
-      box-shadow: 0.5rem 0.5rem;
+      box-shadow: 0.3rem 0.5rem #292d2e;
     }
   }
 }
