@@ -4,12 +4,11 @@ import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
 import clientPromise from "../lib/mongodb";
 
-interface RegisterProps {
+interface ProfileProps {
   rooms: any[];
 }
 
-export default function Register(props: RegisterProps) {
-  console.log(props);
+export default function Profile(props: ProfileProps) {
   const router = useRouter();
   const { data: session }: any = useSession();
 
@@ -33,11 +32,6 @@ export default function Register(props: RegisterProps) {
       console.error(errorMessage);
     }
   };
-
-  useEffect(() => {
-    //if (session) router.replace("/");
-    console.log(session);
-  }, []);
 
   return (
     <main className="profile">

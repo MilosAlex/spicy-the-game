@@ -35,8 +35,6 @@ const GameBoard = (props: GameBoardProps) => {
         }),
       }).then((res) => res.json());
 
-      console.log("room: ", response);
-
       props.setRoom(response);
     } catch (errorMessage: any) {
       console.error(errorMessage);
@@ -62,8 +60,6 @@ const GameBoard = (props: GameBoardProps) => {
       response = await response;
       const data = await response.json();
 
-      console.log("room: ", data);
-
       props.setRoom(data);
     } catch (errorMessage: any) {
       console.error(errorMessage);
@@ -84,8 +80,6 @@ const GameBoard = (props: GameBoardProps) => {
 
       response = await response;
       const data = await response.json();
-
-      console.log("room: ", data);
 
       props.setRoom(data);
       setIsChallengeActive(false);

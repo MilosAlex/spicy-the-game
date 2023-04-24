@@ -25,8 +25,6 @@ const ScoreBoard = (props: ScoreBoardProps) => {
       });
 
       response = await response;
-      const data = await response.json();
-      console.log("deleted: ", data);
 
     } catch (errorMessage: any) {
       console.error(errorMessage);

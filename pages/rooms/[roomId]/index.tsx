@@ -48,7 +48,6 @@ const GameRoom = (props: GameRoomProps) => {
       });
 
       response = await response;
-      console.log(response);
     } catch (errorMessage: any) {
       console.error(errorMessage);
     }
@@ -67,7 +66,6 @@ const GameRoom = (props: GameRoomProps) => {
 
       response = await response;
       const data = await response.json();
-      console.log("room: ", data);
 
       setRoom(data);
     } catch (errorMessage: any) {
@@ -172,7 +170,6 @@ const GameRoom = (props: GameRoomProps) => {
 
 export async function getServerSideProps(context: any) {
   const roomId = context.query.roomId;
-  console.log(roomId);
 
   try {
     const client = await clientPromise;
@@ -181,8 +178,6 @@ export async function getServerSideProps(context: any) {
     const room = await db
       .collection("rooms")
       .findOne({ _id: new ObjectId(roomId) });
-
-    console.log(room);
 
     return {
       props: { room: JSON.parse(JSON.stringify(room)) },

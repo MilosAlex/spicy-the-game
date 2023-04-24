@@ -26,7 +26,6 @@ export default function CreateRoom(props: CreateRoomProps) {
       });
 
       response = await response;
-      console.log(response);
 
       if (response.status === 200) {
         router.push("/");

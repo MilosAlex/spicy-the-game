@@ -13,7 +13,6 @@ const Chat = (props: ChatProps) => {
 
   const handleChatSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
 
     const url = `${process.env.NEXT_PUBLIC_URL}api/sendChatMessage`;
     try {
