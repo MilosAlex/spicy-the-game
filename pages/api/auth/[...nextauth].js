@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "../../../lib/mongodb";
+import comparePasswords from "../../../lib/comparePasswords";
 
 export const authOptions = {
     secret: process.env.NEXT_PUBLIC_SECRET,
@@ -24,15 +25,20 @@ export const authOptions = {
                 let user = null;
                 try {
                     const client = await clientPromise;
-                    const db = client.db("unodb");
+                    const db = client.db("spicydb");
                     const { username, password } = credentials;
 
                     const mongoUser = await db.collection("users").findOne({
                         username,
-                        password,
                     });
 
-                    if (mongoUser) {
+                    if (!mongoUser) {
+                        return null;
+                    }
+
+                    const isPasswordMatch = await comparePasswords(password, mongoUser.password);
+
+                    if (isPasswordMatch) {
                         user = { id: mongoUser._id.toString(), name: mongoUser.username }
                     }
 

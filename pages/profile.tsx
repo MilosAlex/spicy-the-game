@@ -89,7 +89,7 @@ export default function Register(props: RegisterProps) {
 export async function getServerSideProps() {
   try {
     const client = await clientPromise;
-    const db = client.db("unodb");
+    const db = client.db("spicydb");
 
     const rooms = await db
       .collection("rooms")

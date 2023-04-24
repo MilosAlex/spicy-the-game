@@ -37,7 +37,7 @@ class GameController {
   async initialize() {
     //getting room data from db
     const client = await clientPromise;
-    this.db = client.db("unodb");
+    this.db = client.db("spicydb");
 
     const roomData: any = await this.db
       .collection("rooms")

@@ -9,15 +9,14 @@ export default function Register(props: RegisterProps) {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const [isErrorsVisible, setIserrorsVisible] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    console.log(e, username, password);
-
     const url = `${process.env.NEXT_PUBLIC_URL}api/createUser`;
     e.preventDefault();
-    console.log({ username, password });
     try {
       let response = await fetch(url, {
         method: "POST",
@@ -28,14 +27,18 @@ export default function Register(props: RegisterProps) {
       });
 
       response = await response;
+      if (response.status !== 200) throw new Error("Something went wrong");
+
       const getLoginStatus = await signIn("credentials", {
         redirect: false,
         username,
         password,
       });
+      if (getLoginStatus?.error) throw new Error("Something went wrong");
+
       router.push("/");
     } catch (errorMessage: any) {
-      console.error(errorMessage);
+      setIserrorsVisible(true);
     }
   };
 
@@ -72,6 +75,10 @@ export default function Register(props: RegisterProps) {
         <button className="register__button" type="submit">
           Send
         </button>
+
+        {isErrorsVisible && (
+          <p className="register__error">Wrong username or password!</p>
+        )}
       </form>
     </main>
   );

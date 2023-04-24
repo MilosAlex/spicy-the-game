@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import clientPromise from "./mongodb";
 import shuffle from "./shuffle";
 import { pusher } from "./pusher";
+import hashPassword from "./hashPassword";
 
 class GameController {
   private reqBody: any;
@@ -16,7 +17,7 @@ class GameController {
     console.log(this.reqBody);
     try {
       const client = await clientPromise;
-      const db = client.db("unodb");
+      const db = client.db("spicydb");
       const { name, userId } = this.reqBody;
 
       if (!userId) {
@@ -52,24 +53,26 @@ class GameController {
   public createUser = async () => {
     try {
       const client = await clientPromise;
-      const db = client.db("unodb");
+      const db = client.db("spicydb");
       const { username, password } = this.reqBody;
 
       let newUser = null;
 
-      const isUserRegistered = await db.collection("users").findOne({
+      const dbUser = await db.collection("users").findOne({
         username,
-        password,
       });
 
-      if (!isUserRegistered) {
-        newUser = await db.collection("users").insertOne({
-          username,
-          password,
-        });
-      } else {
-        newUser = isUserRegistered;
+      if (dbUser) {
+        this.res.status(400).json({ message: "User already exists" });
+        return;
       }
+
+      const newPassword = await hashPassword(password);
+
+      newUser = await db.collection("users").insertOne({
+        username,
+        password: newPassword,
+      });
 
       this.res.json(newUser);
     } catch (e) {
@@ -84,7 +87,7 @@ class GameController {
 
     try {
       const client = await clientPromise;
-      const db = client.db("unodb");
+      const db = client.db("spicydb");
 
       if (!userId) {
         this.res.status(400).json({ message: "Missing userId" });

@@ -57,7 +57,7 @@ const RoomList = (props: RoomListProps) => {
 export async function getServerSideProps() {
   try {
     const client = await clientPromise;
-    const db = client.db("unodb");
+    const db = client.db("spicydb");
 
     const rooms = await db.collection("rooms").find({}).toArray();
 

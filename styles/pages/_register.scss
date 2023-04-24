@@ -62,4 +62,9 @@
       box-shadow: 0.5rem 0.5rem $full-black;
     }
   }
+
+  &__error {
+    @include typo-poppins-14-regular(red);
+    margin: 0.5rem 0 0 0;
+  }
 }
