@@ -3,6 +3,9 @@ import Model from "./model";
 import clientPromise from "./mongodb";
 import { pusher } from "./pusher";
 import { Card, RoomData, User } from "./types";
+import { NextApiRequest, NextApiResponse } from "next";
+import { Session, getServerSession } from "next-auth";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
 
 class GameController {
   private roomId: string;
@@ -11,15 +14,17 @@ class GameController {
   private db: Db;
 
   private reqBody: any;
-  private res: any;
+  private req: NextApiRequest;
+  private res: NextApiResponse;
 
-  constructor(req: any, res: any) {
+  constructor(req: NextApiRequest, res: NextApiResponse) {
     this.reqBody = JSON.parse(req.body);
+    this.req = req;
     this.res = res;
 
     const { userId, roomId } = this.reqBody;
     this.roomId = roomId;
-    this.userId = userId;
+    this.userId = "";
     //validate userId and roomId
     /* if (!userId) {
       this.res.status(400).json({ message: "Missing userId" });
@@ -35,6 +40,14 @@ class GameController {
   }
 
   async initialize() {
+    // Get userId from session
+    const session: Session | null = await getServerSession(this.req, this.res, authOptions);
+    if (!session) {
+      this.res.status(400).json({ message: "Missing session" });
+      return;
+    }
+    this.userId = session.user?.id;
+
     //getting room data from db
     const client = await clientPromise;
     this.db = client.db("spicydb");
