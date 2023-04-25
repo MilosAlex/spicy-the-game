@@ -62,7 +62,7 @@ export default function Register(props: RegisterProps) {
           placeholder="Peti42"
         />
         <label className="register__label" htmlFor="password">
-          Magic word (don't use passwords, I'm not encrypting)
+          Password
         </label>
         <input
           className="register__input"
