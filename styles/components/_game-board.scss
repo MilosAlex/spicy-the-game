@@ -229,6 +229,14 @@
   }
 }
 
+@media screen and (max-width: map-get($breakpoints, "large")) {
+  .game-board {
+    &__center__buttons__container--mobile {
+      display: flex;
+    }
+  }
+}
+
 @media screen and (max-width: map-get($breakpoints, "medium")) {
   .game-board {
     background-color: #ede9db;
@@ -255,10 +263,6 @@
       height: 40.4rem;
       &__buttons {
         margin: 2.4rem 0;
-      }
-
-      &__buttons__container--mobile {
-        display: flex;
       }
     }
 
