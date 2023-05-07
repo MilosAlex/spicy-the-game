@@ -27,13 +27,7 @@ const GameRoom = (props: GameRoomProps) => {
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
-  const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-    cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-    authEndpoint: `/api/pusher/auth`,
-    auth: { params: { username, user_id } },
-  });
-
-  let channel: any;
+  
 
   const handleStartGame = async () => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/startGame`;
@@ -80,6 +74,14 @@ const GameRoom = (props: GameRoomProps) => {
     if (props.room.round !== -1) {
       handleRoomQuery();
     }
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+      authEndpoint: `/api/pusher/auth`,
+      auth: { params: { username, user_id } },
+    });
+  
+    let channel: any;
 
     channel = pusher.subscribe(channel_id);
 
