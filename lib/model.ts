@@ -227,7 +227,7 @@ class Model {
 
     return [
       `${player.name} challenged ${challengedPlayer.name} and ${
-        player.id === this.getActivePlayer().id ? "won" : "lost"
+        player.id === this.getActivePlayer().id ? "lost" : "won"
       }`,
     ];
   };
