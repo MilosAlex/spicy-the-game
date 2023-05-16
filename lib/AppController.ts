@@ -3,12 +3,13 @@ import clientPromise from "./mongodb";
 import shuffle from "./shuffle";
 import { pusher } from "./pusher";
 import hashPassword from "./hashPassword";
+import { NextApiRequest, NextApiResponse } from "next";
 
-class GameController {
+class AppController {
   private reqBody: any;
-  private res: any;
+  private res: NextApiResponse;
 
-  constructor(req: any, res: any) {
+  constructor(req: NextApiRequest, res: NextApiResponse) {
     this.reqBody = JSON.parse(req.body);
     this.res = res;
   }
@@ -21,7 +22,13 @@ class GameController {
       const { name, userId } = this.reqBody;
 
       if (!userId) {
+        //TODO: change to 400 to 401
         this.res.status(400).json({ message: "Missing userId" });
+        return;
+      }
+
+      if (!name) {
+        this.res.status(400).json({ message: "Missing name" });
         return;
       }
 
@@ -43,10 +50,9 @@ class GameController {
         round: -1,
       });
 
-      this.res.json(room);
+      this.res.json("Room creation successful");
     } catch (e) {
-      console.error(e);
-      //throw new Error(e).message;
+      this.res.status(500).json({ message: "Unexpected Error" });
     }
   };
 
@@ -55,6 +61,15 @@ class GameController {
       const client = await clientPromise;
       const db = client.db("spicydb");
       const { username, password } = this.reqBody;
+
+      if (!username) {
+        this.res.status(400).json({ message: "Missing username" });
+        return;
+      }
+      if (!password) {
+        this.res.status(400).json({ message: "Missing password" });
+        return;
+      }
 
       let newUser = null;
 
@@ -74,10 +89,9 @@ class GameController {
         password: newPassword,
       });
 
-      this.res.json(newUser);
+      this.res.json("User creation successful");
     } catch (e) {
-      console.error(e);
-      //throw new Error(e).message;
+      this.res.status(500).json({ message: "Unexpected Error" });
     }
   };
 
@@ -103,14 +117,14 @@ class GameController {
         hostId: new ObjectId(userId),
       });
 
-      this.res.json(room);
+      this.res.json("Room deletion successful");
     } catch (e) {
-      console.error(e);
-      //throw new Error(e).message;
+      this.res.status(400).json({ message: "Unexpected Error" });
     }
   };
 
   public sendChatMessage = async () => {
+    //TODO: try catch
     const { roomId, userName, message } = this.reqBody;
 
     await pusher.trigger(`presence-${roomId}`, "new-chat", {
@@ -123,4 +137,4 @@ class GameController {
   };
 }
 
-export default GameController;
+export default AppController;
