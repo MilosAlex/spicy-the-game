@@ -27,8 +27,6 @@ const GameRoom = (props: GameRoomProps) => {
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
-  
-
   const handleStartGame = async () => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/startGame`;
     try {
@@ -85,12 +83,6 @@ const GameRoom = (props: GameRoomProps) => {
 
     channel = pusher.subscribe(channel_id);
 
-    // when a new member successfully subscribes to the channel
-    channel.bind("pusher:subscription_succeeded", () => {
-      // total subscribed
-      setPlayers(membersToArray(channel.members.members as any) as any);
-    });
-
     channel.bind("new-round", function (gameEvent: ChatMessage[]) {
       handleRoomQuery();
       setChatMessages((prev) => [...prev, ...gameEvent]);
@@ -104,8 +96,17 @@ const GameRoom = (props: GameRoomProps) => {
       window.location.href = "/";
     });
 
+    // when a new member successfully subscribes to the channel
+    channel.bind("pusher:subscription_succeeded", () => {
+      console.log("subscription_succeeded");
+      
+      // total subscribed
+      setPlayers(membersToArray(channel.members.members as any) as any);
+    }); //lehet ez nem is kell
+
     // when a new member joins the room
     channel.bind("pusher:member_added", (member: any) => {
+      console.log("member_added");
       const gameEvent: ChatMessage = {
         sender: "System",
         message: `${member.info.username} joined the room`,

@@ -22,31 +22,29 @@ class GameController {
     this.req = req;
     this.res = res;
 
-    const { userId, roomId } = this.reqBody;
+    const { roomId } = this.reqBody;
     this.roomId = roomId;
-    this.userId = "";
-    //validate userId and roomId
-    /* if (!userId) {
-      this.res.status(400).json({ message: "Missing userId" });
-      return;
-    }
+    //validate roomId
+    /* 
     if (!roomId) {
       this.res.status(400).json({ message: "Missing roomId" });
       return;
-    } */
-
+    } 
+    */
+    
+    this.userId = "";
     this.model = {} as Model;
     this.db = {} as Db;
   }
 
-  async initialize() {
+  public async initialize() {
     // Get userId from session
     const session: Session | null = await getServerSession(this.req, this.res, authOptions);
-    if (!session) {
-      this.res.status(400).json({ message: "Missing session" });
+    if (!session || !session.user) {
+      this.res.status(400).json({ message: "Missing user" });
       return;
     }
-    this.userId = session.user?.id;
+    this.userId = session.user.id;
 
     //getting room data from db
     const client = await clientPromise;
@@ -59,13 +57,6 @@ class GameController {
     //creating model
     this.model = new Model(roomData);
   }
-
-  private getPusherUsers = async () => {
-    const url = `/channels/presence-${this.roomId}/users`;
-    const pusherRes = await pusher.get({ path: url });
-    const body = await pusherRes.json();
-    return body.users;
-  };
 
   private notifyPlayers = async (eventMessages: string[]) => {
     const messages = eventMessages.map((message) => {
