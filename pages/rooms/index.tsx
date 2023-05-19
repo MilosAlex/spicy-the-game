@@ -4,29 +4,24 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import clientPromise from "../../lib/mongodb";
 import Lock from "../../icons/lock";
-
-interface Room {
-  _id: ObjectId;
-  hostId: ObjectId;
-  name: string;
-}
+import { RoomName } from "../../lib/types";
 
 interface RoomListProps {
-  rooms: Room[];
+  rooms: RoomName[];
 }
 
 const RoomList = (props: RoomListProps) => {
   const { data: session } = useSession();
   return (
-    <main>
+    <main className="room-list">
       <h1 className="room-list__title">Select a room</h1>
       <section className="room-list__room__container">
-        {props.rooms.reverse().map((room) =>
+        {[...props.rooms].reverse().map((room) =>
           session ? (
             <Link
               className="room-list__room"
-              href={`/rooms/${room._id.toString()}`}
-              key={room._id.toString()}
+              href={`/rooms/${room._id}`}
+              key={room._id}
             >
               <h2 className="room-list__room__title">
                 {room.name ?? room._id}
@@ -35,7 +30,7 @@ const RoomList = (props: RoomListProps) => {
           ) : (
             <article
               className="room-list__room room-list__room--locked"
-              key={room._id.toString()}
+              key={room._id}
             >
               <div className="room-list__room__lock">
                 <Lock />
@@ -59,7 +54,11 @@ export async function getServerSideProps() {
     const client = await clientPromise;
     const db = client.db("spicydb");
 
-    const rooms = await db.collection("rooms").find({}).toArray();
+    const rooms = await db
+      .collection("rooms")
+      .find({})
+      .project({ _id: 1, name: 1, hostId: 1 })
+      .toArray();
 
     return {
       props: { rooms: JSON.parse(JSON.stringify(rooms)) },

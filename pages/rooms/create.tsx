@@ -81,6 +81,6 @@ export default function CreateRoom(props: CreateRoomProps) {
 
 export async function getServerSideProps() {
   return {
-    props: { comments: JSON.parse(JSON.stringify({})) },
+    props: {},
   };
 }

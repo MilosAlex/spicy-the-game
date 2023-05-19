@@ -78,7 +78,7 @@ const GameRoom = (props: GameRoomProps) => {
       authEndpoint: `/api/pusher/auth`,
       auth: { params: { username, user_id } },
     });
-  
+
     let channel: any;
 
     channel = pusher.subscribe(channel_id);
@@ -99,7 +99,7 @@ const GameRoom = (props: GameRoomProps) => {
     // when a new member successfully subscribes to the channel
     channel.bind("pusher:subscription_succeeded", () => {
       console.log("subscription_succeeded");
-      
+
       // total subscribed
       setPlayers(membersToArray(channel.members.members as any) as any);
     }); //lehet ez nem is kell
@@ -180,7 +180,10 @@ export async function getServerSideProps(context: any) {
 
     const room = await db
       .collection("rooms")
-      .findOne({ _id: new ObjectId(roomId) });
+      .findOne(
+        { _id: new ObjectId(roomId) },
+        { projection: { _id: 1, name: 1, hostId: 1, round: 1, isGameEnded: 1 } }
+      );
 
     return {
       props: { room: JSON.parse(JSON.stringify(room)) },

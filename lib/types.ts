@@ -55,6 +55,12 @@ export interface Room {
   isGameEnded: boolean;
 }
 
+export interface RoomName {
+  _id: string;
+  name: string;
+  hostId: string;
+}
+
 export interface ChatMessage {
   sender: string;
   message: string;
