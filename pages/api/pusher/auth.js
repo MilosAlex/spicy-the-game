@@ -1,11 +1,7 @@
 import { pusher } from "../../../lib/pusher";
 
 export default async function handler(req, res) {
-
-    // see https://pusher.com/docs/channels/server_api/authenticating-users
     const { socket_id, channel_name, username, user_id } = req.body;
-
-    // use JWTs here to authenticate users before continuing
 
     const presenceData = {
         user_id,

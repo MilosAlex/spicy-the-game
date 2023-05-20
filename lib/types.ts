@@ -26,6 +26,24 @@ export interface Player {
   isSpectator?: boolean;
 }
 
+export interface Member {
+  id: string;
+  name: string;
+}
+
+export interface PusherMember {
+  user_id: string;
+  info: {
+    username: string;
+  };
+}
+
+export interface PusherMembers {
+  [key: string]: {
+    username: string;
+  };
+}
+
 export interface RoomData {
   _id: ObjectId;
   hostId: ObjectId;
