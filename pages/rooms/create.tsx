@@ -9,7 +9,6 @@ interface CreateRoomProps {}
 export default function CreateRoom(props: CreateRoomProps) {
   const router = useRouter();
   const { data: session }: any = useSession();
-  const user_id = session?.user?.id;
 
   const [roomTitle, setRoomTitle] = useState("");
 
@@ -21,7 +20,6 @@ export default function CreateRoom(props: CreateRoomProps) {
         method: "POST",
         body: JSON.stringify({
           name: roomTitle,
-          userId: user_id,
         }),
       });
 

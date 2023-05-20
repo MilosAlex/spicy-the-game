@@ -17,9 +17,8 @@ const ScoreBoard = (props: ScoreBoardProps) => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/deleteRoom`;
     try {
       let response = await fetch(url, {
-        method: "POST",
+        method: "DELETE",
         body: JSON.stringify({
-          userId: props.userId,
           roomId:  props.roomId,
         }),
       });

@@ -28,9 +28,8 @@ const GameBoard = (props: GameBoardProps) => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/drawCard`;
     try {
       let response = await fetch(url, {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
-          userId: props.userId,
           roomId: props.room._id.toString(),
         }),
       }).then((res) => res.json());
@@ -48,9 +47,8 @@ const GameBoard = (props: GameBoardProps) => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/playCard`;
     try {
       let response = await fetch(url, {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
-          userId: props.userId,
           roomId: props.room._id.toString(),
           card: pickedCard,
           declaration: declaredNum,
@@ -70,9 +68,8 @@ const GameBoard = (props: GameBoardProps) => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/challenge`;
     try {
       let response = await fetch(url, {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
-          userId: props.userId,
           roomId: props.room._id.toString(),
           challenged,
         }),

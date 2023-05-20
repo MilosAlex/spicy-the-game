@@ -19,9 +19,8 @@ export default function Profile(props: ProfileProps) {
     const url = `${process.env.NEXT_PUBLIC_URL}api/deleteRoom`;
     try {
       let response = await fetch(url, {
-        method: "POST",
+        method: "DELETE",
         body: JSON.stringify({
-          userId: session.user?.id,
           roomId: roomId,
         }),
       });

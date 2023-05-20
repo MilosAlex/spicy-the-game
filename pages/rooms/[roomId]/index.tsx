@@ -31,9 +31,8 @@ const GameRoom = (props: GameRoomProps) => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/startGame`;
     try {
       let response = await fetch(url, {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
-          userId: user_id,
           roomId: props.room._id.toString(),
           activePlayers: players,
         }),
@@ -51,7 +50,6 @@ const GameRoom = (props: GameRoomProps) => {
       let response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
-          userId: user_id,
           roomId: props.room._id.toString(),
         }),
       });
@@ -98,8 +96,6 @@ const GameRoom = (props: GameRoomProps) => {
 
     // when a new member successfully subscribes to the channel
     channel.bind("pusher:subscription_succeeded", () => {
-      console.log("subscription_succeeded");
-
       // total subscribed
       setPlayers(membersToArray(channel.members.members as any) as any);
     }); //lehet ez nem is kell
