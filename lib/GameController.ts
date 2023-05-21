@@ -105,7 +105,15 @@ class GameController {
     else if (message === "NO_DECLARATION")
       this.res.status(409).json({ message: "No declaration to challenge" });
     else if (message === "CANT_CHALLENGE_SELF")
-      this.res.status(400).json({ message: "You can't challenge yourself" });
+      this.res.status(409).json({ message: "You can't challenge yourself" });
+    else if (message === "GAME_ALREADY_STARTED")
+      this.res.status(409).json({ message: "Game already started" });
+    else if (message === "NOT_ENOUGH_PLAYERS")
+      this.res.status(400).json({ message: "Not enough players" });
+    else if (message === "TOO_MANY_PLAYERS")
+      this.res.status(400).json({ message: "Too many Players" });
+    else if (message === "NOT_HOST")
+      this.res.status(403).json({ message: "You are not the host" });
     else this.res.status(400).json({ message: "Unexpected Error" });
   };
 
@@ -129,7 +137,7 @@ class GameController {
         return;
       }
 
-      const eventMessage = this.model.startGame(activePlayers);
+      const eventMessage = this.model.startGame(activePlayers, this.userId);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
       await this.notifyPlayers(eventMessage);

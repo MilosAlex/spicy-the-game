@@ -117,7 +117,20 @@ class Model {
     };
   };
 
-  public startGame = (activePlayers: User[]) => {
+  public startGame = (activePlayers: User[], userId: string) => {
+    if (this.roomData.round !== -1) {
+      throw new Error("GAME_ALREADY_STARTED");
+    }
+    if (activePlayers.length < 2) {
+      throw new Error("NOT_ENOUGH_PLAYERS");
+    }
+    if (activePlayers.length > 6) {
+      throw new Error("TOO_MANY_PLAYERS");
+    }
+    if (this.roomData.hostId.toString() !== userId) {
+      throw new Error("NOT_HOST");
+    }
+
     const players = this.initPlayers(activePlayers);
     const startingCard = this.drawTopCard();
 
