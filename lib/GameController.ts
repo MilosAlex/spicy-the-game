@@ -9,9 +9,9 @@ import { authOptions } from "../pages/api/auth/[...nextauth]";
 
 class GameController {
   private roomId: string;
-  private userId: string;
-  private model: Model;
-  private db: Db;
+  private userId: string = "";
+  private model: Model = null as unknown as Model;
+  private db: Db = null as unknown as Db;
 
   private reqBody: any;
   private req: NextApiRequest;
@@ -24,42 +24,53 @@ class GameController {
 
     const { roomId } = this.reqBody;
     this.roomId = roomId;
-    //validate roomId
-    /* 
-    if (!roomId) {
-      this.res.status(400).json({ message: "Missing roomId" });
-      return;
-    } 
-    */
-
-    this.userId = "";
-    this.model = {} as Model;
-    this.db = {} as Db;
   }
 
   public async initialize() {
-    // Get userId from session
-    const session: Session | null = await getServerSession(
-      this.req,
-      this.res,
-      authOptions
-    );
-    if (!session || !session.user) {
-      this.res.status(400).json({ message: "Missing user" });
-      return;
+    try {
+      // Get userId from session
+      const session: Session | null = await getServerSession(
+        this.req,
+        this.res,
+        authOptions
+      );
+      if (!session || !session.user) {
+        this.res.status(401).json({ message: "Missing userId" });
+        return;
+      }
+      this.userId = session.user.id;
+
+      if (!this.roomId) {
+        this.res.status(400).json({ message: "Missing roomId" });
+        return;
+      }
+
+      let roomIdObj: ObjectId;
+
+      try {
+        roomIdObj = new ObjectId(this.roomId);
+      } catch (e) {
+        this.res.status(400).json({ message: "Invalid roomId" });
+        return;
+      }
+
+      //getting room data from db
+      const client = await clientPromise;
+      this.db = client.db("spicydb");
+      const roomData = (await this.db
+        .collection("rooms")
+        .findOne({ _id: roomIdObj })) as RoomData;
+
+      if (!roomData) {
+        this.res.status(404).json({ message: "Room not found" });
+        return;
+      }
+
+      //creating model
+      this.model = new Model(roomData);
+    } catch (e) {
+      this.res.status(500).json({ message: "Unexpected Error" });
     }
-    this.userId = session.user.id;
-
-    //getting room data from db
-    const client = await clientPromise;
-    this.db = client.db("spicydb");
-
-    const roomData: any = await this.db
-      .collection("rooms")
-      .findOne({ _id: new ObjectId(this.roomId) });
-
-    //creating model
-    this.model = new Model(roomData);
   }
 
   private notifyPlayers = async (eventMessages: string[]) => {
@@ -82,19 +93,18 @@ class GameController {
   };
 
   public getPlayerRoom = () => {
-    const room = this.model.getPlayerRoom(this.userId);
-
-    if (!room) {
-      this.res.status(400).json({ message: "Room not found" });
-      return;
+    try {
+      if (!this.model) return;
+      const room = this.model.getPlayerRoom(this.userId);
+      this.res.json(room);
+    } catch (e) {
+      this.res.status(400).json({ message: "Unexpected Error" });
     }
-
-    this.res.json(room);
-    return room;
   };
 
   public startGame = async () => {
     try {
+      if (!this.model) return;
       const { activePlayers }: { activePlayers: User[] } = this.reqBody;
 
       if (!activePlayers) {
@@ -115,6 +125,7 @@ class GameController {
 
   public playCard = async () => {
     try {
+      if (!this.model) return;
       const { card, declaration }: { card: Card; declaration: string } =
         this.reqBody;
 
@@ -122,7 +133,6 @@ class GameController {
         this.res.status(400).json({ message: "Missing card" });
         return;
       }
-
       if (!declaration) {
         this.res.status(400).json({ message: "Missing declaration" });
         return;
@@ -131,9 +141,6 @@ class GameController {
       const eventMessage = this.model.playCard(this.userId, card, declaration);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-
-      const player = room.players.find((p) => p.id === this.userId);
-
       await this.notifyPlayers(eventMessage);
 
       this.getPlayerRoom();
@@ -144,12 +151,11 @@ class GameController {
 
   public drawCard = async () => {
     try {
+      if (!this.model) return;
+
       const eventMessage = this.model.drawCard(this.userId);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-
-      const player = room.players.find((p) => p.id === this.userId);
-
       await this.notifyPlayers(eventMessage);
 
       this.getPlayerRoom();
@@ -160,6 +166,7 @@ class GameController {
 
   public challenge = async () => {
     try {
+      if (!this.model) return;
       const { challenged }: { challenged: "color" | "value" } = this.reqBody;
 
       if (!challenged) {
@@ -170,9 +177,6 @@ class GameController {
       const eventMessage = this.model.challenge(this.userId, challenged);
       const room = this.model.getRoom();
       await this.updateDbRoom(room);
-
-      const player = room.players.find((p) => p.id === this.userId);
-
       await this.notifyPlayers(eventMessage);
 
       this.getPlayerRoom();
