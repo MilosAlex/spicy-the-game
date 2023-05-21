@@ -92,13 +92,30 @@ class GameController {
     );
   };
 
+  private errorHandler = (e: unknown) => {
+    const message = (e as Error)?.message;
+    if (message === "NOT_YOUR_TURN")
+      this.res.status(409).json({ message: "Not your turn" });
+    else if (message === "PLAYER_NOT_FOUND")
+      this.res.status(404).json({ message: "Player not found" });
+    else if (message === "GAME_ENDED")
+      this.res.status(409).json({ message: "Game ended" });
+    else if (message === "DECK_EMPTY")
+      this.res.status(409).json({ message: "Not enough cards in deck" });
+    else if (message === "NO_DECLARATION")
+      this.res.status(409).json({ message: "No declaration to challenge" });
+    else if (message === "CANT_CHALLENGE_SELF")
+      this.res.status(400).json({ message: "You can't challenge yourself" });
+    else this.res.status(400).json({ message: "Unexpected Error" });
+  };
+
   public getPlayerRoom = () => {
     try {
       if (!this.model) return;
       const room = this.model.getPlayerRoom(this.userId);
       this.res.json(room);
     } catch (e) {
-      this.res.status(400).json({ message: "Unexpected Error" });
+      this.errorHandler(e);
     }
   };
 
@@ -119,7 +136,7 @@ class GameController {
 
       this.getPlayerRoom();
     } catch (e) {
-      this.res.status(400).json({ message: "Unexpected Error" });
+      this.errorHandler(e);
     }
   };
 
@@ -145,7 +162,7 @@ class GameController {
 
       this.getPlayerRoom();
     } catch (e) {
-      this.res.status(400).json({ message: "Unexpected Error" });
+      this.errorHandler(e);
     }
   };
 
@@ -160,7 +177,7 @@ class GameController {
 
       this.getPlayerRoom();
     } catch (e) {
-      this.res.status(400).json({ message: "Unexpected Error" });
+      this.errorHandler(e);
     }
   };
 
@@ -181,7 +198,7 @@ class GameController {
 
       this.getPlayerRoom();
     } catch (e) {
-      this.res.status(400).json({ message: "Unexpected Error" });
+      this.errorHandler(e);
     }
   };
 }

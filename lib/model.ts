@@ -23,10 +23,10 @@ class Model {
 
   private getPlayer = (playerId: string) => {
     const player = this.roomData.players.find(
-      (player: any) => player.id === playerId
+      (player: PlayerData) => player.id === playerId
     );
     if (!player) {
-      throw new Error("Player not found");
+      throw new Error("PLAYER_NOT_FOUND");
     }
     return player;
   };
@@ -43,7 +43,7 @@ class Model {
 
   private checkGameEnded = () => {
     if (this.roomData.deck.length === 0) {
-      throw new Error("Game ended");
+      throw new Error("GAME_ENDED");
     }
   };
 
@@ -72,7 +72,7 @@ class Model {
         ? this.roomData.topCard
         : null;
 
-    let you : Player;
+    let you: Player;
 
     try {
       you = {
@@ -133,7 +133,7 @@ class Model {
     this.checkGameEnded();
     const activePlayer = this.getActivePlayer();
     if (activePlayer.id !== userId) {
-      throw new Error("Not your turn");
+      throw new Error("NOT_YOUR_TURN");
     }
 
     const index = activePlayer.hand.findIndex(
@@ -165,11 +165,11 @@ class Model {
     this.checkGameEnded();
     const activePlayer = this.getActivePlayer();
     if (activePlayer.id !== userId) {
-      throw new Error("Not your turn");
+      throw new Error("NOT_YOUR_TURN");
     }
 
     if (this.roomData.deck.length === 0) {
-      throw new Error("Not enough cards in deck");
+      throw new Error("DECK_EMPTY");
     }
 
     activePlayer.hand.push(this.roomData.deck.splice(0, 1)[0]);
@@ -185,13 +185,13 @@ class Model {
   public challenge = (userId: string, challenged: "color" | "value") => {
     this.checkGameEnded();
     if (!this.roomData.declarer || !this.roomData.declaredCard) {
-      throw new Error("No declaration to challenge");
+      throw new Error("NO_DECLARATION");
     }
     const player = this.getPlayer(userId);
     const challengedPlayer = this.getPlayer(this.roomData.declarer);
 
     if (player.id === challengedPlayer.id) {
-      throw new Error("You can't challenge yourself");
+      throw new Error("CANT_CHALLENGE_SELF");
     }
 
     if (
