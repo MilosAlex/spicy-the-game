@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 interface ChatProps {
   roomId: ObjectId;
-  userName: string;
+  username: string;
   messages: ChatMessage[];
 }
 
@@ -20,7 +20,7 @@ const Chat = (props: ChatProps) => {
         method: "POST",
         body: JSON.stringify({
           roomId: props.roomId.toString(),
-          userName: props.userName,
+          username: props.username,
           message: textValue,
         }),
       });

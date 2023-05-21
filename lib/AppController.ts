@@ -4,28 +4,52 @@ import shuffle from "./shuffle";
 import { pusher } from "./pusher";
 import hashPassword from "./hashPassword";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Session, getServerSession } from "next-auth";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
 
 class AppController {
   private reqBody: any;
+  private req: NextApiRequest;
   private res: NextApiResponse;
+  private userId: string = "";
 
   constructor(req: NextApiRequest, res: NextApiResponse) {
-    this.reqBody = JSON.parse(req.body);
+    this.req = req;
     this.res = res;
+    try {
+      this.reqBody = JSON.parse(req.body);
+    } catch (e) {
+      this.res.status(500).json({ message: "Unexpected Error" });
+    }
   }
 
-  public createRoom = async () => {
-    console.log(this.reqBody);
+  private authenticate = async () => {
     try {
+      const session: Session | null = await getServerSession(
+        this.req,
+        this.res,
+        authOptions
+      );
+      if (!session || !session.user) {
+        this.res.status(401).json({ message: "Missing userId" });
+        return false;
+      }
+      this.userId = session.user.id;
+      return true;
+    } catch (e) {
+      this.res.status(500).json({ message: "Unexpected Error" });
+      return false;
+    }
+  };
+
+  public createRoom = async () => {
+    try {
+      const authenticated = await this.authenticate();
+      if (!authenticated) return;
+
       const client = await clientPromise;
       const db = client.db("spicydb");
-      const { name, userId } = this.reqBody;
-
-      if (!userId) {
-        //TODO: change to 400 to 401
-        this.res.status(400).json({ message: "Missing userId" });
-        return;
-      }
+      const { name } = this.reqBody;
 
       if (!name) {
         this.res.status(400).json({ message: "Missing name" });
@@ -37,14 +61,14 @@ class AppController {
         .findOne({ name: "numbers-only-spicy-short" });
 
       if (!deck) {
-        this.res.status(400).json({ message: "Missing deck" });
+        this.res.status(404).json({ message: "Missing deck" });
         return;
       }
 
       const shuffledDeck = shuffle(deck.cards);
 
       const room = await db.collection("rooms").insertOne({
-        hostId: new ObjectId(userId),
+        hostId: new ObjectId(this.userId),
         name,
         deck: shuffledDeck,
         round: -1,
@@ -71,8 +95,6 @@ class AppController {
         return;
       }
 
-      let newUser = null;
-
       const dbUser = await db.collection("users").findOne({
         username,
       });
@@ -84,7 +106,7 @@ class AppController {
 
       const newPassword = await hashPassword(password);
 
-      newUser = await db.collection("users").insertOne({
+      await db.collection("users").insertOne({
         username,
         password: newPassword,
       });
@@ -96,27 +118,36 @@ class AppController {
   };
 
   public deleteRoom = async () => {
-    const { roomId, userId } = this.reqBody;
-    await pusher.trigger(`presence-${roomId}`, "room-deleted", {});
-
     try {
+      const authenticated = await this.authenticate();
+      if (!authenticated) return;
+
+      const { roomId } = this.reqBody;
+
       const client = await clientPromise;
       const db = client.db("spicydb");
 
-      if (!userId) {
-        this.res.status(400).json({ message: "Missing userId" });
-        return;
-      }
       if (!roomId) {
         this.res.status(400).json({ message: "Missing roomId" });
         return;
       }
 
-      const room = await db.collection("rooms").deleteOne({
+      const room = await db.collection("rooms").findOne({
         _id: new ObjectId(roomId),
-        hostId: new ObjectId(userId),
+        hostId: new ObjectId(this.userId),
       });
 
+      if (!room) {
+        this.res.status(404).json({ message: "Room not found" });
+        return;
+      }
+
+      await db.collection("rooms").deleteOne({
+        _id: new ObjectId(roomId),
+        hostId: new ObjectId(this.userId),
+      });
+
+      await pusher.trigger(`presence-${roomId}`, "room-deleted", {});
       this.res.json("Room deletion successful");
     } catch (e) {
       this.res.status(400).json({ message: "Unexpected Error" });
@@ -124,16 +155,35 @@ class AppController {
   };
 
   public sendChatMessage = async () => {
-    //TODO: try catch
-    const { roomId, userName, message } = this.reqBody;
+    try {
+      const authenticated = await this.authenticate();
+      if (!authenticated) return;
 
-    await pusher.trigger(`presence-${roomId}`, "new-chat", {
-      sender: userName,
-      message: message,
-      gameEvent: false,
-    });
+      const { roomId, username, message } = this.reqBody;
 
-    this.res.status(200).json({ message: "Message sent" });
+      if (!roomId) {
+        this.res.status(400).json({ message: "Missing roomId" });
+        return;
+      }
+      if (!username) {
+        this.res.status(400).json({ message: "Missing username" });
+        return;
+      }
+      if (!message) {
+        this.res.status(400).json({ message: "Missing message" });
+        return;
+      }
+
+      await pusher.trigger(`presence-${roomId}`, "new-chat", {
+        sender: username,
+        message: message,
+        gameEvent: false,
+      });
+
+      this.res.status(200).json({ message: "Message sent" });
+    } catch (e) {
+      this.res.status(400).json({ message: "Unexpected Error" });
+    }
   };
 }
 

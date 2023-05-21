@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Deck from "../icons/deck";
-import { Card, ChatMessage, Room } from "../lib/types";
+import { Card, ChatMessage, Player, Room } from "../lib/types";
 import CardComponent from "./card";
 import Chat from "./chat";
 import Hand from "./hand";
@@ -21,7 +21,7 @@ const GameBoard = (props: GameBoardProps) => {
 
   const isActiveTurn = props.room.activePlayer === props.userId;
   const activePlayer = props.room.players.find(
-    (player: any) => player.id === props.room.activePlayer
+    (player: Player) => player.id === props.room.activePlayer
   );
 
   const handleDrawCard = async () => {
@@ -213,7 +213,7 @@ const GameBoard = (props: GameBoardProps) => {
           <div className="game-board__chat">
             <Chat
               roomId={props.room._id}
-              userName={props.room.you.name}
+              username={props.room.you.name}
               messages={props.chatMessages}
             />
           </div>
@@ -257,7 +257,7 @@ const GameBoard = (props: GameBoardProps) => {
             </button>
             <Chat
               roomId={props.room._id}
-              userName={props.room.you.name}
+              username={props.room.you.name}
               messages={props.chatMessages}
             />
           </div>

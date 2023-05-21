@@ -31,7 +31,7 @@ class GameController {
       return;
     } 
     */
-    
+
     this.userId = "";
     this.model = {} as Model;
     this.db = {} as Db;
@@ -39,7 +39,11 @@ class GameController {
 
   public async initialize() {
     // Get userId from session
-    const session: Session | null = await getServerSession(this.req, this.res, authOptions);
+    const session: Session | null = await getServerSession(
+      this.req,
+      this.res,
+      authOptions
+    );
     if (!session || !session.user) {
       this.res.status(400).json({ message: "Missing user" });
       return;
