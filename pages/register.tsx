@@ -1,5 +1,4 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
 
@@ -7,7 +6,7 @@ interface RegisterProps {}
 
 export default function Register(props: RegisterProps) {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { status } = useSession();
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -27,14 +26,14 @@ export default function Register(props: RegisterProps) {
       });
 
       response = await response;
-      if (response.status !== 200) throw new Error("Something went wrong");
+      if (response.status !== 200) throw new Error("Registration failed");
 
       const getLoginStatus = await signIn("credentials", {
         redirect: false,
         username,
         password,
       });
-      if (getLoginStatus?.error) throw new Error("Something went wrong");
+      if (getLoginStatus?.error) throw new Error("Login failed");
 
       router.push("/");
     } catch (errorMessage: any) {
@@ -43,8 +42,8 @@ export default function Register(props: RegisterProps) {
   };
 
   useEffect(() => {
-    if (session) router.replace("/");
-  }, []);
+    if (status === "authenticated") router.push("/");
+  }, [status]);
 
   return (
     <main className="register">

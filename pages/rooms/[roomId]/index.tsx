@@ -1,19 +1,28 @@
 import { ObjectId } from "mongodb";
-import { useSession } from "next-auth/react";
+import { SessionContextValue, useSession } from "next-auth/react";
 import Pusher from "pusher-js";
 import { use, useEffect, useState } from "react";
 import GameBoard from "../../../components/gameBoard";
 import clientPromise from "../../../lib/mongodb";
-import { ChatMessage, Member, PusherMember, PusherMembers, Room } from "../../../lib/types";
+import {
+  ChatMessage,
+  Member,
+  PusherMember,
+  PusherMembers,
+  Room,
+} from "../../../lib/types";
 import Lobby from "../../../components/lobby";
 import ScoreBoard from "../../../components/scoreBoard";
+import { useRouter } from "next/router";
 
 interface GameRoomProps {
   room: Room;
 }
 
 const GameRoom = (props: GameRoomProps) => {
-  const { data: session }: any = useSession();
+  const router = useRouter();
+
+  const { data: session, status }: SessionContextValue = useSession();
   const username = session?.user?.name;
   const user_id = session?.user?.id;
   const channel_id = "presence-" + props.room?._id.toString();
@@ -59,6 +68,10 @@ const GameRoom = (props: GameRoomProps) => {
       console.error(errorMessage);
     }
   };
+
+  useEffect(() => {
+    if (status === "unauthenticated") router.push("/");
+  }, [status]);
 
   useEffect(() => {
     if (!props.room) window.location.href = "/";
@@ -117,7 +130,6 @@ const GameRoom = (props: GameRoomProps) => {
       setChatMessages((prev) => [...prev, gameEvent]);
       setPlayers(membersToArray(channel.members.members as PusherMembers));
       console.log(member);
-      
     });
 
     return () => {
@@ -135,20 +147,20 @@ const GameRoom = (props: GameRoomProps) => {
 
   return (
     <>
-      {(room == null || room?.round == -1) && props.room.round == -1 && (
+      {(room == null || room?.round == -1) && props.room?.round == -1 && (
         <Lobby
           title={props.room.name}
           players={players}
           handleStartGame={handleStartGame}
           hostId={props.room.hostId}
-          userId={user_id}
+          userId={user_id!}
         />
       )}
       {room && room.round != -1 && !room.isGameEnded && (
         <GameBoard
           room={room}
           setRoom={setRoom}
-          userId={user_id}
+          userId={user_id!}
           chatMessages={chatMessages}
         />
       )}
@@ -156,7 +168,7 @@ const GameRoom = (props: GameRoomProps) => {
         <ScoreBoard
           players={room.players}
           roomId={room._id.toString()}
-          userId={user_id}
+          userId={user_id!}
           hostId={room.hostId.toString()}
         />
       )}
