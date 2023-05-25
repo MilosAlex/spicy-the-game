@@ -98,6 +98,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json(deck);
   } catch (e) {
     console.error(e);
-    //throw new Error(e).message;
   }
 };

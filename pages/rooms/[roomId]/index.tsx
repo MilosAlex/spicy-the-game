@@ -189,7 +189,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       props: { room: JSON.parse(JSON.stringify(room)) },
     };
   } catch (e) {
-    console.error(e);
     return {
       props: { room: null },
     };

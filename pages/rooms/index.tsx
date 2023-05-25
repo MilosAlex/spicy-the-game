@@ -64,7 +64,6 @@ export async function getServerSideProps() {
       props: { rooms: JSON.parse(JSON.stringify(rooms)) },
     };
   } catch (e) {
-    console.error(e);
     return {
       props: { rooms: [] },
     };
