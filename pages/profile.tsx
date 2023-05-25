@@ -1,7 +1,6 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { SessionContextValue, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useState } from "react";
 import clientPromise from "../lib/mongodb";
 import { RoomName } from "../lib/types";
 
@@ -10,8 +9,7 @@ interface ProfileProps {
 }
 
 export default function Profile(props: ProfileProps) {
-  const router = useRouter();
-  const { data: session }: any = useSession();
+  const { data: session }: SessionContextValue = useSession();
 
   const [rooms, setRooms] = useState(props.rooms);
 
@@ -25,10 +23,8 @@ export default function Profile(props: ProfileProps) {
         }),
       });
 
-      response = await response;
-
       setRooms(rooms.filter((e) => e._id !== roomId));
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };

@@ -23,9 +23,7 @@ const ScoreBoard = (props: ScoreBoardProps) => {
         }),
       });
 
-      response = await response;
-
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };

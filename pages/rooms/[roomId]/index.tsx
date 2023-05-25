@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { SessionContextValue, useSession } from "next-auth/react";
-import Pusher from "pusher-js";
+import Pusher, { PresenceChannel } from "pusher-js";
 import { use, useEffect, useState } from "react";
 import GameBoard from "../../../components/gameBoard";
 import clientPromise from "../../../lib/mongodb";
@@ -14,6 +14,7 @@ import {
 import Lobby from "../../../components/lobby";
 import ScoreBoard from "../../../components/scoreBoard";
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
 
 interface GameRoomProps {
   room: Room;
@@ -43,9 +44,7 @@ const GameRoom = (props: GameRoomProps) => {
           activePlayers: players,
         }),
       });
-
-      response = await response;
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };
@@ -60,11 +59,9 @@ const GameRoom = (props: GameRoomProps) => {
         }),
       });
 
-      response = await response;
       const data = await response.json();
-
       setRoom(data);
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };
@@ -87,9 +84,7 @@ const GameRoom = (props: GameRoomProps) => {
       auth: { params: { username, user_id } },
     });
 
-    let channel: any;
-
-    channel = pusher.subscribe(channel_id);
+    const channel = pusher.subscribe(channel_id) as PresenceChannel;
 
     channel.bind("new-round", function (gameEvent: ChatMessage[]) {
       handleRoomQuery();
@@ -176,8 +171,8 @@ const GameRoom = (props: GameRoomProps) => {
   );
 };
 
-export async function getServerSideProps(context: any) {
-  const roomId = context.query.roomId;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const roomId: string = context.query.roomId as string;
 
   try {
     const client = await clientPromise;

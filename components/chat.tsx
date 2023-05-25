@@ -25,12 +25,12 @@ const Chat = (props: ChatProps) => {
         }),
       });
 
-      response = await response;
-    } catch (errorMessage: any) {
+      if (response.status === 200) {
+        setTextValue("");
+      }
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
-
-    setTextValue("");
   };
 
   return (

@@ -35,7 +35,7 @@ const GameBoard = (props: GameBoardProps) => {
       }).then((res) => res.json());
 
       props.setRoom(response);
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };
@@ -55,11 +55,10 @@ const GameBoard = (props: GameBoardProps) => {
         }),
       });
 
-      response = await response;
       const data = await response.json();
 
       props.setRoom(data);
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };
@@ -75,12 +74,11 @@ const GameBoard = (props: GameBoardProps) => {
         }),
       });
 
-      response = await response;
       const data = await response.json();
 
       props.setRoom(data);
       setIsChallengeActive(false);
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };

@@ -1,4 +1,4 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { SessionContextValue, signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -8,7 +8,7 @@ interface CreateRoomProps {}
 
 export default function CreateRoom(props: CreateRoomProps) {
   const router = useRouter();
-  const { data: session }: any = useSession();
+  const { data: session }: SessionContextValue = useSession();
 
   const [roomTitle, setRoomTitle] = useState("");
 
@@ -23,12 +23,10 @@ export default function CreateRoom(props: CreateRoomProps) {
         }),
       });
 
-      response = await response;
-
       if (response.status === 200) {
         router.push("/");
       }
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       console.error(errorMessage);
     }
   };

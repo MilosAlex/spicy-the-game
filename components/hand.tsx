@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { LegacyRef, useState } from "react";
 import { Card } from "../lib/types";
 import CardComponent from "./card";
 import { useHorizontalScroll } from "../lib/useHorizontalScroll";
@@ -21,7 +21,7 @@ const Hand = (props: HandProps) => {
     <section className="hand">
       {props.isActive && (
       <button className="hand__button" onClick={props.drawCard}>Draw a card</button>)}
-      <div className="hand__cards" ref={scrollRef as any}>
+      <div className="hand__cards" ref={scrollRef as unknown as React.LegacyRef<HTMLDivElement>}>
         {props.cards.map((card: Card, i: number) => (
           <CardComponent
             key={card.value + card.color + i}
@@ -41,7 +41,7 @@ const Hand = (props: HandProps) => {
       <div className="hand__cards">
         <CardComponent color={pickedCard.color} value={pickedCard.value} />
         <h2 className="hand__declaration-title">It's a...</h2>
-        {[...(Array(10).keys() as any)].map((i: number) => {
+        {[...(Array(10).keys())].map((i: number) => {
           if (
             (Number(props.declaredCard?.value ?? props.topCard?.value) === 9 &&
               i < 4 &&

@@ -2,11 +2,12 @@ import { SessionProvider } from "next-auth/react";
 import NavBar from "../components/navBar";
 import "../styles/main.scss";
 import Head from "next/head";
+import { AppProps } from "next/app";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
-}: any) {
+}: AppProps) {
   return (
     <SessionProvider session={session}>
       <Head>

@@ -25,7 +25,6 @@ export default function Register(props: RegisterProps) {
         }),
       });
 
-      response = await response;
       if (response.status !== 200) throw new Error("Registration failed");
 
       const getLoginStatus = await signIn("credentials", {
@@ -36,7 +35,7 @@ export default function Register(props: RegisterProps) {
       if (getLoginStatus?.error) throw new Error("Login failed");
 
       router.push("/");
-    } catch (errorMessage: any) {
+    } catch (errorMessage) {
       setIserrorsVisible(true);
     }
   };
