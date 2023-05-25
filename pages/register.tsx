@@ -59,6 +59,7 @@ export default function Register(props: RegisterProps) {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Peti42"
+          maxLength={10}
         />
         <label className="register__label" htmlFor="password">
           Password
@@ -70,6 +71,7 @@ export default function Register(props: RegisterProps) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="asd123"
+          maxLength={20}
         />
         <button className="register__button" type="submit">
           Send

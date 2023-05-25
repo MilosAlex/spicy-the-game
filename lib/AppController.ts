@@ -55,10 +55,14 @@ class AppController {
         this.res.status(400).json({ message: "Missing name" });
         return;
       }
+      if (name > 30) {
+        this.res.status(400).json({ message: "Too long name" });
+        return;
+      }
 
       const deck = await db
         .collection("decks")
-        .findOne({ name: "numbers-only-spicy-short" });
+        .findOne({ name: "numbers-only-spicy" });
 
       if (!deck) {
         this.res.status(404).json({ message: "Missing deck" });
@@ -67,7 +71,7 @@ class AppController {
 
       const shuffledDeck = shuffle(deck.cards);
 
-      const room = await db.collection("rooms").insertOne({
+      await db.collection("rooms").insertOne({
         hostId: new ObjectId(this.userId),
         name,
         deck: shuffledDeck,
@@ -90,8 +94,16 @@ class AppController {
         this.res.status(400).json({ message: "Missing username" });
         return;
       }
+      if (username.length > 10) {
+        this.res.status(400).json({ message: "Too long username" });
+        return;
+      }
       if (!password) {
         this.res.status(400).json({ message: "Missing password" });
+        return;
+      }
+      if (password > 20) {
+        this.res.status(400).json({ message: "Too long password" });
         return;
       }
 

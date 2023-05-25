@@ -33,10 +33,6 @@ export default function CreateRoom(props: CreateRoomProps) {
     }
   };
 
-  /* useEffect(() => {
-    if (!session) router.replace("/");
-  }, []); */
-
   return (
     <main className="create-room">
       <h1 className="create-room__title">Create room</h1>
@@ -51,6 +47,7 @@ export default function CreateRoom(props: CreateRoomProps) {
           value={roomTitle}
           onChange={(e) => setRoomTitle(e.target.value)}
           placeholder="Peti vs Feri"
+          maxLength={30}
         />
         {session ? (
           <button className="create-room__button" type="submit">
