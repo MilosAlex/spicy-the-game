@@ -234,15 +234,18 @@ class Model {
       this.setActivePlayer(challengedPlayer);
     }
 
-    this.roomData.declaredCard = null;
-    this.roomData.declarer = null;
-    this.roomData.pileSize = 1;
-
-    return [
+    const eventMessages = [
       `${player.name} challenged ${challengedPlayer.name} and ${
         player.id === this.getActivePlayer().id ? "lost" : "won"
       }`,
     ];
+    this.resolveTrophy(eventMessages);
+
+    this.roomData.declaredCard = null;
+    this.roomData.declarer = null;
+    this.roomData.pileSize = 1;
+
+    return eventMessages;
   };
 
   constructor(roomData: RoomData) {
