@@ -50,7 +50,7 @@ export default function Profile(props: ProfileProps) {
                     href={`/rooms/${room._id}`}
                     key={room._id}
                   >
-                    {room.name}
+                    <h2 className="profile__room__title">{room.name}</h2>
                   </Link>
                   <button
                     className="profile__room__delete"

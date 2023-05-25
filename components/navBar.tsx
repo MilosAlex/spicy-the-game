@@ -17,7 +17,7 @@ export default function NavBar(props: NavBarProps) {
           <section className="navbar__status">
             <h3 className="navbar__name">
               <span className="navbar__name--extra">Signed in as </span>
-              <Link href="/profile">{session.user?.name}</Link>
+              <Link className="navbar__name--fixed" href="/profile">{session.user?.name}</Link>
             </h3>
             <button
               className="navbar__status__button"

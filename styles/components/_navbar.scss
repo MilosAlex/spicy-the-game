@@ -28,6 +28,10 @@
     font-weight: 400;
     white-space: nowrap;
   }
+  
+  &__name--fixed {
+    text-decoration: underline;
+  }
 
   &__status {
     display: flex;

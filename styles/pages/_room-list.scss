@@ -23,6 +23,9 @@
     &__title {
       @include typo-poppins-24-semibold($full-black);
       margin: unset;
+      word-wrap: break-word;
+      text-align: center;
+      max-width: 90%;
     }
 
     &__lock {

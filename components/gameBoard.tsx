@@ -149,7 +149,7 @@ const GameBoard = (props: GameBoardProps) => {
                       {props.room.declarer === props.userId
                         ? "You"
                         : props.room.players.find(
-                            (p: any) => p.id === props.room.declarer
+                            (p: Player) => p.id === props.room.declarer
                           )?.name}
                     </p>
                   </div>
@@ -219,10 +219,7 @@ const GameBoard = (props: GameBoardProps) => {
           </div>
         </div>
         <Hand
-          cards={
-            props.room.players.find((player: any) => player.id == props.userId)
-              ?.hand ?? []
-          }
+          cards={props.room.you.hand}
           isActive={isActiveTurn}
           onClickHandler={handleDeclarationClick}
           drawCard={handleDrawCard}
