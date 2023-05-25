@@ -1,8 +1,9 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../lib/mongodb";
 
 //THIS API IS NOT PART OF THE FINAL PRODUCT
 
-export default async (req: any, res: any) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const client = await clientPromise;
     const db = client.db("spicydb");
