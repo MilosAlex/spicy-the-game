@@ -3,10 +3,7 @@ import { Card, Player, PlayerData, RoomData, User } from "./types";
 class Model {
   private roomData: RoomData;
 
-  public getRoom = () => {
-    return this.roomData;
-  };
-
+  // Creates the player objects and deals the cards.
   private initPlayers = (activePlayers: User[]) => {
     const players = activePlayers.map((user: User) => {
       const hand = this.roomData.deck.splice(0, 6);
@@ -16,11 +13,13 @@ class Model {
     return players;
   };
 
+  // Returns the first card from the deck.
   private drawTopCard = () => {
     const card = this.roomData.deck.splice(0, 1)[0];
     return card;
   };
 
+  // Returns the player object with the given id.
   private getPlayer = (playerId: string) => {
     const player = this.roomData.players.find(
       (player: PlayerData) => player.id === playerId
@@ -31,22 +30,28 @@ class Model {
     return player;
   };
 
+  // Returns the player object of the active player.
   private getActivePlayer = () => {
     return this.roomData.players[
       this.roomData.round % this.roomData.players.length
     ];
   };
 
+  // Sets the active player to the given player by 
+  // changing the round number.
   private setActivePlayer = (player: PlayerData) => {
     this.roomData.round = this.roomData.players.indexOf(player);
   };
 
+  // Checks if the game has ended and throws an error if it has.
   private checkGameEnded = () => {
     if (this.roomData.deck.length === 0) {
       throw new Error("GAME_ENDED");
     }
   };
 
+  // Checks if reward points should be given to the declarer
+  // and gives them if so.
   private resolveTrophy = (eventMessages: string[]) => {
     const prevDeclarer = this.roomData.players.find(
       (player: PlayerData) => player.id === this.roomData.declarer
@@ -66,6 +71,12 @@ class Model {
     }
   };
 
+  // Returns the room data.
+  public getRoom = () => {
+    return this.roomData;
+  };
+
+  // Returns the room data from the perspective of the given user.
   public getPlayerRoom = (userId: string) => {
     const shownTopCard =
       !this.roomData.declarer || this.roomData.declarer === userId
@@ -80,7 +91,7 @@ class Model {
         handSize: this.getPlayer(userId).hand.length,
       };
     } catch (e) {
-      //user is a spectator
+      // User is a spectator
       you = {
         id: userId,
         name: "Spectator",
@@ -117,6 +128,8 @@ class Model {
     };
   };
 
+  // Changes game state to the first round after error handling.
+  // Returns the event messages.
   public startGame = (activePlayers: User[], userId: string) => {
     if (this.roomData.round !== -1) {
       throw new Error("GAME_ALREADY_STARTED");
@@ -142,6 +155,8 @@ class Model {
     return ["Game started"];
   };
 
+  // Handles card playing action and moves the game a turn forward.
+  // Returns the event messages.
   public playCard = (userId: string, card: Card, declaration: string) => {
     this.checkGameEnded();
     const activePlayer = this.getActivePlayer();
@@ -174,6 +189,8 @@ class Model {
     return eventMessages;
   };
 
+  // Handles card drawing action and moves the game a turn forward.
+  // Returns the event messages.
   public drawCard = (userId: string) => {
     this.checkGameEnded();
     const activePlayer = this.getActivePlayer();
@@ -195,6 +212,8 @@ class Model {
     return eventMessages;
   };
 
+  // Handles challenge event and gives penalties and rewards.
+  // Returns the event messages.
   public challenge = (userId: string, challenged: "color" | "value") => {
     this.checkGameEnded();
     if (!this.roomData.declarer || !this.roomData.declaredCard) {

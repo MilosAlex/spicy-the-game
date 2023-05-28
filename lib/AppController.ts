@@ -23,7 +23,8 @@ class AppController {
     }
   }
 
-  // Verifies that the user is authenticated
+  // Verifies that the user is authenticated.
+  // Returns true if authenticated, false if not.
   private authenticate = async () => {
     try {
       const session: Session | null = await getServerSession(
@@ -43,7 +44,8 @@ class AppController {
     }
   };
 
-  // 
+  // After error checking creates a room in the db.
+  // Response is only a status and a message.
   public createRoom = async () => {
     try {
       const authenticated = await this.authenticate();
@@ -86,6 +88,8 @@ class AppController {
     }
   };
 
+  // After error checking creates a new user in the db.
+  // Response is only a status and a message.
   public createUser = async () => {
     try {
       const client = await clientPromise;
@@ -131,6 +135,8 @@ class AppController {
     }
   };
 
+  // After error checking deletes a room from the db.
+  // Response is only a status and a message.
   public deleteRoom = async () => {
     try {
       const authenticated = await this.authenticate();
@@ -168,6 +174,8 @@ class AppController {
     }
   };
 
+  // After error checking sends a chat message with Pusher.
+  // Response is only a status and a message.
   public sendChatMessage = async () => {
     try {
       const authenticated = await this.authenticate();

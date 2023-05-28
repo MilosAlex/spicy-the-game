@@ -26,6 +26,8 @@ class GameController {
     this.roomId = roomId;
   }
 
+  // Asynchronously initializes the controller. Verifies the user.
+  // Creates a response if there is an error.
   public async initialize() {
     try {
       // Get userId from session
@@ -54,7 +56,7 @@ class GameController {
         return;
       }
 
-      //getting room data from db
+      // Getting room data from db
       const client = await clientPromise;
       this.db = client.db("spicydb");
       const roomData = (await this.db
@@ -66,13 +68,14 @@ class GameController {
         return;
       }
 
-      //creating model
+      // Creating model
       this.model = new Model(roomData);
     } catch (e) {
       this.res.status(500).json({ message: "Unexpected Error" });
     }
   }
 
+  // Sends the contents of the eventMessages to the players with Pusher.
   private notifyPlayers = async (eventMessages: string[]) => {
     const messages = eventMessages.map((message) => {
       return { sender: this.roomId, message, gameEvent: true };
@@ -81,6 +84,7 @@ class GameController {
     await pusher.trigger(`presence-${this.roomId}`, "new-round", messages);
   };
 
+  // Updates the db with the state of the model.
   private updateDbRoom = async (room: RoomData) => {
     await this.db.collection("rooms").updateOne(
       { _id: new ObjectId(this.roomId) },
@@ -92,6 +96,7 @@ class GameController {
     );
   };
 
+  // Handles errors with the correct response.
   private errorHandler = (e: unknown) => {
     const message = (e as Error)?.message;
     if (message === "NOT_YOUR_TURN")
@@ -117,6 +122,7 @@ class GameController {
     else this.res.status(400).json({ message: "Unexpected Error" });
   };
 
+  // Response is the room information from a players perspective.
   public getPlayerRoom = () => {
     try {
       if (!this.model) return;
@@ -127,6 +133,8 @@ class GameController {
     }
   };
 
+  // Handles the game starting with the given activePlayers, 
+  // updates the db and notifies the players.
   public startGame = async () => {
     try {
       if (!this.model) return;
@@ -148,6 +156,7 @@ class GameController {
     }
   };
 
+  // Handles the card playing action, updates the db and notifies the players.
   public playCard = async () => {
     try {
       if (!this.model) return;
@@ -174,6 +183,7 @@ class GameController {
     }
   };
 
+  // Handles the drawing of a card, updates the db and notifies the players.
   public drawCard = async () => {
     try {
       if (!this.model) return;
@@ -189,6 +199,7 @@ class GameController {
     }
   };
 
+  // Handles the challenge action, updates the db and notifies the players.
   public challenge = async () => {
     try {
       if (!this.model) return;

@@ -20,19 +20,24 @@ interface GameRoomProps {
   room: Room;
 }
 
+// Page component for the game room.
+// This component is responsible for handling the game logic and
+// rendering the gameboard and lobby and scoreboard.
 const GameRoom = (props: GameRoomProps) => {
   const router = useRouter();
-
   const { data: session, status }: SessionContextValue = useSession();
+
+  // States
+
   const username = session?.user?.name;
   const user_id = session?.user?.id;
   const channel_id = "presence-" + props.room?._id.toString();
 
   const [players, setPlayers] = useState<Member[]>([]);
-
   const [room, setRoom] = useState<Room | null>(null);
-
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+
+  // Action handlers
 
   const handleStartGame = async () => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/startGame`;
@@ -66,6 +71,8 @@ const GameRoom = (props: GameRoomProps) => {
     }
   };
 
+  // Effects
+
   useEffect(() => {
     if (status === "unauthenticated") router.push("/");
   }, [status]);
@@ -86,6 +93,7 @@ const GameRoom = (props: GameRoomProps) => {
 
     const channel = pusher.subscribe(channel_id) as PresenceChannel;
 
+    // Event listeners
     channel.bind("new-round", function (gameEvent: ChatMessage[]) {
       handleRoomQuery();
       setChatMessages((prev) => [...prev, ...gameEvent]);
@@ -99,12 +107,12 @@ const GameRoom = (props: GameRoomProps) => {
       window.location.href = "/";
     });
 
-    // when the user successfully subscribes to the channel
+    // When the user successfully subscribes to the channel
     channel.bind("pusher:subscription_succeeded", () => {
       setPlayers(membersToArray(channel.members.members as PusherMembers));
     });
 
-    // when a new member joins the room
+    // When a new member joins the room
     channel.bind("pusher:member_added", (member: PusherMember) => {
       const gameEvent: ChatMessage = {
         sender: "System",
@@ -115,7 +123,7 @@ const GameRoom = (props: GameRoomProps) => {
       setPlayers(membersToArray(channel.members.members as PusherMembers));
     });
 
-    // when a member leaves the room
+    // When a member leaves the room
     channel.bind("pusher:member_removed", (member: PusherMember) => {
       const gameEvent: ChatMessage = {
         sender: "System",
@@ -130,6 +138,8 @@ const GameRoom = (props: GameRoomProps) => {
       pusher.unsubscribe(channel_id);
     };
   }, [session]);
+
+  // Helper functions
 
   const membersToArray = (members: PusherMembers): Member[] => {
     const membersArray = [];

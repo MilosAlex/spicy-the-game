@@ -6,6 +6,7 @@ import Lock from "../../icons/lock";
 
 interface CreateRoomProps {}
 
+// Page component for creating a room.
 export default function CreateRoom(props: CreateRoomProps) {
   const router = useRouter();
   const { data: session }: SessionContextValue = useSession();

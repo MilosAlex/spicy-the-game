@@ -10,6 +10,7 @@ interface RoomListProps {
   rooms: RoomName[];
 }
 
+// Page component for the room list page.
 const RoomList = (props: RoomListProps) => {
   const { data: session } = useSession();
   return (

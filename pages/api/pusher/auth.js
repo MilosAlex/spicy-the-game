@@ -1,5 +1,6 @@
 import { pusher } from "../../../lib/pusher";
 
+// Handles the authentication request from Pusher.
 export default async function handler(req, res) {
     const { socket_id, channel_name, username, user_id } = req.body;
 

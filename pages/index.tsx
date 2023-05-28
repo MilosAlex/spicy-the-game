@@ -2,6 +2,7 @@ import Link from "next/link";
 
 interface HomeProps {}
 
+// Page component for the home page.
 export default function Home(props: HomeProps) {
   return (
     <main className="home">

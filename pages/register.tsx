@@ -8,11 +8,13 @@ export default function Register(props: RegisterProps) {
   const router = useRouter();
   const { status } = useSession();
 
+  // Form state
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const [isErrorsVisible, setIserrorsVisible] = useState<boolean>(false);
 
+  // Form submit handler
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/createUser`;
     e.preventDefault();
@@ -40,6 +42,7 @@ export default function Register(props: RegisterProps) {
     }
   };
 
+  // Auth checker
   useEffect(() => {
     if (status === "authenticated") router.push("/");
   }, [status]);

@@ -8,11 +8,13 @@ interface ProfileProps {
   rooms: RoomName[];
 }
 
+// Page component for the profile page.
 export default function Profile(props: ProfileProps) {
   const { data: session }: SessionContextValue = useSession();
 
   const [rooms, setRooms] = useState(props.rooms);
 
+  // Room deletion action handler.
   const handleRoomDelete = async (roomId: string) => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/deleteRoom`;
     try {
