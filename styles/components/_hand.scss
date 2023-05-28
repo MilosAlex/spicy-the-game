@@ -5,14 +5,11 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 1.6rem;
-  //margin: 0 1rem 2rem 1rem;
   width: 100%;
   background-color: #1f2123;
-  //border: 1px solid #000;
   border-radius: 1.2rem;
   padding: 1.6rem 2.4rem 1.9rem 2.4rem;
   max-width: 120rem;
-  //height: 26.8rem;
   height: 29.3rem;
 
   &__button {
@@ -42,10 +39,7 @@
 
   &__cards {
     display: flex;
-    //flex-direction: row;
-    //justify-content: center;
     align-items: center;
-    //flex-wrap: wrap;
     overflow-x: auto;
     gap: 2.6rem;
     height: 20.2rem;
@@ -67,7 +61,6 @@
   }
 
   &__declaration-title {
-    //@include typo-bungee-16(#fff);
     @include typo-poppins-16-semibold(#fff);
   }
 }

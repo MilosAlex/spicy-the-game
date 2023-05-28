@@ -1,0 +1,1 @@
+The styles forlder was created using the [Sass Guidelines](https://sass-guidelin.es/) as a reference.
