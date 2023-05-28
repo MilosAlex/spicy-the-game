@@ -23,6 +23,7 @@ class AppController {
     }
   }
 
+  // Verifies that the user is authenticated
   private authenticate = async () => {
     try {
       const session: Session | null = await getServerSession(
@@ -42,6 +43,7 @@ class AppController {
     }
   };
 
+  // 
   public createRoom = async () => {
     try {
       const authenticated = await this.authenticate();

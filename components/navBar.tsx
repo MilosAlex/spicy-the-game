@@ -4,7 +4,11 @@ import React from "react";
 
 interface NavBarProps {}
 
+// Displays the navigation bar at the top of the page.
+// Appears on all pages.
 export default function NavBar(props: NavBarProps) {
+
+  // Displays the right content depending on the auth state.
   const { data: session } = useSession();
 
   return (

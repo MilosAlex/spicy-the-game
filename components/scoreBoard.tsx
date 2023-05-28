@@ -8,11 +8,16 @@ interface ScoreBoardProps {
   hostId: string;
 }
 
+// Displays the final score board at the end of the game.
+// Handles the room deletion.
 const ScoreBoard = (props: ScoreBoardProps) => {
+
+  // Sorts the players by their final score.
   const sortedPlayers = props.players.sort(
     (a, b) => b.points - b.handSize - (a.points - a.handSize)
   );
 
+  // Handles the room deletion.
   const handleRoomDelete = async () => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/deleteRoom`;
     try {

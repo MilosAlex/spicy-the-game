@@ -13,7 +13,11 @@ interface GameBoardProps {
   chatMessages: ChatMessage[];
 }
 
+// Displays the game board, handles drawing cards, playing cards and
+// challenging.
 const GameBoard = (props: GameBoardProps) => {
+  // States
+
   const [isChallengeActive, setIsChallengeActive] = useState<boolean>(false);
 
   const [isChatVisible, setIsChatVisible] = useState<boolean>(false);
@@ -23,6 +27,8 @@ const GameBoard = (props: GameBoardProps) => {
   const activePlayer = props.room.players.find(
     (player: Player) => player.id === props.room.activePlayer
   );
+
+  // Action handlers
 
   const handleDrawCard = async () => {
     const url = `${process.env.NEXT_PUBLIC_URL}api/drawCard`;

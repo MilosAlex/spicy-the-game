@@ -8,9 +8,12 @@ interface ChatProps {
   messages: ChatMessage[];
 }
 
+// Displays the chat box and the given messages(prop), handles sending messages.
 const Chat = (props: ChatProps) => {
+  // Value of the input field
   const [textValue, setTextValue] = React.useState<string>("");
 
+  // Handles sending messages
   const handleChatSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

@@ -1,7 +1,5 @@
 import React from "react";
 import Pepper from "../icons/pepper";
-import Reverse from "../icons/Reverse";
-import Skip from "../icons/Skip";
 
 interface CardProps {
   color: string;
@@ -11,6 +9,8 @@ interface CardProps {
   size?: "small" | "medium" | "large";
 }
 
+// Used to display the cards in the player's hand and the cards
+// and the main cards on the board. The cards are optionally clickable.
 export default function Card(props: CardProps) {
   const colorClass = `card--${props.color}`;
   const sizeClass = props.size ? `card--${props.size}` : "";

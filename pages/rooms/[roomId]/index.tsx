@@ -124,7 +124,6 @@ const GameRoom = (props: GameRoomProps) => {
       };
       setChatMessages((prev) => [...prev, gameEvent]);
       setPlayers(membersToArray(channel.members.members as PusherMembers));
-      console.log(member);
     });
 
     return () => {

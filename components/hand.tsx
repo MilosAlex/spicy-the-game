@@ -12,9 +12,13 @@ interface HandProps {
   drawCard: () => Promise<void>;
 }
 
+// Displays the player's hand and calls action handlers when a card is
+// clicked or when the player wants to draw a card.
 const Hand = (props: HandProps) => {
+  // State of the hand (cards in hand | declaration potions)
   const [pickedCard, setPickedCard] = useState<Card | null>(null);
 
+  // Enables horizontal scrolling with the mouse wheel
   const scrollRef = useHorizontalScroll();
 
   return !pickedCard ? (

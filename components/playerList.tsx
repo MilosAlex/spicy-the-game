@@ -7,6 +7,8 @@ interface PlayerListProps {
   activePlayer: string;
 }
 
+// Displays the list of players and their hand size and points
+// as part of the game board.
 const PlayerList = (props: PlayerListProps) => {
   return (
     <section className="player-list">

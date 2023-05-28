@@ -10,6 +10,8 @@ interface LobbyProps {
   userId: string;
 }
 
+// Displays the wait room before the start of the game and calls 
+// the start game handler when the host clicks on the start game button.
 const Lobby = (props: LobbyProps) => {
   return (
     <main className="lobby">
